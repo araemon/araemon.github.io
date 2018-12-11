@@ -6,7 +6,7 @@
 Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544536941"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544539310"  />
 <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
 <style>
@@ -50,7 +50,7 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
         </ul>
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre><br>@discardableResult<br>func vibrate() -> Self {<br>    AudioServicesPlaySystemSound(1519)<br>    return self<br>}<br></pre><br><br>参考:<br><a href="https://blog.sgr-ksmt.org/2016/09/24/discardable_result/">https://blog.sgr-ksmt.org/2016/09/24/discardable_result/</a><br></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre><br>@discardableResult<br>func vibrate() -> Self {<br>    AudioServicesPlaySystemSound(1519)<br>    return self<br>}<br></pre><br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/swift-discardableResult.html&text=Swift%E3%81%A7%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3%E5%AE%9F%E8%A3%85%E3%80%81%E8%BF%94%E3%82%8A%E5%80%A4%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84%E6%99%82%E3%81%AEwarning%E3%82%92%E6%B6%88%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/swift-discardableResult.html" target="_blank" title="Facebook"></a></li>
