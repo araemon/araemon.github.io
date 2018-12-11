@@ -7,6 +7,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
     <style>
+        body {
+            background-position: center top;
+            background: #FFF;
+            color: #111;
+            font-size: 19px;
+            font-family: 游ゴシック体, 'Yu Gothic', YuGothic, 'ヒラギノ角ゴシック Pro', 'Hiragino Kaku Gothic Pro', メイリオ, Meiryo, Osaka, 'ＭＳ Ｐゴシック', 'MS PGothic', sans-serif;
+        }
+
         h1 {
             font-family: 'Corben', cursive;
             position: absolute;
@@ -15,10 +23,16 @@
             bottom: 0px;
             left: 0px;
             margin: auto;
-
+            font-size: 1.5rem;
             width: 100%;
             text-align: center;
             height: 64px;
+        }
+
+        @media screen and (min-width: 700px) {
+            h1 {
+                font-size: 2em;
+            }
         }
 
         a {
