@@ -6,7 +6,7 @@
 💻Swift4でUITalbeViewの最下部にスクロールしたい</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544556022"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544556247"  />
 <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
@@ -45,21 +45,21 @@
 2018-05-21</time></div>
 
         <ul class="shareList">
-        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html&text=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Facebook"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Google+"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="はてなブックマーク"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html&title=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Pocket"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html&text=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html&title=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Pocket"></a></li>
         </ul>
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>最下部にスクロールするには`scrollToRow`を使うが、`tableView.reloadData()` 後すぐに実行すると正しくスクロールできない。<br>タイマーでタイミングを少しずらすことでうまくいった。<br><pre><br>//tableViewに追加する処理をした後<br><br>tableView.reloadData()<br><br>DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {<br>    self.tableView.scrollToRow(at: IndexPath(row: self.items.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)<br>}<br></pre></p>
         <ul class="shareList">
-        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html&text=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Facebook"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Google+"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="はてなブックマーク"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/swift4-UITalbeView-scrollToRow.html&title=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Pocket"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html&text=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html&title=%F0%9F%92%BBSwift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Pocket"></a></li>
         </ul>
 
 </article>
