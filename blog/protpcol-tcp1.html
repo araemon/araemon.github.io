@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+iPhoneからC言語を使ってTCP通信してみる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544518602"  />
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <h1><a href="/">101010.fun</a></h1>
+<ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke S</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/contact/">Contact</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+<a href="/blog/">[Blog]</a>
+<h1>
+iPhoneからC言語を使ってTCP通信してみる</h1>
+<div class="time"><time pubdate="" datetime="2018-11-29">
+2018-11-29</time></div>
+
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/protpcol-tcp1.html&text=iPhone%E3%81%8B%E3%82%89C%E8%A8%80%E8%AA%9E%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6TCP%E9%80%9A%E4%BF%A1%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/protpcol-tcp1.html&title=iPhone%E3%81%8B%E3%82%89C%E8%A8%80%E8%AA%9E%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6TCP%E9%80%9A%E4%BF%A1%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+<p>
+前回、UDP通信をやってみて、以外にも簡単にできるということがわかった。この調子でTCP通信もやってみようと思ったがけっこう複雑で、前提知識が必要そうである。そこで、プログラミングの前に、勉強がてら予習記事を書くことにする。<br><br><h2>TCP通信の流れ</h2><br>さっそくTCPでググってみると、このような図がたくさん出てくる。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129140655.jpg" width="400" /><br><br>大きく3つの流れ（シーケンス）に別れるようだ。<br><br>1. コネクションの確立<br>2. データ送信<br>3. コネクションの解放<br><br>実際のデータを送るまでに、1と3のコネクション処理が出てくる。<br><br><b>つまり挨拶から始まり、さよならの挨拶で終わる。</b><br><br>まるで、人間のコミュニケーションの様なプロトコルだ。ちなみにプロトコルとは「取り決め」とか、「約束ごと」のようなものである。<br><br><b>プロトコルを決めないと、機械だって人間だって会話できないのだ。</b><br><br><br>UDPは、User Datagram Protocolの略で、Datagramは、届くかどうかは保証されないっすよ、ということだった。<br><br>それに対して、TCPはTransmission Control Protocolの略。Transmissionは送信だから、送信状態を管理できるプロトコルでっせ！ってことなのだろう。一方向的なUDPとは違って、TCPはかなりお行儀が良いことがわる。<br><br><br>しかし、TCP通信に出てくる、SYN、ACKってナンジャラホイ？って感じだ。<br><br>| 記号 | 意味          |<br>| ---- | ----------- |<br>| SYN  | Synchronize |<br>| ACK  | Acknowledge |<br>| FIN  | Final       |<br><br>いまいちピンと来ない。<br><br>| 記号 | 意味        |<br>| ---- | ----------- |<br>| SYN  | 送ってもいいかな？ |<br>| ACK  | おっけー |<br>| FIN  | 終わるねー       |<br><br>このように読み替えたら分かりやすくなった。<br><br>TCPパケットの構造だ。UDPパケットよりは複雑になっているが、ポイントを抑えればきっと誰でも理解できるはず。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129140651.jpg" class="default" /><br><br>まずパケットをみると、先ほどのACKやSYNというのはTCPパケットのコントロールフラグ部に入っている。<br><br>なるほど、所詮は1ビット単位の0か1のフラグなので大したことではないな。送信元ポートや送信先ポートはUDPでも出てきたのでおkだ。どうもシーケンス番号とシーケンスACK番号（確認応答番号）がTCP通信では鍵を握るらしい。<br><br>大雑把にTCP通信のイメージがわかったところで、次は最初の「コネクションの確立」つまり、「3ウェイハンドシェイク」のやり取りを詳しく見ていくことにしよう。<br><br><br><h2>3ウェイハンドシェイク</h2><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129151547.jpg" class="default" /><br><br><br>3ウェイハンドシェイクを理解するにあたって、TCPパケットで意識する部分はたったの4つで良い。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129153228.jpg" class="default" /><br><br>また、次のようなルールがあることを先に覚えておくと理解しやすい。<br><br><h3>シーケンスACK番号のルール</h3><br><b>「相手から受信したシーケンス番号」＋「データサイズの値」</b><br><b>ただし、3ウェイハンドシェイクでは「相手から受信したシーケンス番号」に「１」を加算した値となる</b><br><br>それでは図のやり取りを見ていこう。<br><br>最初に、クライアントがサーバーに対してSYNパケットを送る。SYNパケットといってもSYNフラグを1、ACKフラグを0にしただけだ。シーケンス番号は最初だけはランダムな値ということなので、ここでは仮に1000としよう。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129153756.jpg" class="default" /><br><br>次に、 SYNパケットを受け取ったサーバーは、クライアントへSYN ACKパケットを返す。この時のシーケンスACK番号は<b>「シーケンスACK番号のルール」</b>に従えば、受信したシーケンス番号の1000に1を加えた1001の値になる。<br><br>サーバー側のシーケンス番号は最初の送信だけはランダム値なので、仮に9000とする。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129153800.jpg" class="default" /><br><br>最後に、SYN ACK パケットを受けとったクライアントは、接続開始のACKパケットを送る。<b>シーケンス番号は相手から受け取ったシーケンスACK番号になる</b>という決まりがあるので、そのまま1001となる。また、シーケンスACK番号は先ほどと同様に、送られてきたシーケンス番号9000に1を足して9001となる。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181129/20181129153803.jpg" class="default" /><br><br>以上のようにシーケンス番号とACK番号が加算されながら入れ替わる。そのことで、通信の状態をお互いに、把握できるようになっているわけだ。言い換えれば、どこまで受信、送信できているかということを、このシーケンス番号とシーケンスACK番号を見れば確認できる。まさにシーケンスという名の通り、「順番に並んでいる」ことを意識した通信ということがわかる。<br><br><br>参考:<br><a href="https://www.infraexpert.com/study/tcpip9.html">https://www.infraexpert.com/study/tcpip9.html</a><br><a href="https://ja.wikipedia.org/wiki/3%E3%82%A6%E3%82%A7%E3%82%A4%E3%83%BB%E3%83%8F%E3%83%B3%E3%83%89%E3%82%B7%E3%82%A7%E3%82%A4%E3%82%AF">https://ja.wikipedia.org/wiki/3%E3%82%A6%E3%82%A7%E3%82%A4%E3%83%BB%E3%83%8F%E3%83%B3%E3%83%89%E3%82%B7%E3%82%A7%E3%82%A4%E3%82%AF</a><br><br><br></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/protpcol-tcp1.html&text=iPhone%E3%81%8B%E3%82%89C%E8%A8%80%E8%AA%9E%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6TCP%E9%80%9A%E4%BF%A1%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/protpcol-tcp1.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/protpcol-tcp1.html&title=iPhone%E3%81%8B%E3%82%89C%E8%A8%80%E8%AA%9E%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6TCP%E9%80%9A%E4%BF%A1%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+
+</article>
+</div>
+            </div>
+</body>
+</html>
