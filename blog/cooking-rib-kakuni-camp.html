@@ -6,7 +6,7 @@
 🔥スペアリブの角煮26人分を作る - 山梨キャンプ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544542605"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544546545"  />
 <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
@@ -65,5 +65,29 @@
             </div>
 
 <div id="page_top"><a href="#"></a></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+/****************************************
+ * TOPへ戻るボタン表示
+ ***************************************/
+$(function() {
+    var pagetop = $('#page_top');
+    pagetop.hide();
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {  //100pxスクロールしたら表示
+            pagetop.fadeIn();
+        } else {
+            pagetop.fadeOut();
+        }
+    });
+    pagetop.click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 300); //0.3秒かけてトップへ移動
+        return false;
+    });
+});
+
+</script>
 </body>
 </html>

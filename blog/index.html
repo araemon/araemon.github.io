@@ -6,9 +6,10 @@
 </title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- <link rel="stylesheet" type="text/css" href="/css/icon.css"  /> -->
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544542605"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544546545"  />
 <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 <style>
 
 
@@ -34,17 +35,23 @@
                 </div>
 
                 <div id="contents">
+                        <div class="tag">
+                                <button value="">All</button>
+                                <button value="swift">Swift</button>
+                                <button value="protocol">Protocol</button>
+                                <button value="cooking">Cooking</button>
+                        </div>
                         <article>
                                 <h1>
                                 </h1>
 <div class="list"><div class="time"><time datetime="2018-11-29">2018-11-29</time></div>
-<h3><a href="./protpcol-tcp1.html">💻iPhoneからC言語を使ってTCP通信してみる</a></h3>
+<h3><a href="./protocol-tcp1.html">💻iPhoneからC言語を使ってTCP通信してみる</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-28">2018-11-28</time></div>
-<h3><a href="./protpcol-udp-1.html">💻iPhoneからC言語を使ってUDP通信してみた</a></h3>
+<h3><a href="./protocol-udp-1.html">💻iPhoneからC言語を使ってUDP通信してみた</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-19">2018-11-19</time></div>
 <h3><a href="./arduino-bluetooth.html">💻Arduinoで温度ロガーを作るまで</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-16">2018-11-16</time></div>
-<h3><a href="./swift-weak-strong-closure.html">💻ViewControllerが解放されない。クロージャーで強参照していた件。</a></h3>
+<h3><a href="./swift-weak-strong-closure.html">💻[Swift]ViewControllerが解放されない。クロージャーで強参照していた件。</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-03">2018-11-03</time></div>
 <h3><a href="./diy-table.html">🔧メイン作業を快適にするため、シンプルな机を作ってみた</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-10-30">2018-10-30</time></div>
@@ -73,5 +80,50 @@
                         </article>
                 </div>
         </div>
+<div id="page_top"><a href="#"></a></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+/****************************************
+ * タグボタン処理
+***************************************/
+
+$(function () {
+        $('button').click(function () {
+                var buttonText = $(this).attr("value")
+                $('.list').show()
+                if(buttonText != "all") {
+                        $('.list').each(function(index, element) {
+                                var href = $(element).find("a").attr('href')
+                                console.log(href);
+                                if(!href.match(buttonText)) {
+                                        $(element).hide();
+                                }
+
+                        });
+                }
+        });
+});
+/****************************************
+ * TOPへ戻るボタン表示
+ ***************************************/
+$(function() {
+    var pagetop = $('#page_top');
+    pagetop.hide();
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {  //100pxスクロールしたら表示
+            pagetop.fadeIn();
+        } else {
+            pagetop.fadeOut();
+        }
+    });
+    pagetop.click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 300); //0.3秒かけてトップへ移動
+        return false;
+    });
+});
+
+</script>
 </body>
 </html>
