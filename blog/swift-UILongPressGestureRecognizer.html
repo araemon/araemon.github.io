@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+💻SwiftのUILongPressGestureRecognizerは二回呼ばれる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544547617"  />
+<link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="mailto:i.officearai@gmail.com">Contact</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+<a href="/blog/">Blog (記事一覧)</a>
+<h1>
+💻SwiftのUILongPressGestureRecognizerは二回呼ばれる</h1>
+<div class="time"><time pubdate="" datetime="2018-05-21">
+2018-05-21</time></div>
+
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html&text=%F0%9F%92%BBSwift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html&title=%F0%9F%92%BBSwift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+<p>
+
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br><pre><br>let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressedButton))<br>button.addGestureRecognizer(longPressRecognizer)<br></pre><br>こんな感じで登録したlongPressedButton関数は二回呼ばれる。<br>アラートなど呼び出す時は二度呼ばれてしまうので注意が必要。<br>UIGestureRecognizerのstateで下記のように切り分ける。<br><br><pre><br>@objc func longPressedButton(sender:UIGestureRecognizer) {<br><br>    if (sender.state == .began){<br>      print("長押し開始のタイミング")      <br>      /*<br>      何かアラート処理を書いたり<br>      */<br>    } else if (sender.state == .ended) {<br>      print("長押し終了のタイミング")      <br>    }<br>}<br></pre></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html&text=%F0%9F%92%BBSwift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=http://192.168.100.101/blog/swift-UILongPressGestureRecognizer.html&title=%F0%9F%92%BBSwift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+
+</article>
+</div>
+            </div>
+
+<div id="page_top"><a href="#"></a></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script>
+/****************************************
+ * TOPへ戻るボタン表示
+ ***************************************/
+$(function() {
+    var pagetop = $('#page_top');
+    pagetop.hide();
+    $(window).scroll(function () {
+        if ($(this).scrollTop() > 100) {  //100pxスクロールしたら表示
+            pagetop.fadeIn();
+        } else {
+            pagetop.fadeOut();
+        }
+    });
+    pagetop.click(function () {
+        $('body,html').animate({
+            scrollTop: 0
+        }, 300); //0.3秒かけてトップへ移動
+        return false;
+    });
+});
+
+</script>
+</body>
+</html>
