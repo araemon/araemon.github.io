@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>
-💻Swiftで一度だけ実行したい時に使えるファンクション</title>
+Swiftで一度だけ実行したい時に使えるファンクション</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544593791"  />
-<link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544597988"  />
+<!-- <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet"> -->
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
 <style>
 
@@ -27,7 +27,7 @@
 <li><a href="/chazuke/">Chazuke</a></li>
 <li><a href="/harmonize/">Harmonize</a></li>
 <li><a href="/apps/">Other Apps</a></li>
-<li><a href="mailto:i.officearai@gmail.com">Contact</a></li>
+<li><a href="/about/">About</a></li>
 </ul>
 <div class="copyright">Copyright © Toshihiko Arai</div>
                 </div>
@@ -40,7 +40,7 @@
     <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
     </div>
 <h1>
-💻Swiftで一度だけ実行したい時に使えるファンクション</h1>
+Swiftで一度だけ実行したい時に使えるファンクション</h1>
 <div class="time"><time pubdate="" datetime="2018-05-22">
 2018-05-22</time></div>
 
@@ -48,13 +48,12 @@
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>viewDidLayoutSubviewsなど何度も呼び出されてしまうファンクション内で一度だけ実行したい処理があった場合に以下のような書き方をしていた。<br>これだと毎回フラグを宣言、条件分岐するのは面倒だし、可読性がよくないなと思っていた。<br><br><pre><br>var isFirst = false<br><br>override func viewDidLayoutSubviews() { // updateLayout<br>  if !isFirst {<br>     isFirst = true<br><br>    // 一度だけ実行したい処理を書く<br>  }  <br>}<br></pre><br>クロージャーとlazyを使ったスマートな書き方を見つけたので参考にさせていただいた。<br><a href="https://qiita.com/codelynx/items/f0243d631f2448e89026">https://qiita.com/codelynx/items/f0243d631f2448e89026</a><br><br><pre><br>private lazy var onceUpdateLayout: (()->())? = {<br>  // 一度だけ実行したい処理を書く<br>    return nil<br>}()<br><br>override func viewDidLayoutSubviews() { // updateLayout<br>  onceUpdateLayout?()<br>}<br></pre><br>処理をファンクションに分離できたため`何をしているのか`がわかり可読性が上がった。<br><br>他にも色々な書き方がいろいろあるようだ。<br><br>クロージャー(Closures)は名前のない関数で変数として扱われる。<br>lazy(lazy stored property）は、参照されるときに初めて初期値が設定されるプロパティ。<br></p>
         <ul class="shareList">
-        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-once-exec.html&text=%F0%9F%92%BBSwift%E3%81%A7%E4%B8%80%E5%BA%A6%E3%81%A0%E3%81%91%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%99%82%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%83%95%E3%82%A1%E3%83%B3%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-once-exec.html&text=Swift%E3%81%A7%E4%B8%80%E5%BA%A6%E3%81%A0%E3%81%91%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%99%82%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%83%95%E3%82%A1%E3%83%B3%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-once-exec.html" target="_blank" title="Facebook"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/swift-once-exec.html" target="_blank" title="Google+"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/swift-once-exec.html" target="_blank" title="はてなブックマーク"></a></li>
-        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/swift-once-exec.html&title=%F0%9F%92%BBSwift%E3%81%A7%E4%B8%80%E5%BA%A6%E3%81%A0%E3%81%91%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%99%82%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%83%95%E3%82%A1%E3%83%B3%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" title="Pocket"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/swift-once-exec.html&title=Swift%E3%81%A7%E4%B8%80%E5%BA%A6%E3%81%A0%E3%81%91%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%99%82%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%83%95%E3%82%A1%E3%83%B3%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" title="Pocket"></a></li>
         </ul>
-
 </article>
 </div>
             </div>
