@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+OGPが反映されない。ブログカードを実装するまで</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta content="" name="description" />
+<meta content="OGPが反映されない。ブログカードを実装するまで" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/html-ogp-blog-card.html" property="og:url" />
+<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" property="og:image" />
+<meta content="" property="og:description" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544713917"  />
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+OGPが反映されない。ブログカードを実装するまで</h1>
+<div class="time"><time pubdate="" datetime="2018-05-23">
+2018-05-23</time></div>
+<p>
+<ul id="toc"><li><a href="#1">ブログカードとOpen Graph Protocol(OPG)</a></li><li><a href="#2">OGPが反映されない</a></li><li><a href="#3">バーチャルホストの鍵のパスをいじる</a></li><li><a href="#4">VirtualHost 443の複数記述</a></li><li><a href="#5">SSL Server Test</a></li><li><a href="#6">画像キャッシュサービス</a></li></li></ul>
+<h2 id="1">ブログカードとOpen Graph Protocol(OPG)</h2>URLをつけて投稿するとSNSなどにカードのように表示されるこれ。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" class="default" /><br><br>どうやるかというとhtmlのメタタグにこんな感じでサイト情報を埋め込むことでコントロールできる。<br><br><pre class='code'>&lt;meta content=&quot;description説明が入ります&quot; name=&quot;description&quot; /&gt;<br>&lt;meta content=&quot;og:titleタイトルが入ります&quot; property=&quot;og:title&quot; /&gt;<br>&lt;meta content=&quot;article&quot; property=&quot;og:type&quot; /&gt;<br>&lt;meta content=&quot;https://works.kamityping.com/post/2018/index.html&quot; property=&quot;og:url&quot; /&gt;<br>&lt;meta content=&quot;https://works.kamityping.com/post/2018/images/kamityping-icon.png&quot; property=&quot;og:image&quot; /&gt;<br>&lt;meta content=&quot;og:description説明が入ります&quot; property=&quot;og:description&quot; /&gt;<br></pre><br>Open Graph Protocol(OGP)という規格らしい。<br><br>Pandocで自作ジェネレーターを組んでHTML生成しているとこういったことも全て自分でやらなければならない。<br>現在のWEBの仕組みに詳しくなると同時に、CMSやブログサービスがこういったことを自動でやってくれていたありがたみがわかる。<br><br>OGPに関してはこちらに詳しい規格が書いてある。<br><br>The Open Graph protocol:<br><a href="http://ogp.me/">http://ogp.me/</a><br><br><br><h2 id="2">OGPが反映されない</h2>Twitterなどでブログカードを反映させるまでにトラブルがあった。<br><br>まずは、現状でブログカードがどのように反映されるか確認できるツールがある。<br><br>シェアデバッガー:<br><a href="https://developers.facebook.com/tools/debug/sharing/">https://developers.facebook.com/tools/debug/sharing/</a><br><br>確認するとこのような警告がでた。<br><br><pre class='code'>SSL証明書を検証できません。 自己署名（ブラウザの警告を引き起こす）または無効です。<br>Can't validate SSL Certificate. Either it is self-signed (which will cause browser warnings) or it is invalid.<br></pre><br>サブドメインで運営しているためか、Let's Encrypt 関連でうまくいっていないようである。<br>ルートドメインではエラーは吐かなかった。<br><br><br><h2 id="3">バーチャルホストの鍵のパスをいじる</h2>letsencryptは４つの鍵を生成する。<br><br><table><thead><tr><th>ファイル名    </th><th>  意味</th></tr></thead><tbody><tr><td>privkey.pem    </td><td>  秘密鍵（SSL/TLS サーバ証明書の公開鍵に対応する）</td></tr><tr><td>cert.pem       </td><td>  SSL/TLS サーバ証明書（公開鍵を含む）</td></tr><tr><td>chain.pem      </td><td>  アクセス時にブラウザに提供する必要のある中間証明書</td></tr><tr><td>fullchain.pem  </td><td> SSL/TLS サーバ証明書（公開鍵を含む）と中間証明書の両方が含まれているファイルで、cert.pem と chain.pem の内容が結合されたものです。</td></tr></tbody></table>参考:<br><a href="https://letsencrypt.jp/docs/using.html">https://letsencrypt.jp/docs/using.html</a><br><br>chainの指定を追加したらなぜかうまくいったが、問題はさらに続く。<br><br><pre class='code'>SSLCertificateFile /somewherepath/fullchain.pem<br>SSLCertificateKeyFile /somewherepath/privkey.pem<br>#以下追加<br>SSLCertificateChainFile /somewherepath/chain.pem<br></pre><br><br><h2 id="4">VirtualHost 443の複数記述</h2>Virtualhostのconfに下のように複数記述していた。どうも書き方が間違っていたようだ。<br>複数設定すると最後の設定のみが反映されているようで、ドメインが証明書が使われてしまいブラウザーでエラーを吐いた。<br><br><pre class='code'>&lt;VirtualHost *:443&gt;<br>...#サブドメイン1<br>&lt;/VirtualHost&gt;<br><br>&lt;VirtualHost *:443&gt;<br>...#サブドメイン2<br>&lt;/VirtualHost&gt;<br><br>&lt;VirtualHost *:443&gt;<br>...#サブドメイン3<br>&lt;/VirtualHost&gt;<br></pre><br>443に関する記述を消して、ssl.confをドメイン毎に書き直した。というか現状一つのドメインしかsslを必要としていないのでssl.confをrenameして使っただけだが、他のサブドメインにsslを設定したい場合はこのssl.confをコピーして編集すれば良さそうだ。<br><br><pre class='code'>cp ssl.conf subdomain1.ssl.conf<br></pre><br><br><h2 id="5">SSL Server Test</h2>自分のサーバーのSSLが最適化されているかテストしてみた。B評価だった。そのうちAになるように対応してみたい。<br><br>Qualys SSL Labs:<br><a href="https://www.ssllabs.com/ssltest/analyze.html">https://www.ssllabs.com/ssltest/analyze.html</a><br><br><br><h2 id="6">画像キャッシュサービス</h2>とあるブログカードなどに使われていた。直リンクを避け画像表示を高速化するためだと思うが、使い方は調べていない。<br><br>Images.weserv.nl:<br><a href="https://images.weserv.nl/#quick-reference">https://images.weserv.nl/#quick-reference</a><br></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/html-ogp-blog-card.html&text=OGP%E3%81%8C%E5%8F%8D%E6%98%A0%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E3%80%82%E3%83%96%E3%83%AD%E3%82%B0%E3%82%AB%E3%83%BC%E3%83%89%E3%82%92%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B%E3%81%BE%E3%81%A7" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/html-ogp-blog-card.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/html-ogp-blog-card.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/html-ogp-blog-card.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/html-ogp-blog-card.html&title=OGP%E3%81%8C%E5%8F%8D%E6%98%A0%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E3%80%82%E3%83%96%E3%83%AD%E3%82%B0%E3%82%AB%E3%83%BC%E3%83%89%E3%82%92%E5%AE%9F%E8%A3%85%E3%81%99%E3%82%8B%E3%81%BE%E3%81%A7" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+
+</body>
+</html>
