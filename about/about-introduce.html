@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+このサイトについて</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="about">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/about/" class="tagHighlight">About</a>
+    </div>
+<h1>
+このサイトについて</h1>
+<div class="time"><time pubdate="" datetime="2018-12-13">
+2018-12-13</time></div>
+
+<p>
+
+このサイトは元々アプリのためのヘルプページや宣伝に使っていたのですが、今ではプログラミングのモチベーションのために忘備録などを残すことにしています。<br><br>はてなブログ有料版を使っていたのですが、GitHub Pagesに引っ越すことにしました。<br>単純に無料でできるgithub.ioがカッコいいかなと思ったわけです。<br><br>さて、このサイトの書き出しは、全て自前のプログラムで組んでいます。<br>Hugoなどの静的サイトジェネレーターは使っておりません。<br><br>MarkDownの変換も以前はPandocを使っていましたが、それもやめました。<br>自分だけのなんちゃってMarkDownを採用しています。つまり、Tableやcodeなどの面倒な正規表現の処理を省いています。<br><br>Html出力は、PHPとシェルスクリプトで行なっています。<br>PHPのHTML出力をそのままファイルに書き込んでいるだけです。<br><pre><br>ob_start();<br>include "./template/index.php";<br>$resultHtml = ob_get_contents();<br>ob_end_clean();<br><br>$writePath = "./contents/index.html";<br><br>file_put_contents($writePath, $resultHtml);<br></pre><br>エディタはVScodeとVimのみ、フルスクラッチで約1週間くらいの工程です。<br><br>シンプルな機能しかありませんが、個人サイトなのでこれで十分かと思いました。<br>外部のライブラリーを使わずに、自前で用意することで精神衛生上にもよくなりました。<br>また、CSS、レシポンシブルデザインの勉強にもなりました。<br>そして何より自分でプログラミングして作ることは、楽しい！です。<br><br>このサイトのデザインは"dwango on GitHub"を大いに参考させてもらいました。<br><a href="https://dwango.github.io/">https://dwango.github.io/</a><br><br>Non JavaScript！<br>と行きたいところですが、現状一箇所のみスクリプトを使っています。<br></p>
+</article>
+</div>
+            </div>
+
+</body>
+</html>
