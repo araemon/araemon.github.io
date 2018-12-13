@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+FirebaseのCrashlyticsでdSYMエラーの解決方法</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544678398"  />
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+FirebaseのCrashlyticsでdSYMエラーの解決方法</h1>
+<div class="time"><time pubdate="" datetime="2018-11-17">
+2018-11-17</time></div>
+
+<p>
+
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181117/20181117115900.jpg" class="default" /><br><br>忘れやすいのでメモしておく。<br><br>1. XcodeのOrganizerを開く<br>2. Uploadしたアプリを選択して、右側の「Download Debug Symbols」をクリックしてインジケーターがなくなるまで待つ<br>3. Uploadしたアプリを右クリックして「Show in Finder」を選択<br>4. xcarchiveファイルを右クリックして「パッケージの内容を表示」を選択<br>5. 「dSYMs」フォルダを右クリックして圧縮をする<br>6. 圧縮されたdSYMs.zipをデスクトップなどに移動して、Firebaseの画面でアップロードする<br><br>以上でクラッシュレポートが見れるようになる。<br><br>追記:<br>iTunesConnectのアプリのアクティビティから対象のビルドバージョンを選ぶと「dSYM をダウンロード」が出てくる。<br>このファイルを使った方が速いかな？</p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/firebase-crashlytics-dsym.html&text=Firebase%E3%81%AECrashlytics%E3%81%A7dSYM%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AE%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%B3%95" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/firebase-crashlytics-dsym.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/firebase-crashlytics-dsym.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/firebase-crashlytics-dsym.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/firebase-crashlytics-dsym.html&title=Firebase%E3%81%AECrashlytics%E3%81%A7dSYM%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%AE%E8%A7%A3%E6%B1%BA%E6%96%B9%E6%B3%95" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+
+</body>
+</html>
