@@ -6,10 +6,7 @@
 Blog (記事一覧)</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <!-- <link rel="stylesheet" type="text/css" href="/css/icon.css"  /> -->
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544597988"  />
-<!-- <link href="https://fonts.googleapis.com/css?family=Corben:700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=M+PLUS+Rounded+1c:900" rel="stylesheet"> -->
-<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544671421"  />
 <style>
 
 
@@ -52,6 +49,10 @@ Blog (記事一覧)                                </h1>
 <h3><a href="./arduino-bluetooth.html">Arduinoで温度ロガーを作るまで</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-16">2018-11-16</time></div>
 <h3><a href="./swift-weak-strong-closure.html">ViewControllerが解放されない、Swiftでクロージャーで強参照していた件</a></h3>
+</div><div class="list"><div class="time"><time datetime="2018-11-12">2018-11-12</time></div>
+<h3><a href="./kotlin-unix-timestamp.html">KotlinでUNIXタイムスタンプの取得</a></h3>
+</div><div class="list"><div class="time"><time datetime="2018-11-08">2018-11-08</time></div>
+<h3><a href="./kotlin-android-studio-log-limit.html">Log.dのメッセージ出力には文字数制限あり</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-11-03">2018-11-03</time></div>
 <h3><a href="./diy-table.html">メイン作業を快適にするため、シンプルな机を作ってみた</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-10-30">2018-10-30</time></div>
@@ -69,9 +70,9 @@ Blog (記事一覧)                                </h1>
 </div><div class="list"><div class="time"><time datetime="2018-08-01">2018-08-01</time></div>
 <h3><a href="./cooking-hot-sandwich-apple-pie.html">アップルパイ風ホットサンドイッチ！ホットサンドのレシピ紹介-その3</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-07-31">2018-07-31</time></div>
-<h3><a href="./research-ios-android-share-part1.html">世界26ヶ国のiOSとAndroidのシェア率を比較してみた</a></h3>
-</div><div class="list"><div class="time"><time datetime="2018-07-31">2018-07-31</time></div>
 <h3><a href="./cooking-nanchatte-tacos-hot-sandwich.html">スパイシーなタコス風ホットサンドをつくってみた！ホットサンドレシピ紹介-その2</a></h3>
+</div><div class="list"><div class="time"><time datetime="2018-07-31">2018-07-31</time></div>
+<h3><a href="./research-ios-android-share-part1.html">世界26ヶ国のiOSとAndroidのシェア率を比較してみた</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-07-30">2018-07-30</time></div>
 <h3><a href="./cooking-freshness-burger-spam-hot-sandwich.html">フレッシュネスバーガー風！スパムサンドの作り方 ホットサンドレシピの紹介-その1</a></h3>
 </div><div class="list"><div class="time"><time datetime="2018-05-22">2018-05-22</time></div>
@@ -85,7 +86,6 @@ Blog (記事一覧)                                </h1>
 </div>                        </article>
                 </div>
         </div>
-<div id="page_top"><a href="#"></a></div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script>
 /****************************************
@@ -118,27 +118,6 @@ $(function () {
                 }
         });
 });
-/****************************************
- * TOPへ戻るボタン表示
- ***************************************/
-$(function() {
-    var pagetop = $('#page_top');
-    pagetop.hide();
-    $(window).scroll(function () {
-        if ($(this).scrollTop() > 100) {  //100pxスクロールしたら表示
-            pagetop.fadeIn();
-        } else {
-            pagetop.fadeOut();
-        }
-    });
-    pagetop.click(function () {
-        $('body,html').animate({
-            scrollTop: 0
-        }, 300); //0.3秒かけてトップへ移動
-        return false;
-    });
-});
-
 </script>
 </body>
 </html>

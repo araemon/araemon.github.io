@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+Log.dのメッセージ出力には文字数制限あり</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544671421"  />
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+Log.dのメッセージ出力には文字数制限あり</h1>
+<div class="time"><time pubdate="" datetime="2018-11-08">
+2018-11-08</time></div>
+
+<p>
+
+ログ出力のこれ。<br><br>Log.d(tag, message)<br><br>messageを出力できる最大文字数が設定されているようだ。4000文字くらいで途切れてしまうが、知らずに数時間ハマった。<br><br><pre><br>val list = message.split(Regex("\n"))<br><br>list.forEach {<br>     Log.d('bugfix', it)<br>}<br></pre><br><br>こんな感じで改行区切りで一行づつ出力ことで、簡易対処することにした。</p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/kotlin-android-studio-log-limit.html&text=Log.d%E3%81%AE%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E5%87%BA%E5%8A%9B%E3%81%AB%E3%81%AF%E6%96%87%E5%AD%97%E6%95%B0%E5%88%B6%E9%99%90%E3%81%82%E3%82%8A" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/kotlin-android-studio-log-limit.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/kotlin-android-studio-log-limit.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/kotlin-android-studio-log-limit.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/kotlin-android-studio-log-limit.html&title=Log.d%E3%81%AE%E3%83%A1%E3%83%83%E3%82%BB%E3%83%BC%E3%82%B8%E5%87%BA%E5%8A%9B%E3%81%AB%E3%81%AF%E6%96%87%E5%AD%97%E6%95%B0%E5%88%B6%E9%99%90%E3%81%82%E3%82%8A" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+
+</body>
+</html>
