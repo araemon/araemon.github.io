@@ -6,7 +6,7 @@
 Directory index forbidden by Options directiveエラーとFile does not exist favicon.ico</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544699757"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ Directory index forbidden by Options directiveエラーとFile does not exist fa
 
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>Apacheで発生したアクセスエラーログ。<br><br><span class="backSlash">Directory index forbidden by Options directive: /xxxx/</span><br><br>アクセスされたフォルダに、index.htmlが置かれていないために発生するようだ。<br>このフォルダにはアクセスされることを想定していないため、空のindex.htmlを置いて解決する。<br>しかし今度は、ブラウザがfaviconをリクエストするために下記のようなエラーが発生してしまった。<br><br><span class="backSlash">File does not exist: /xxxx/favicon.ico, referer: http://xxxx.com/</span><br><br>空のfaviconを作成して、index.htmlと同じディレクトリにおけば解決する。<br><br><span class="backSlash">cat /dev/null > favicon.ico</span><br></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>Apacheで発生したアクセスエラーログ。<br><br><span class="backSlash">Directory index forbidden by Options directive: /xxxx/</span><br><br>アクセスされたフォルダに、index.htmlが置かれていないために発生するようだ。<br>このフォルダにはアクセスされることを想定していないため、空のindex.htmlを置いて解決する。<br>しかし今度は、ブラウザがfaviconをリクエストするために下記のようなエラーが発生してしまった。<br><br><span class="backSlash">File does not exist: /xxxx/favicon.ico, referer: http://xxxx.com/</span><br><br>空のfaviconを作成して、index.htmlと同じディレクトリにおけば解決する。<br><br><span class="backSlash">cat /dev/null > favicon.ico</span><br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/apache-favicon-error.html&text=Directory+index+forbidden+by+Options+directive%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%A8File+does+not+exist+favicon.ico" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/apache-favicon-error.html" target="_blank" title="Facebook"></a></li>

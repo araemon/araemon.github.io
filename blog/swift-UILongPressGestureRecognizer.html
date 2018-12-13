@@ -6,7 +6,7 @@
 SwiftのUILongPressGestureRecognizerは二回呼ばれる</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544699757"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ SwiftのUILongPressGestureRecognizerは二回呼ばれる</h1>
 
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br><pre class='code'>let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressedButton))<br>button.addGestureRecognizer(longPressRecognizer)<br></pre><br>こんな感じで登録したlongPressedButton関数は二回呼ばれる。<br>アラートなど呼び出す時は二度呼ばれてしまうので注意が必要。<br>UIGestureRecognizerのstateで下記のように切り分ける。<br><br><pre class='code'>@objc func longPressedButton(sender:UIGestureRecognizer) {<br><br>    if (sender.state == .began){<br>      print(&quot;長押し開始のタイミング&quot;)      <br>      /*<br>      何かアラート処理を書いたり<br>      */<br>    } else if (sender.state == .ended) {<br>      print(&quot;長押し終了のタイミング&quot;)      <br>    }<br>}<br></pre></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br><pre class='code'>let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressedButton))<br>button.addGestureRecognizer(longPressRecognizer)<br></pre><br>こんな感じで登録したlongPressedButton関数は二回呼ばれる。<br>アラートなど呼び出す時は二度呼ばれてしまうので注意が必要。<br>UIGestureRecognizerのstateで下記のように切り分ける。<br><br><pre class='code'>@objc func longPressedButton(sender:UIGestureRecognizer) {<br><br>    if (sender.state == .began){<br>      print(&quot;長押し開始のタイミング&quot;)      <br>      /*<br>      何かアラート処理を書いたり<br>      */<br>    } else if (sender.state == .ended) {<br>      print(&quot;長押し終了のタイミング&quot;)      <br>    }<br>}<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-UILongPressGestureRecognizer.html&text=Swift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Facebook"></a></li>

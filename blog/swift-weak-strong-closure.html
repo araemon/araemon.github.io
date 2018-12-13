@@ -6,7 +6,7 @@
 ViewControllerが解放されない、Swiftでクロージャーで強参照していた件</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544699757"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ ViewControllerが解放されない、Swiftでクロージャーで強参照し�
 
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br>使い終わったViewControllerでdeinitが呼ばれていないことに気づいた。<br><br>メンテナンス性を上げようとしてカプセル化を行ったは良いが、クロージャーで強参照をしてしまっていた。<br>delegateや、rootViewcontrollerのようなパラメータにweakの指定はもちろんのこと、クロージャ内でも注意しないといけない。<br><br>Hoge.swift<br><pre class='code'>class Hoge: NSObject {<br>    <br>    weak var rootViewController:UIViewController?<br>    var onSuccess:((Int) -&gt; ())?<br><br>....<br>}<br></pre><br>onSuccessにもweakをつけたいのだが、そうもいかないらしい。<br><br>ViewController.swift<br><pre class='code'>hoge.onSuccess = { [weak self] (value:Int) -&gt; Void in<br>      self?.somethingDo(value)<br>}<br></pre><br>このように、呼び出す側で [weak self]というのをつけてやることで弱参照となりViewControllerでdeinitが呼ばれるようになった。<br></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br>使い終わったViewControllerでdeinitが呼ばれていないことに気づいた。<br><br>メンテナンス性を上げようとしてカプセル化を行ったは良いが、クロージャーで強参照をしてしまっていた。<br>delegateや、rootViewcontrollerのようなパラメータにweakの指定はもちろんのこと、クロージャ内でも注意しないといけない。<br><br>Hoge.swift<br><pre class='code'>class Hoge: NSObject {<br>    <br>    weak var rootViewController:UIViewController?<br>    var onSuccess:((Int) -&gt; ())?<br><br>....<br>}<br></pre><br>onSuccessにもweakをつけたいのだが、そうもいかないらしい。<br><br>ViewController.swift<br><pre class='code'>hoge.onSuccess = { [weak self] (value:Int) -&gt; Void in<br>      self?.somethingDo(value)<br>}<br></pre><br>このように、呼び出す側で [weak self]というのをつけてやることで弱参照となりViewControllerでdeinitが呼ばれるようになった。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-weak-strong-closure.html&text=ViewController%E3%81%8C%E8%A7%A3%E6%94%BE%E3%81%95%E3%82%8C%E3%81%AA%E3%81%84%E3%80%81Swift%E3%81%A7%E3%82%AF%E3%83%AD%E3%83%BC%E3%82%B8%E3%83%A3%E3%83%BC%E3%81%A7%E5%BC%B7%E5%8F%82%E7%85%A7%E3%81%97%E3%81%A6%E3%81%84%E3%81%9F%E4%BB%B6" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-weak-strong-closure.html" target="_blank" title="Facebook"></a></li>
