@@ -6,7 +6,7 @@
 バーチャルホストで.htaccessが無視される？</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@
 バーチャルホストで.htaccessが無視される？</h1>
 <div class="time"><time pubdate="" datetime="2018-09-02">
 2018-09-02</time></div>
-
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>「バーチャルホストのドメインでアクセス」した場合と、「メインドメイン + フォルダを指定してアクセス」した場合の動作が異なることを発見した。<br>どうも、バーチャルホストでのアクセスだと.htaccessが読み込まれないようであった。<br>原因は、「AllowOverride None」を追記してしまったこと。下記のように「AllowOverride All」としたら、.htaccessの設定がちゃんと反映されるようになった。<br><pre class='code'>&lt;VirtualHost *:80&amp;gt;<br>        ServerName hoge.xxxxxxxxxxx.com<br>        DocumentRoot /home/xxxxxxxxxxx/hoge<br>        &amp;lt;Directory &quot;/home/xxxxxxxxxxx/hoge&quot;&amp;gt;<br>             Options FollowSymLinks<br>             AllowOverride All<br>             Order deny,allow<br>             Allow from all<br>        &amp;lt;/Directory&amp;gt;<br>&lt;/VirtualHost&amp;gt;<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>

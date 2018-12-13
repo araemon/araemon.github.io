@@ -6,7 +6,7 @@
 FirebaseのCrashlyticsでdSYMエラーの解決方法</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ FirebaseのCrashlyticsでdSYMエラーの解決方法</title>
 FirebaseのCrashlyticsでdSYMエラーの解決方法</h1>
 <div class="time"><time pubdate="" datetime="2018-11-17">
 2018-11-17</time></div>
-
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181117/20181117115900.jpg" class="default" /><br><br>忘れやすいのでメモしておく。<br><br>1. XcodeのOrganizerを開く<br>2. Uploadしたアプリを選択して、右側の「Download Debug Symbols」をクリックしてインジケーターがなくなるまで待つ<br>3. Uploadしたアプリを右クリックして「Show in Finder」を選択<br>4. xcarchiveファイルを右クリックして「パッケージの内容を表示」を選択<br>5. 「dSYMs」フォルダを右クリックして圧縮をする<br>6. 圧縮されたdSYMs.zipをデスクトップなどに移動して、Firebaseの画面でアップロードする<br><br>以上でクラッシュレポートが見れるようになる。<br><br>追記:<br>iTunesConnectのアプリのアクティビティから対象のビルドバージョンを選ぶと「dSYM をダウンロード」が出てくる。<br>このファイルを使った方が速いかな？</p>

@@ -6,7 +6,7 @@
 Android Studioで無線LANを使ってビルドする</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ Android Studioで無線LANを使ってビルドする</title>
 Android Studioで無線LANを使ってビルドする</h1>
 <div class="time"><time pubdate="" datetime="2018-09-14">
 2018-09-14</time></div>
-
 <p>
 
 adbがある場所へ移動。<br><span class="backSlash">cd ~/Library/Android/sdk/platform-tools</span><br><br>空いているテキトーなポートを指定。<br><span class="backSlash">./adb shell setprop service.adb.tcp.port 8888</span><br><br>おまじない。<br><span class="backSlash">./adb tcpip 8888</span><br><br>AndroidのLANのIPアドレスを入力して、接続する。<br><span class="backSlash">./adb connect 192.168.100.100:8888</span><br><br>以上でUSB接続しなくても、Android Studio上で端末が認識さている。無線でデバッグできるようになってとても便利だ。</p>

@@ -6,7 +6,7 @@
 Log.dのメッセージ出力には文字数制限あり</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ Log.dのメッセージ出力には文字数制限あり</title>
 Log.dのメッセージ出力には文字数制限あり</h1>
 <div class="time"><time pubdate="" datetime="2018-11-08">
 2018-11-08</time></div>
-
 <p>
 
 AndroidStudioでのログ出力のこれ。<br>Log.d(tag, message)<br><br>messageを出力できる最大文字数が設定されているようだ。4000文字くらいで途切れてしまうが、知らずに数時間ハマった。<br><pre class='code'>val list = message.split(Regex(&quot;\n&quot;))<br><br>list.forEach {<br>     Log.d('bugfix', it)<br>}<br></pre>こんな感じで改行区切りで一行づつ出力ことで、簡易対処することにした。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4865940391/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4865940391.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4865940391/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>

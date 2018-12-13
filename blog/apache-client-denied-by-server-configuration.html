@@ -6,7 +6,7 @@
 client denied by server configurationエラー</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ client denied by server configurationエラー</title>
 client denied by server configurationエラー</h1>
 <div class="time"><time pubdate="" datetime="2018-09-02">
 2018-09-02</time></div>
-
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>Apache のエラーログで「client denied by server configuration:」と出た時の対処法。放っておいても問題はなさそうだが、Apacheのエラーログを見やすくしたいため細かいエラーを徹底的になくしていく。<br>バーチャルホストでの運営なので、バーチャルホストの設定ファイル、virtualhost.conf を開く。<br><br>「Require all granted」を記述するする。<br><pre class='code'>&lt;VirtualHost *:80&gt;<br>        ServerName hogehoge.xxxxxxxxx.com<br>        DocumentRoot /somewhere/hogehoge<br>        &amp;lt;Directory &quot;/somewhere/hogehoge&quot;&gt;<br>            Require all granted<br>        &amp;lt;/Directory&gt;<br>&lt;VirtualHost&gt;<br></pre><br>Apache 再起動。<br><span class="backSlash">/etc/rc.d/init.d/httpd restart</span><br><br>これで解決したと思ったが、今度は下記のようなエラーが出てしまった。<br><span class="backSlash">configuration error:  couldn't perform authentication. AuthType not set!:</span><br><br>「Require all granted」はApache2.4系の書き方のようだ。<br>でApacheのバージョンを確認してみる。<br><span class="backSlash">httpd -v</span><br><br>やはり2.4以前のバージョンがインストールされていた。<br>この場合「Require all granted」ではなく、「Order allow,deny」「Allow from all」と書くようだ。<br>なので、最終的な書き方は次のようになる。<br><pre class='code'>&lt;VirtualHost *:80&gt;<br>        ServerName hogehoge.xxxxxxxxx.com<br>        DocumentRoot /somewhere/hogehoge<br>        &amp;lt;Directory &quot;/somewhere/hogehoge&quot;&gt;<br>            Order allow,deny<br>            Allow from all<br>        &amp;lt;/Directory&gt;<br>&lt;/VirtualHost&gt;<br></pre><br>これで解決！と思ったが、またエラーが出てしまった。<br><span class="backSlash">client denied by server configuration:</span><br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>

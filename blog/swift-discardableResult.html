@@ -6,7 +6,7 @@
 Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
 Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい</h1>
 <div class="time"><time pubdate="" datetime="2018-05-21">
 2018-05-21</time></div>
-
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre class='code'>@discardableResult<br>func vibrate() -&gt; Self {<br>    AudioServicesPlaySystemSound(1519)<br>    return self<br>}<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>

@@ -6,7 +6,7 @@
 KotlinでUNIXタイムスタンプの取得</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ KotlinでUNIXタイムスタンプの取得</title>
 KotlinでUNIXタイムスタンプの取得</h1>
 <div class="time"><time pubdate="" datetime="2018-11-12">
 2018-11-12</time></div>
-
 <p>
 
 <span class="backSlash">System.currentTimeMillis()</span><br><br>これでUNIXタイムスタンプが取得できた！、と思ったらつまづく。<br><br>正解はこちら。<br><br><span class="backSlash">val unixTimestamp = System.currentTimeMillis() / 1000</span><br><br>1000で割る。<br><br>UNIXタイムスタンプの単位は秒だから。<br><br>一方、System.currentTimeMillis()での取得はミリ秒。<br><br><br>関数名を落ち着いてよく読みませう。<br><br><b>current time millis**</b><br><br>😯<br><br>書いてある。<br><br>コピペばかりしてるとこうなる。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4865940391/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4865940391.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4865940391/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>

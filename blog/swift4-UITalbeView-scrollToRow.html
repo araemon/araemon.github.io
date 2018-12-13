@@ -6,7 +6,7 @@
 Swift4でUITalbeViewの最下部にスクロールしたい</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544704441"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544709810"  />
 </head>
 <body>
 
@@ -36,7 +36,6 @@ Swift4でUITalbeViewの最下部にスクロールしたい</title>
 Swift4でUITalbeViewの最下部にスクロールしたい</h1>
 <div class="time"><time pubdate="" datetime="2018-05-21">
 2018-05-21</time></div>
-
 <p>
 
 <img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>最下部にスクロールするには`scrollToRow`を使うが、`tableView.reloadData()` 後すぐに実行すると正しくスクロールできない。<br>タイマーでタイミングを少しずらすことでうまくいった。<br><pre class='code'>//tableViewに追加する処理をした後<br><br>tableView.reloadData()<br><br>DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {<br>    self.tableView.scrollToRow(at: IndexPath(row: self.items.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)<br>}<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
