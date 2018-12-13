@@ -6,7 +6,7 @@
 KotlinでUNIXタイムスタンプの取得</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544692064"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ KotlinでUNIXタイムスタンプの取得</h1>
 
 <p>
 
-<pre><br>System.currentTimeMillis()<br></pre><br>これでUNIXタイムスタンプが取得できた！、と思ったらつまづく。<br><br>正解はこちら。<br><br><pre><br>val unixTimestamp = System.currentTimeMillis() / 1000<br></pre><br><br>1000で割る。<br><br>UNIXタイムスタンプの単位は秒だから。<br><br>一方、System.currentTimeMillis()での取得はミリ秒。<br><br><br>関数名を落ち着いてよく読みませう。<br><br><b>current time millis**</b><br><br>😯<br><br>書いてある。<br><br>コピペばかりしてるとこうなる。<br></p>
+<span class="backSlash">System.currentTimeMillis()</span><br><br>これでUNIXタイムスタンプが取得できた！、と思ったらつまづく。<br><br>正解はこちら。<br><br><span class="backSlash">val unixTimestamp = System.currentTimeMillis() / 1000</span><br><br>1000で割る。<br><br>UNIXタイムスタンプの単位は秒だから。<br><br>一方、System.currentTimeMillis()での取得はミリ秒。<br><br><br>関数名を落ち着いてよく読みませう。<br><br><b>current time millis**</b><br><br>😯<br><br>書いてある。<br><br>コピペばかりしてるとこうなる。<br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/kotlin-unix-timestamp.html&text=Kotlin%E3%81%A7UNIX%E3%82%BF%E3%82%A4%E3%83%A0%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%97%E3%81%AE%E5%8F%96%E5%BE%97" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/kotlin-unix-timestamp.html" target="_blank" title="Facebook"></a></li>

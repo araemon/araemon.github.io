@@ -6,7 +6,7 @@
 【シェルスクリプト】Pandocを使ってMarkDownをHtmlに変換</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544692064"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@
 
 <p>
 
-<pre><br>#!/bin/bash<br>cd `dirname $0` #おまじない<br><br>for fname in *.md; do<br><br>	pandoc $fname -t html5 -H templates/header.html -B templates/before.html -A templates/after.html -o ${fname%.md}.html<br><br>#	echo $fname ${fname%.md}.html;<br>done<br></pre></p>
+<pre class='code'>#!/bin/bash<br>cd `dirname $0` #おまじない<br><br>for fname in *.md; do<br><br>	pandoc $fname -t html5 -H templates/header.html -B templates/before.html -A templates/after.html -o ${fname%.md}.html<br><br>#	echo $fname ${fname%.md}.html;<br>done<br></pre></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/pandoc-markdown-html.html&text=%E3%80%90%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%80%91Pandoc%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6MarkDown%E3%82%92Html%E3%81%AB%E5%A4%89%E6%8F%9B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/pandoc-markdown-html.html" target="_blank" title="Facebook"></a></li>

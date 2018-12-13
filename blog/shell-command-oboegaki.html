@@ -6,7 +6,7 @@
 シェルスクリプト・コマンドの覚え書き</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544692064"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@
 
 <p>
 
-シェルスクリプトに慣れるためのメモ。<br><br><h2 id="1">引数と特別な変数</h2>test.sh<br><pre><br>#!/bin/sh<br><br>#スクリプト名<br>echo "$0"<br><br>#ドルマークをバックスラッシュでエスケープすれば文字列として扱える<br>echo "\$0"<br><br>#1番目の引数<br>echo "$1"<br><br>#引数の数<br>echo "$#"<br><br># $* 全部の引数をまとめて1つとして処理?<br><br># $@ 全部の引数を個別として処理?<br><br># $? 直前実行したコマンドの終了値（0は成功、1は失敗）<br><br># $$ このシェルスクリプトのプロセスID<br><br># $! 最後に実行したバックグラウンドプロセスID<br></pre><br>参考:<br><a href="https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337">https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337</a><br></p>
+シェルスクリプトに慣れるためのメモ。<br><br><h2 id="1">引数と特別な変数</h2>test.sh<br><pre class='code'>#!/bin/sh<br><br>#スクリプト名<br>echo &quot;$0&quot;<br><br>#ドルマークをバックスラッシュでエスケープすれば文字列として扱える<br>echo &quot;\$0&quot;<br><br>#1番目の引数<br>echo &quot;$1&quot;<br><br>#引数の数<br>echo &quot;$#&quot;<br><br># $* 全部の引数をまとめて1つとして処理?<br><br># $@ 全部の引数を個別として処理?<br><br># $? 直前実行したコマンドの終了値（0は成功、1は失敗）<br><br># $$ このシェルスクリプトのプロセスID<br><br># $! 最後に実行したバックグラウンドプロセスID<br></pre><br>参考:<br><a href="https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337">https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337</a><br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/shell-command-oboegaki.html&text=%E3%82%B7%E3%82%A7%E3%83%AB%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%83%BB%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%AE%E8%A6%9A%E3%81%88%E6%9B%B8%E3%81%8D" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/shell-command-oboegaki.html" target="_blank" title="Facebook"></a></li>

@@ -6,7 +6,7 @@
 Android Studioで無線LANを使ってビルドする</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544692064"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@ Android Studioで無線LANを使ってビルドする</h1>
 
 <p>
 
-adbがある場所へ移動。<br><pre><br>cd ~/Library/Android/sdk/platform-tools<br></pre><br>空いているテキトーなポートを指定。<br><pre><br>./adb shell setprop service.adb.tcp.port 8888<br></pre><br>おまじない。<br><pre><br>./adb tcpip 8888<br></pre><br>AndroidのLANのIPアドレスを入力して、接続する。<br><pre><br>./adb connect 192.168.100.100:8888<br></pre><br>以上でUSB接続しなくても、Android Studio上で端末が認識さている。無線でデバッグできるようになってとても便利だ。</p>
+adbがある場所へ移動。<br><span class="backSlash">cd ~/Library/Android/sdk/platform-tools</span><br><br>空いているテキトーなポートを指定。<br><span class="backSlash">./adb shell setprop service.adb.tcp.port 8888</span><br><br>おまじない。<br><span class="backSlash">./adb tcpip 8888</span><br><br>AndroidのLANのIPアドレスを入力して、接続する。<br><span class="backSlash">./adb connect 192.168.100.100:8888</span><br><br>以上でUSB接続しなくても、Android Studio上で端末が認識さている。無線でデバッグできるようになってとても便利だ。</p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/android-studio-wifi-build-adb.html&text=Android+Studio%E3%81%A7%E7%84%A1%E7%B7%9ALAN%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%83%93%E3%83%AB%E3%83%89%E3%81%99%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/android-studio-wifi-build-adb.html" target="_blank" title="Facebook"></a></li>

@@ -6,7 +6,7 @@
 バーチャルホストで.htaccessが無視される？</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544685288"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544692064"  />
 </head>
 <body>
 
@@ -39,7 +39,7 @@
 
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>「バーチャルホストのドメインでアクセス」した場合と、「メインドメイン + フォルダを指定してアクセス」した場合の動作が異なることを発見した。<br>どうも、バーチャルホストでのアクセスだと.htaccessが読み込まれないようであった。<br>原因は、「AllowOverride None」を追記してしまったこと。下記のように「AllowOverride All」としたら、.htaccessの設定がちゃんと反映されるようになった。<br><pre><br>&lt;VirtualHost *:80&gt;<br>        ServerName hoge.xxxxxxxxxxx.com<br>        DocumentRoot /home/xxxxxxxxxxx/hoge<br>        &lt;Directory "/home/xxxxxxxxxxx/hoge"&gt;<br>             Options FollowSymLinks<br>             AllowOverride All<br>             Order deny,allow<br>             Allow from all<br>        &lt;/Directory&gt;<br>&lt;/VirtualHost&gt;<br></pre></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>「バーチャルホストのドメインでアクセス」した場合と、「メインドメイン + フォルダを指定してアクセス」した場合の動作が異なることを発見した。<br>どうも、バーチャルホストでのアクセスだと.htaccessが読み込まれないようであった。<br>原因は、「AllowOverride None」を追記してしまったこと。下記のように「AllowOverride All」としたら、.htaccessの設定がちゃんと反映されるようになった。<br><pre class='code'>&lt;VirtualHost *:80&amp;gt;<br>        ServerName hoge.xxxxxxxxxxx.com<br>        DocumentRoot /home/xxxxxxxxxxx/hoge<br>        &amp;lt;Directory &quot;/home/xxxxxxxxxxx/hoge&quot;&amp;gt;<br>             Options FollowSymLinks<br>             AllowOverride All<br>             Order deny,allow<br>             Allow from all<br>        &amp;lt;/Directory&amp;gt;<br>&lt;/VirtualHost&amp;gt;<br></pre></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/apache-virtualhost-htaccess.html&text=%E3%83%90%E3%83%BC%E3%83%81%E3%83%A3%E3%83%AB%E3%83%9B%E3%82%B9%E3%83%88%E3%81%A7.htaccess%E3%81%8C%E7%84%A1%E8%A6%96%E3%81%95%E3%82%8C%E3%82%8B%EF%BC%9F" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/apache-virtualhost-htaccess.html" target="_blank" title="Facebook"></a></li>
