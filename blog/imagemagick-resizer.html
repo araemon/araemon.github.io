@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+RMagickを使ってアスペクト比を維持しながら画像をリサイズしてみる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544676758"  />
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+RMagickを使ってアスペクト比を維持しながら画像をリサイズしてみる</h1>
+<div class="time"><time pubdate="" datetime="2018-05-11">
+2018-05-11</time></div>
+
+<p>
+<ul id="toc"><li><a href="#1">仕様を考えてみる</a></li><li><a href="#2">出来上がったプログラムがこちら</a></li><li><a href="#3">RMagickのインストールでつまづく</a></li><li><a href="#4">感想</a></li></li></ul>
+<h2 id="1">仕様を考えてみる</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123052.jpg" class="default" /><br><br>1. Rubyで書いたResizer.rbと同じフォルダに、リサイズしたいPNGまたはJPEGファイルを配置。<br>2. Resizerを実行すると、リサイズされた画像がresizedディレクトリに格納され元のデータはmasterへ移動される。<br>3. 指定サイズの正方形の大きさの枠内におさまるように、アスペクト比を維持しながらJPEGフォーマットに変換する。<br>4. RMagick (RubyでImageMagickを動かす)を使う。<br><br><br><h2 id="2">出来上がったプログラムがこちら</h2>resizer.rb<br><pre><br>require 'date'<br>require 'RMagick'<br>require 'fileutils'<br><br>#limit=500<br>p "リサイズ値を入力してください"<br>limit = $stdin.gets<br>p limit<br><br>files = Dir.glob("*.{png,PNG,jpg,JPG,jpeg,JPEG}")           # ファイルの配列を返す ["bar", "foo"]<br>puts(files)<br>FileUtils::mkdir_p './master'<br>FileUtils::mkdir_p './resized'<br><br>files.each do |filename|<br>    name = File.basename(filename, ".*") #=> "test"<br>    img = Magick::ImageList.new(filename)<br><br>    File.rename filename, "./master/#{filename}"<br><br>new_img = img.resize_to_fit(limit, limit)<br>    new_img.write("./resized/#{name}.jpg") { self.quality = 90 }<br><br>    new_img.destroy! # メモリクリア<br>end<br></pre><br>エラー処理などしていないので注意。<br>commandファイルを用意してこのプログラムをダブルクリックで実行できるようにした。<br><br><pre><br>#!/bin/bash<br><br>cd `dirname $0`<br><br>ruby Resizer.rb<br></pre><br><br><h2 id="3">RMagickのインストールでつまづく</h2>RMagickをbrewでインストールしようとしたら、エラーが出てインストールできなかった。<br>Stack Over Flowで問題解決の方法が。<br><a href="https://stackoverflow.com/questions/41647979/imagemagick-7-with-rmagick-2-16-on-macos-sierra-cant-find-magickwand-h?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa">https://stackoverflow.com/questions/41647979/imagemagick-7-with-rmagick-2-16-on-macos-sierra-cant-find-magickwand-h?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa</a><br><br>ImageMagickをバージョンダウンすれば良さそうである。<br><br><pre><br>brew uninstall imagemagick<br><br>brew install imagemagick@6<br><br>brew link --force imagemagick@6<br><br>sudo gem install rmagick<br></pre><br>これでインストールできた。<br><br><br><h2 id="4">感想</h2>* ファイルを扱うプログラムをRubyでは簡潔に書けるのでありがたい。<br>* ImageMagick最高！</p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/imagemagick-resizer.html&text=RMagick%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%A2%E3%82%B9%E3%83%9A%E3%82%AF%E3%83%88%E6%AF%94%E3%82%92%E7%B6%AD%E6%8C%81%E3%81%97%E3%81%AA%E3%81%8C%E3%82%89%E7%94%BB%E5%83%8F%E3%82%92%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/imagemagick-resizer.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/imagemagick-resizer.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/imagemagick-resizer.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/imagemagick-resizer.html&title=RMagick%E3%82%92%E4%BD%BF%E3%81%A3%E3%81%A6%E3%82%A2%E3%82%B9%E3%83%9A%E3%82%AF%E3%83%88%E6%AF%94%E3%82%92%E7%B6%AD%E6%8C%81%E3%81%97%E3%81%AA%E3%81%8C%E3%82%89%E7%94%BB%E5%83%8F%E3%82%92%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+
+</body>
+</html>
