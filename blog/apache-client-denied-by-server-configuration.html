@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+client denied by server configurationエラー</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544680160"  />
+<style>
+
+
+</style>
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+client denied by server configurationエラー</h1>
+<div class="time"><time pubdate="" datetime="2018-09-02">
+2018-09-02</time></div>
+
+<p>
+
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" /><br>Apache のエラーログで「client denied by server configuration:」と出た時の対処法。放っておいても問題はなさそうだが、Apacheのエラーログを見やすくしたいため細かいエラーを徹底的になくしていく。<br>バーチャルホストでの運営なので、バーチャルホストの設定ファイル、virtualhost.conf を開く。<br><br>「Require all granted」を記述するする。<br><pre><br>&lt;VirtualHost *:80><br>        ServerName hogehoge.xxxxxxxxx.com<br>        DocumentRoot /somewhere/hogehoge<br>        &lt;Directory "/somewhere/hogehoge"><br>            Require all granted<br>        &lt;/Directory><br>&lt;/VirtualHost><br></pre><br><br>Apache 再起動。<br><pre><br>/etc/rc.d/init.d/httpd restart<br></pre><br>これで解決したと思ったが、今度は下記のようなエラーが出てしまった。<br><pre><br>configuration error:  couldn't perform authentication. AuthType not set!:<br></pre><br>「Require all granted」はApache2.4系の書き方のようだ。<br>でApacheのバージョンを確認してみる。<br><pre><br>httpd -v<br></pre><br>やはり2.4以前のバージョンがインストールされていた。<br>この場合「Require all granted」ではなく、「Order allow,deny」「Allow from all」と書くようだ。<br>なので、最終的な書き方は次のようになる。<br><pre><br>&lt;VirtualHost *:80><br>        ServerName hogehoge.xxxxxxxxx.com<br>        DocumentRoot /somewhere/hogehoge<br>        &lt;Directory "/somewhere/hogehoge"><br>            Order allow,deny<br>            Allow from all<br>        &lt;/Directory><br>&lt;/VirtualHost><br></pre><br><br>これで解決！と思ったが、またエラーが出てしまった。<br><pre><br>client denied by server configuration:<br></pre></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/apache-client-denied-by-server-configuration.html&text=client+denied+by+server+configuration%E3%82%A8%E3%83%A9%E3%83%BC" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/apache-client-denied-by-server-configuration.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/apache-client-denied-by-server-configuration.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/apache-client-denied-by-server-configuration.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/apache-client-denied-by-server-configuration.html&title=client+denied+by+server+configuration%E3%82%A8%E3%83%A9%E3%83%BC" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+
+</body>
+</html>
