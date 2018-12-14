@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+RubyとcURLではじめてのWebSocketを試してみる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta content="RubyとcURLではじめてのWebSocketを試してみる" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/ruby-curl-websocket.html" property="og:url" />
+<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729093657.png" property="og:image" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544771167"  />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+RubyとcURLではじめてのWebSocketを試してみる</h1>
+<div class="time"><time pubdate="" datetime="2018-05-22">
+2018-05-22</time></div>
+<p>
+<ul id="toc"><li><a href="#1">開発環境</a></li><li><a href="#2">インストール</a></li><li><a href="#3">websoketサーバーをつくる</a></li><li><a href="#4">クライアントからwebsoketを送信する</a></li></li></ul>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729093657.png" class="default" /><br><br><br>だいぶ前からWebSocketは気になっていたが情報が少なかったこともあり手を出せずにいた。<br><br>現在では情報も多く、Flashが終わったとなるとChazukeのコメント取得もwebsocketに対応せざるを得ないと思うので遅ればせながら学んでみることにした。<br><br><br>とりあえず導入が簡単そうなrubyで動くwebsocketサーバーを探してみる。<br><br>EventMachine(EM-WebSocket)<br><a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br><br><br><h2 id="1">開発環境</h2>* macOS High Sierra 10.13.4<br>* em-websocket-0.5.1.gem<br>* ruby 2.3.3p222 (2016-11-21 revision 56859) [universal.x86_64-darwin17]<br>* curl 7.54.0 (x86_64-apple-darwin17.0) libcurl/7.54.0 LibreSSL/2.0.20 zlib/1.2.11 nghttp2/1.24.0<br><br><br><h2 id="2">インストール</h2><pre class='code'>sudo gem install ew-websocket
+</pre><br><h2 id="3">websoketサーバーをつくる</h2>とりあえず公式のサンプルをコピペ<br><br><a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br><br>**server.rb**<br><br><pre class='code'>require 'em-websocket'
+
+EM.run {
+  EM::WebSocket.run(:host =&gt; &quot;0.0.0.0&quot;, :port =&gt; 8080) do |ws|
+    ws.onopen { |handshake|
+      puts &quot;WebSocket connection open&quot;
+
+      # Access properties on the EM::WebSocket::Handshake object, e.g.
+      # path, query_string, origin, headers
+
+      # Publish message to the client
+      ws.send &quot;Hello Client, you connected to #{handshake.path}&quot;
+    }
+
+    ws.onclose { puts &quot;Connection closed&quot; }
+
+    ws.onmessage { |msg|
+      puts &quot;Recieved message: #{msg}&quot;
+      ws.send &quot;Pong: #{msg}&quot;
+    }
+  end
+}
+</pre><br><br>サーバーの起動<br><br><pre class='code'>ruby server.rb
+</pre><br><br><br>参考:<br><a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br><a href="https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9">https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9</a><br><br><br><h2 id="4">クライアントからwebsoketを送信する</h2>ハンドシェイクの作り方はこちらが勉強になる。HTTPに見せかけてルーター達を騙して通信していることになるほど納得した。<br><br>引用:<br><br><a href="https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より">https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より</a><br>『WebSocket ハンドシェイク』<br><br>> WebSocket プロトコルは TCP よりも上位かつ HTTP と同じレベルで TCP/IP スイートにぴったりと適合します。新しいプロトコルをインターネットに導入する際の課題の 1 つは、無数のルーター、プロキシ、およびファイアウォールに何も変わっていないと思わせる方法です。WebSocket プロトコルは、同じ基盤となる TCP 接続で、独自の WebSocket データ転送に切り替える前に HTTP として見せかけ、この目的を達成します。これによって、疑うことを知らない多くの中継サービスをアップグレードして、WebSocket 通信がそのネットワーク接続を通過できるようにする必要がなくなります。実際には、これは必ずしもスムーズに行われるわけではありません。熱意が空回りしたルーターが HTTP の要求や応答をいじり、プロキシのキャッシュ、アドレス、リソース変換などを、自身の目的に合うように書き直そうとするためです。短期間で行える効果的な解決策は、セキュリティが確保されるチャネル、つまりトランスポート層セキュリティ (TLS) で WebSocket プロトコルを使用する方法です。こうすれば、多くの場合こうした書き直しを最小限に抑えられます。<br><br><br>curlでハンドシェイクしているこちらの記事を参考させてもらった。<br><a href="http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl">http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl</a><br><br><pre class='code'>curl -v -i -N \
+  -H 'Sec-WebSocket-Version: 13' \
+  -H &quot;Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)&quot; \
+  -H &quot;Connection: Upgrade&quot; \
+  -H &quot;Upgrade: websocket&quot; \
+  &quot;http://localhost:8080&quot;            
+
+* Rebuilt URL to: http://localhost:8080/
+*   Trying ::1...
+* TCP_NODELAY set
+* Connection failed
+* connect to ::1 port 8080 failed: Connection refused
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; User-Agent: curl/7.54.0
+&gt; Accept: */*
+&gt; Sec-WebSocket-Version: 13
+&gt; Sec-WebSocket-Key: LXWAu5XfhDXLUAZRlSOa3w==
+&gt; Connection: Upgrade
+&gt; Upgrade: websocket
+&gt;
+&lt; HTTP/1.1 101 Switching Protocols
+HTTP/1.1 101 Switching Protocols
+&lt; Upgrade: websocket
+Upgrade: websocket
+&lt; Connection: Upgrade
+Connection: Upgrade
+&lt; Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
+Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
+
+&lt;
+? Hello Client, you connected to /
+</pre><br>無事websocketでハンドシェイクできた。<br><br><pre class='code'>WebSocket connection open
+</pre><br>しかし、この後の通信やり取りはどうしたらいいのだろう？<br><br>SSL/TLSやOAuthなどの認証が必要な場合などの問題も解決しなければならない。<br><br>WebSocketの旅は長そうだ。<br><br>つづく。<br><br><br>参考:<br><a href="http://keicode.com/script/html5-websocket-1.php">http://keicode.com/script/html5-websocket-1.php</a><br><a href="https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx">https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx</a><br><a href="https://triple-underscore.github.io/RFC6455-ja.html">https://triple-underscore.github.io/RFC6455-ja.html</a><br><a href="http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl">http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl</a><br></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/ruby-curl-websocket.html&text=Ruby%E3%81%A8cURL%E3%81%A7%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AEWebSocket%E3%82%92%E8%A9%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/ruby-curl-websocket.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/ruby-curl-websocket.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/ruby-curl-websocket.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/ruby-curl-websocket.html&title=Ruby%E3%81%A8cURL%E3%81%A7%E3%81%AF%E3%81%98%E3%82%81%E3%81%A6%E3%81%AEWebSocket%E3%82%92%E8%A9%A6%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+
+</body>
+</html>

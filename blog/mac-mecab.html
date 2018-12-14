@@ -10,7 +10,7 @@ MeCabで形態素解析</title>
 <meta content="https://araemon.github.io/blog/mac-mecab.html" property="og:url" />
 <meta content="https://araemon.github.io" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544771167"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -57,14 +57,14 @@ MeCabで形態素解析</h1>
 ます	助動詞,*,*,*,特殊・マス,基本形,ます,マス,マス
 。	記号,句点,*,*,*,*,。,。,。
 EOS
-</pre>このような形で文章が品詞分けされました。<br>終了したいときは<span class="backSlash">control</span> + <span class="backSlash">c</span>で終了します。<br><br><br><h2 id="3">シェルスクリプトで使いやすくしてみる</h2>mecabを実用的にするにはスクリプトを組む必要があります。<br>まずは単純にファイルを解析して、行ごとに処理できるようにしてみます。<br><pre class='code'>#!/bin/bash
+</pre>このような形で文章が品詞分けされました。<br>終了したいときは<span class="backSlash">control</span> + <span class="backSlash">c</span>で終了します。<br><br><br><h2 id="3">シェルスクリプトで使いやすくしてみる</h2>mecabを実用的に使えるようにするにはシェルスクリプトを組む必要があります。<br>まずは単純にファイルを解析して、行ごとに処理できるようにしてみます。<br><pre class='code'>#!/bin/bash
 
 file=&quot;post/about-introduce.md&quot;
 mecab $file | while read line
 do
     echo $line     
 done
-</pre><br>つぎに、上記の$line変数をタグ区切りで分けてみます。<br><pre class='code'>do
+</pre><br>つぎに、上記の$line変数をタグ区切りで分けてみます。<br>awkコマンドは-Fオプションで区切り文字を指定しない限り、タブまたは半角スペースで区切ってくれます。そしてMeCabの出力はタグ区切りとなっています。ですから、次のように書くことができます。<br><pre class='code'>do
     text=`echo $line | awk '{print $1}'`
     hinshi=`echo $line | awk '{print $2}'`
 done

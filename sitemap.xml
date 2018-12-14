@@ -139,6 +139,9 @@
     <loc>https://araemon.github.io/imagemagick-keep-aspect.html</loc>
   </url>
   <url>
+    <loc>https://araemon.github.io/css-menu-float.html</loc>
+  </url>
+  <url>
     <loc>https://araemon.github.io/punctuation-marks.html</loc>
   </url>
   <url>
@@ -169,6 +172,12 @@
     <loc>https://araemon.github.io/swift-weak-strong-closure.html</loc>
   </url>
   <url>
+    <loc>https://araemon.github.io/hatena-root-domain-access.html</loc>
+  </url>
+  <url>
+    <loc>https://araemon.github.io/curl-option.html</loc>
+  </url>
+  <url>
     <loc>https://araemon.github.io/html-ogp-blog-card.html</loc>
   </url>
   <url>
@@ -176,6 +185,9 @@
   </url>
   <url>
     <loc>https://araemon.github.io/cooking-nanchatte-tacos-hot-sandwich.html</loc>
+  </url>
+  <url>
+    <loc>https://araemon.github.io/mac-shell-rsync.html</loc>
   </url>
   <url>
     <loc>https://araemon.github.io/swift4-UITalbeView-scrollToRow.html</loc>
@@ -202,13 +214,22 @@
     <loc>https://araemon.github.io/shell-command-oboegaki.html</loc>
   </url>
   <url>
+    <loc>https://araemon.github.io/ssh-scp-upload-compression.html</loc>
+  </url>
+  <url>
     <loc>https://araemon.github.io/kotlin-unix-timestamp.html</loc>
+  </url>
+  <url>
+    <loc>https://araemon.github.io/fastlane-frameit.html</loc>
   </url>
   <url>
     <loc>https://araemon.github.io/cooking-mackerel-sandwich.html</loc>
   </url>
   <url>
     <loc>https://araemon.github.io/cooking-hot-sandwich-apple-pie.html</loc>
+  </url>
+  <url>
+    <loc>https://araemon.github.io/ruby-curl-websocket.html</loc>
   </url>
   <url>
     <loc>https://araemon.github.io/android-studio-wifi-build-adb.html</loc>

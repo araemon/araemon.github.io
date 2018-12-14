@@ -10,7 +10,7 @@ OGPが反映されない。ブログカードを実装するまで</title>
 <meta content="https://araemon.github.io/blog/html-ogp-blog-card.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544771167"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -52,7 +52,7 @@ OGPが反映されない。ブログカードを実装するまで</h1>
 &lt;meta content=&quot;og:description説明が入ります&quot; property=&quot;og:description&quot; /&gt;
 </pre><br>Open Graph Protocol(OGP)という規格らしい。<br><br>Pandocで自作ジェネレーターを組んでHTML生成しているとこういったことも全て自分でやらなければならない。<br>現在のWEBの仕組みに詳しくなると同時に、CMSやブログサービスがこういったことを自動でやってくれていたありがたみがわかる。<br><br>OGPに関してはこちらに詳しい規格が書いてある。<br><br>The Open Graph protocol:<br><a href="http://ogp.me/">http://ogp.me/</a><br><br><br><h2 id="2">OGPが反映されない</h2>Twitterなどでブログカードを反映させるまでにトラブルがあった。<br><br>まずは、現状でブログカードがどのように反映されるか確認できるツールがある。<br><br>シェアデバッガー:<br><a href="https://developers.facebook.com/tools/debug/sharing/">https://developers.facebook.com/tools/debug/sharing/</a><br><br>確認するとこのような警告がでた。<br><br><pre class='code'>SSL証明書を検証できません。 自己署名（ブラウザの警告を引き起こす）または無効です。
 Can't validate SSL Certificate. Either it is self-signed (which will cause browser warnings) or it is invalid.
-</pre><br>サブドメインで運営しているためか、Let's Encrypt 関連でうまくいっていないようである。<br>ルートドメインではエラーは吐かなかった。<br><br><br><h2 id="3">バーチャルホストの鍵のパスをいじる</h2>letsencryptは４つの鍵を生成する。<br><br><table><thead><tr><th>ファイル名    </th><th>  意味</th></tr></thead><tbody><tr><td>privkey.pem    </td><td>  秘密鍵（SSL/TLS サーバ証明書の公開鍵に対応する）</td></tr><tr><td>cert.pem       </td><td>  SSL/TLS サーバ証明書（公開鍵を含む）</td></tr><tr><td>chain.pem      </td><td>  アクセス時にブラウザに提供する必要のある中間証明書</td></tr><tr><td>fullchain.pem  </td><td> SSL/TLS サーバ証明書（公開鍵を含む）と中間証明書の両方が含まれているファイルで、cert.pem と chain.pem の内容が結合されたものです。</td></tr></tbody></table>参考:<br><a href="https://letsencrypt.jp/docs/using.html">https://letsencrypt.jp/docs/using.html</a><br><br>chainの指定を追加したらなぜかうまくいったが、問題はさらに続く。<br><br><pre class='code'>SSLCertificateFile /somewherepath/fullchain.pem
+</pre><br>サブドメインで運営しているためか、Let's Encrypt 関連でうまくいっていないようである。<br>ルートドメインではエラーは吐かなかった。<br><br><br><h2 id="3">バーチャルホストの鍵のパスをいじる</h2>letsencryptは４つの鍵を生成する。<br><br><table><thead><tr><th>ファイル名    </th><th>  意味</th></tr></thead><tbody><tr><td>privkey.pem    </td><td>  秘密鍵（SSL/TLS サーバ証明書の公開鍵に対応する）</td></tr><tr><td>cert.pem       </td><td>  SSL/TLS サーバ証明書（公開鍵を含む）</td></tr><tr><td>chain.pem      </td><td>  アクセス時にブラウザに提供する必要のある中間証明書</td></tr><tr><td>fullchain.pem  </td><td> SSL/TLS サーバ証明書（公開鍵を含む）と中間証明書の両方が含まれているファイルで、cert.pem と chain.pem の内容が結合されたものです。</td></tr></tbody></table><br>参考:<br><a href="https://letsencrypt.jp/docs/using.html">https://letsencrypt.jp/docs/using.html</a><br><br>chainの指定を追加したらなぜかうまくいったが、問題はさらに続く。<br><br><pre class='code'>SSLCertificateFile /somewherepath/fullchain.pem
 SSLCertificateKeyFile /somewherepath/privkey.pem
 #以下追加
 SSLCertificateChainFile /somewherepath/chain.pem

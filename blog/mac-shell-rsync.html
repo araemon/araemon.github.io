@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+サーバーにアップロードするための神コマンド『rsync』！</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta content="サーバーにアップロードするための神コマンド『rsync』！" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/mac-shell-rsync.html" property="og:url" />
+<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729100900.jpg" property="og:image" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544771167"  />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+サーバーにアップロードするための神コマンド『rsync』！</h1>
+<div class="time"><time pubdate="" datetime="2018-05-15">
+2018-05-15</time></div>
+<p>
+<ul id="toc"><li><a href="#1"> rsyncについて</a></li><li><a href="#2">rsyncを最新版にアプデート</a></li><li><a href="#3">rsyncの書式</a></li><li><a href="#4">rsyncのコピー元のスラッシュの重要性</a></li><li><a href="#5">rsyncの動作確認その1</a></li><li><a href="#6">rsyncの動作確認その2 --delete付き</a></li></li></ul>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729100900.jpg" class="default" /><br><br>**rsync** をご存知だろうか？<br><br>ホームページやWebアプリをサーバーにアップロードする作業、<br><br>DreamweaverやFileZilla、FTPやSSH(SCP)などで行なうのが世の常、常識<br><br><br>しかしその常識が本当は非常識だどしたら？<br><br>**rsync** に触れてみれば今までのやり方が非常識だったと思い知らされる<br><br><br>いつもロボットのように機械的に<br><br>コンピューターの奴隷になって行なっているアップロード作業も<br><br>**rsync** を知ってしまったら、ボタンをポチッと押してお茶を飲んで待つだけ🍵<br><br>…<br><br><br>いや、待たない<br><br>**rsync** は待たないのだ<br><br><br>なぜならrsyncは変更したファイルの差分のみをアップロードするのだから<br><br><br><br>ゆえにアップロード作業は一瞬で終わってしまう<br><br>待つ必要がないほど、あっという間なのだ<br><br><br>つまりお茶を飲む時間すら与えてくれない🍵🖐<br><br>…<br><br><br>一息つく暇もなくデザインを確認しろと、<br><br>バグや修正点乱れはないか確認しろと、<br><br>もっとコーディングしろと、<br><br>プログラマーをさらに家畜にしてしまうのだ<br><br><br>**rsync** は恐ろしい…<br><br><br>そんな**rsync**と向き合っていくための記録を残すことにする<br><br>…<br><br><br><br><h2 id="1"> rsyncについて</h2>Google先生に聞いた特徴をあげてみる<br><br>* ファイル やディレクトリの同期を行う<br>* 差分アルゴリズムでデータ転送量が最小になるので転送が高速にできる<br>* この差分アルゴリズムがすごそう<br>* 開発者は[Andrew Tridgell](https://ja.wikipedia.org/wiki/アンドリュー・トリジェル)など複数人の共同開発(sambaの作者でもあるようだ)<br>* ローカルはもちろんSSHでリモートでも使える<br>* GNU General Public Licence ライセンス<br>* TCPポート番号 873 を使う<br>* 最初のリリースは1996年?、rsync 2.6.0が2004年1月1日にリーリースされている<br>* 2018年1月28日現在はversion 3.1.3がリリースされている<br>* MacBook Proに初めから入っていたバージョンはversion 2.6.9だった<br><br>参考:<br><a href="https://rsync.samba.org">https://rsync.samba.org</a><br><a href="https://ja.wikipedia.org/wiki/Rsync">https://ja.wikipedia.org/wiki/Rsync</a><br><br><br><h2 id="2">rsyncを最新版にアプデート</h2>Macで最初から入っているバージョンは古いので更新する<br><br><pre class='code'>brew install rsync
+</pre><br>ターミナル再起動でおkだった<br><br>簡単だ<br><br><pre class='code'>rsync --version
+</pre><br><pre class='code'>rsync  version 3.1.3  protocol version 31
+Copyright (C) 1996-2018 by Andrew Tridgell, Wayne Davison, and others.
+Web site: http://rsync.samba.org/
+Capabilities:
+    64-bit files, 64-bit inums, 64-bit timestamps, 64-bit long ints,
+    socketpairs, hardlinks, symlinks, IPv6, batchfiles, inplace,
+    append, ACLs, xattrs, iconv, symtimes, no prealloc, file-flags
+
+rsync comes with ABSOLUTELY NO WARRANTY.  This is free software, and you
+are welcome to redistribute it under certain conditions.  See the GNU
+General Public Licence for details.
+</pre><br><h2 id="3">rsyncの書式</h2>書式:<br><pre class='code'>rsync [オプション] コピー元 コピー先
+</pre><br>オプション:<br><br><table><thead><tr><th> 記号 　　　　</th><th> 意味                                        </th></tr></thead><tbody><tr><td> -a 　　　　　　　 </td><td> archive mode（ コピー元のディレクトリを再帰的にコピー） </td></tr><tr><td> -v 　　　　　　　 </td><td> increase verbosity （コピーしているファイル名やバイト数などの情報を表示） </td></tr><tr><td> -u 　　　　　　　</td><td> skip files that are newer on the receiver （ コピー元とコピー先を比較し、追加・更新されたファイル・ディレクトリのみをコピー） </td></tr><tr><td> -n 　　　　　　　</td><td> dry-run (お試し実行)  </td></tr><tr><td> --delete 　　　　</td><td> コピー元にないファイルをコピー先で削除してコピー元とコピー先を同期 </td></tr></tbody></table><br>参考:<br><a href="https://webkaru.net/linux/rsync-command/">https://webkaru.net/linux/rsync-command/</a><br><br><br><h2 id="4">rsyncのコピー元のスラッシュの重要性</h2>コピー元にスラッシュをつけるかつけないかで対象とするファイルが異なる。<br><br><pre class='code'>rsync -av src dst
+</pre><br>[f:id:araemonz:20180729100944j:plain]<br><br><br><pre class='code'>rsync -av src/ dst
+</pre><br>[f:id:araemonz:20180729100959j:plain]<br><br><br><span class="backSlash">コピー元/</span> は <span class="backSlash">コピー元/*</span> と理解するとわかりやすい。<br>次では実際にスラッシュによる振る舞いの違いを見ていく。<br><br><br><br><h2 id="5">rsyncの動作確認その1</h2>下のようなディレクトリ構造を作ってテストしてみよう。<br>srcディレクトリをdst内のsrcディレクトリへ同期させるけれど、書き方の違いでどう処理が変わるか違いを見ていこう。<br><br>>home/<br>><br>>├src/<br>><br>>│└  new.txt<br>><br>>└dst/<br>><br>>　　└src/<br>><br>>　　　└ old.txt<br>><br>>　　<br><br><h4>1. コピー元、コピー先の両方にスラッシュをつけない</h4><pre class='code'>rsync -av src dst/src
+</pre><br><pre class='code'>ls dst/src
+src old.txt
+</pre><br>dst/srcの中に新しいsrcが入ってしまった😞<br><br><br><br><h4>2. コピー元のみにスラッシュをつける</h4><pre class='code'>rsync -av src/ dst/src
+</pre><br><pre class='code'>ls dst/src
+new.txt old.txt
+</pre><br>イメージ通りにnew.txtが追加された！😀<br><br><br><br><h4>3. コピー元、コピー先の両方にスラッシュをつける</h4><br><pre class='code'>rsync -av src/ dst/src/
+</pre><br><pre class='code'>ls dst/src/
+new.txt old.txt
+</pre><br>2番と同様の結果だ😀<br><br><br><br><br><h4>4. コピー先のみにスラッシュをつける</h4><br><pre class='code'>rsync -av src dst/src/
+</pre><br><pre class='code'>ls dst/src
+src old.txt
+</pre><br>1番と同様のdst/srcの中に新しいsrcが入ってしまった😞<br><br><br><h4>5. コピー元にスラッシュをつけず、コピー先のディレクトリ名を省略する</h4><pre class='code'>rsync -av src dst/
+</pre><br><pre class='code'>ls dst/src
+new.txt old.txt
+</pre><br>これもうまくいった！😀<br><br><br><br><h4>6. コピー元にスラッシュをつけ、コピー先のディレクトリ名を省略する</h4><pre class='code'>rsync -av src/ dst/
+</pre><br><pre class='code'>ls dst/
+new.txt src
+</pre><br>dstディレクトリの階層にファイルが追加されてしまった😞<br><br><br><br><h4>ここまでのまとめ</h4><br>正しく同期できた書き方は以下となった。<br><pre class='code'>rsync -av src/ dst/src
+rsync -av src/ dst/src/
+rsync -av src dst/
+</pre><br><br><br><br><h2 id="6">rsyncの動作確認その2 --delete付き</h2>**--deleteは危険なので以下はコピペして使わないことをお勧めする。**<br><br>動作確認その1と同じ構造のディレクトリを用意。<br><br>今度は--deleteオプションをつけて、コピー元に存在しないファイルはコピー先でも削除して同期するようにしてみよう。<br><br>>home/<br>><br>>├src/<br>><br>>│└  new.txt<br>><br>>└dst/<br>><br>>　　└src/<br>><br>>　　　└ old.txt<br>><br>>　　<br><br>**rsyncの動作確認その1** でおこなった、２、３、５番の３パターンに—deleteオプションを追加して試してみよう。<br><br><pre class='code'>rsync -av --delete src/ dst/src
+rsync -av --delete src/ dst/src/
+rsync -av --delete src dst/
+</pre><br>結果はどれも同じでold.txtが削除され、新たにnew.txtが追加され同期される。これなら問題なさそうだ。<br><br><pre class='code'>ls dst/src
+new.txt
+</pre><br><br><br>今度は**rsyncの動作確認その1**で行なった、１番と４番に—deleteオプションを追加して試してみよう。<br><br><pre class='code'>rsync -av --delete src dst/src
+rsync -av --delete src dst/src/
+</pre><br>１番と４番は dst/src/ の中にさらにsrcを作ってしまったが、old.txtは削除されていない。<br><br><br><pre class='code'>ls dst/src/        
+old.txt src
+</pre><br>それでは最後に**rsyncの動作確認その1**で行なった、6番に—deleteオプションをつけて実行してみることにしよう。<br><br><pre class='code'>rsync -av --delete src/ dst/
+</pre><br>なんとdst内のsrcをまるまる削除してしまった。<br><br>むなしく残っているのはnew.txtのみである。<br><br><pre class='code'>ls dst
+new.txt
+</pre><br>srcの中身をdstにまるごと同期したいならいいかもしれないが。<br><br>スラッシュの違いを理解してどこのディレクトリを操作するのかイメージできていないと大変なことになってしまう。<br><br>おさらいだが**コピー元にスラッシュをつけると、そのディレクトリ以下のファイル群を対象とし**<br><br>**スラッシュをつけなければ、ディレクトリごとを対象** とする。<br><br>**<span class="backSlash">コピー元/</span> は <span class="backSlash">コピー元/*</span> と理解しよう。**<br><br><pre class='code'>rsync -av src dst
+</pre><br>![](./images/rsync-src1.jpg)<br><br><br><pre class='code'>rsync -av src/ dst
+</pre><br>![](./images/rsync-src2.jpg)<br><br><br><br>**dry-run (お試し実行) **というのがある。<br><br>-nオプションでいける<br><br>実際には同期されないのでまずは、本番を実行する前にテストで確認する癖をつけよう。<br><br><pre class='code'>rsync -avn --delete src/ dst/
+sending incremental file list
+deleting src/old.txt
+deleting src/
+./
+new.txt
+</pre><br><br>参考:<br><a href="https://qiita.com/QUANON/items/2953c52df7f65f2ecee5">https://qiita.com/QUANON/items/2953c52df7f65f2ecee5</a><br><a href="https://qiita.com/mitzi2funk/items/9308db56829d7b4cb90d">https://qiita.com/mitzi2funk/items/9308db56829d7b4cb90d</a><br></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/mac-shell-rsync.html&text=%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E7%A5%9E%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%80%8Ersync%E3%80%8F%EF%BC%81" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/mac-shell-rsync.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/mac-shell-rsync.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/mac-shell-rsync.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/mac-shell-rsync.html&title=%E3%82%B5%E3%83%BC%E3%83%90%E3%83%BC%E3%81%AB%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89%E3%81%99%E3%82%8B%E3%81%9F%E3%82%81%E3%81%AE%E7%A5%9E%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%80%8Ersync%E3%80%8F%EF%BC%81" target="_blank" title="Pocket"></a></li>
+        </ul>
+</article>
+</div>
+            </div>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+
+</body>
+</html>
