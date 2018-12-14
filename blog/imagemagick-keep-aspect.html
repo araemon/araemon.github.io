@@ -10,7 +10,7 @@ ImageMagickでアスペクト比を維持しながら画像をリサイズする
 <meta content="https://araemon.github.io/blog/imagemagick-keep-aspect.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544755430"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,32 @@ ImageMagickでアスペクト比を維持しながら画像をリサイズする
 2018-05-11</time></div>
 <p>
 
-rubyで作ったResizer.rbをシェルスクリプトに書き直して改善してみた。<br>pngファイルで背景が透過だとjpgで黒塗りにされてしまうが、-flatten のオプションをつける事で白塗りになる。<br><br><br><h2 id="1">設計</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" class="default" /><br><br>1. Resizer.commandと同じディレクトリに変換したいpngまたはjpgファイルを置く（複数可）。<br>2. Resizer.commandをダブルクリックし、標準入力でリサイズしたい大きさを入力する。<br>3. 縦横がそのサイズに収まるようにアスペクト比を維持しながらjpgに置き換えられる。<br>4. 元画像はoriginalフォルダに格納される。<br><br><br><h2 id="2">実装</h2>resizer.command<br><pre class='code'>#!/bin/bash<br>cd `dirname $0`<br><br>#-flattenで透過画像を白塗り背景に<br><br>read -p &quot;Enter resize limit size: &quot; limitSize<br><br>mkdir -p ./original<br>mkdir -p ./tmp<br><br>converter () {<br>    target_file=$1<br>    cp $target_file ./original/${target_file}<br>    name=${target_file%.*}<br>    echo ${target_file}<br>    convert $target_file -resize ${limitSize}x${limitSize} -flatten ./tmp/$name.jpg<br>    rm -f $target_file<br>}<br><br>for file in `\find . -maxdepth 1 -name '*.png' -o -name '*.PNG' -o -name '*.jpg' -o -name '*.JPG'`; do<br>    converter $file<br>done<br><br>cp ./tmp/* .<br>rm -Rf ./tmp<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4844326473.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+rubyで作ったResizer.rbをシェルスクリプトに書き直して改善してみた。<br>pngファイルで背景が透過だとjpgで黒塗りにされてしまうが、-flatten のオプションをつける事で白塗りになる。<br><br><br><h2 id="1">設計</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" class="default" /><br><br>1. Resizer.commandと同じディレクトリに変換したいpngまたはjpgファイルを置く（複数可）。<br>2. Resizer.commandをダブルクリックし、標準入力でリサイズしたい大きさを入力する。<br>3. 縦横がそのサイズに収まるようにアスペクト比を維持しながらjpgに置き換えられる。<br>4. 元画像はoriginalフォルダに格納される。<br><br><br><h2 id="2">実装</h2>resizer.command<br><pre class='code'>#!/bin/bash
+cd `dirname $0`
+
+#-flattenで透過画像を白塗り背景に
+
+read -p &quot;Enter resize limit size: &quot; limitSize
+
+mkdir -p ./original
+mkdir -p ./tmp
+
+converter () {
+    target_file=$1
+    cp $target_file ./original/${target_file}
+    name=${target_file%.*}
+    echo ${target_file}
+    convert $target_file -resize ${limitSize}x${limitSize} -flatten ./tmp/$name.jpg
+    rm -f $target_file
+}
+
+for file in `\find . -maxdepth 1 -name '*.png' -o -name '*.PNG' -o -name '*.jpg' -o -name '*.JPG'`; do
+    converter $file
+done
+
+cp ./tmp/* .
+rm -Rf ./tmp
+</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4844326473.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/imagemagick-keep-aspect.html&text=ImageMagick%E3%81%A7%E3%82%A2%E3%82%B9%E3%83%9A%E3%82%AF%E3%83%88%E6%AF%94%E3%82%92%E7%B6%AD%E6%8C%81%E3%81%97%E3%81%AA%E3%81%8C%E3%82%89%E7%94%BB%E5%83%8F%E3%82%92%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%99%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/imagemagick-keep-aspect.html" target="_blank" title="Facebook"></a></li>

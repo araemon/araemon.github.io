@@ -10,7 +10,7 @@ Mac容量が少なくなったら、xcode関連のいらないファイルを削
 <meta content="https://araemon.github.io/blog/mac-clean-up-disk.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181103/20181103183300.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544755430"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,12 @@ Mac容量が少なくなったら、xcode関連のいらないファイルを削
 2018-11-03</time></div>
 <p>
 
-ボトルネックを探す。だいたいライブラリが容量をくっている。<br><br><span class="backSlash">sudo du -h -d 1 ~</span><br><br>xcodeで開発していると、下記フォルダ内が溜まっていくので定期的に削除してあげる。<br><br><pre class='code'>~/Library/Developer/Xcode/Archives/<br><br>~/Library/Developer/Xcode/DerivedData/<br></pre><br>シミュレーター関連もクリーンする。<br>参考:<br><a href="http://tech.andhandworks.com/2017/06/xcode.html">http://tech.andhandworks.com/2017/06/xcode.html</a><br><br><pre class='code'>xcrun simctl erase all<br>sudo xcrun simctl delete unavailable<br></pre><br>xcodeだけでなく、Android Studioも使っているとこのようにOSイメージが溜まっていくようだ。必要のないのはバージョンは削除してしまおう。<br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181103/20181103183300.jpg" class="default" /><br></p>
+ボトルネックを探す。だいたいライブラリが容量をくっている。<br><br><span class="backSlash">sudo du -h -d 1 ~</span><br><br>xcodeで開発していると、下記フォルダ内が溜まっていくので定期的に削除してあげる。<br><br><pre class='code'>~/Library/Developer/Xcode/Archives/
+
+~/Library/Developer/Xcode/DerivedData/
+</pre><br>シミュレーター関連もクリーンする。<br>参考:<br><a href="http://tech.andhandworks.com/2017/06/xcode.html">http://tech.andhandworks.com/2017/06/xcode.html</a><br><br><pre class='code'>xcrun simctl erase all
+sudo xcrun simctl delete unavailable
+</pre><br>xcodeだけでなく、Android Studioも使っているとこのようにOSイメージが溜まっていくようだ。必要のないのはバージョンは削除してしまおう。<br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181103/20181103183300.jpg" class="default" /><br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/mac-clean-up-disk.html&text=Mac%E5%AE%B9%E9%87%8F%E3%81%8C%E5%B0%91%E3%81%AA%E3%81%8F%E3%81%AA%E3%81%A3%E3%81%9F%E3%82%89%E3%80%81xcode%E9%96%A2%E9%80%A3%E3%81%AE%E3%81%84%E3%82%89%E3%81%AA%E3%81%84%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%92%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/mac-clean-up-disk.html" target="_blank" title="Facebook"></a></li>

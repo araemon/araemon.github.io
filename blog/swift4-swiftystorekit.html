@@ -10,7 +10,7 @@ Swift4 アプリ内課金ライブラリSwiftyStoreKitが便利</title>
 <meta content="https://araemon.github.io/blog/swift4-swiftystorekit.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544755430"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,68 @@ Swift4 アプリ内課金ライブラリSwiftyStoreKitが便利</h1>
 2018-08-12</time></div>
 <p>
 <ul id="toc"><li><a href="#1">SwiftyStoreKitを使えるように準備</a></li><li><a href="#2">価格などのプロダクト情報を取得</a></li><li><a href="#3">初めて購入する場合の処理</a></li><li><a href="#4">リストア処理</a></li></li></ul>
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br>iOSのアプリ内課金処理は複雑でわかりづらい。<br>良いライブラリがないか探していたところ、SwiftyStoreKitが大変便利だったので忘備録として残しておく。<br>ここでの処理は非消耗型の課金アイテムとする。<br><a href="https://github.com/bizz84/SwiftyStoreKit:embed">https://github.com/bizz84/SwiftyStoreKit:embed</a><br><br><br><h2 id="1">SwiftyStoreKitを使えるように準備</h2>podでインストールする。<br><span class="backSlash">pod 'SwiftyStoreKit'</span><br><br><br>インポートで宣言する。<br><span class="backSlash">import SwiftyStoreKit</span><br><br><br>下記コードをapplication(:didFinishLaunchingWithOptions)などに追加する。一度だけ呼ばれるべきだと書いてあるので。<br>Note that completeTransactions() should only be called once in your code, in application(:didFinishLaunchingWithOptions:).<br><br><pre class='code'>// おまじないのようなもの。下記コードをapplication(:didFinishLaunchingWithOptions)などに追加しよう。<br>SwiftyStoreKit.completeTransactions(atomically: true) { purchases in<br>    for purchase in purchases {<br>        switch purchase.transaction.transactionState {<br>        case .purchased, .restored:<br>            if purchase.needsFinishTransaction {<br>                SwiftyStoreKit.finishTransaction(purchase.transaction)<br>            }<br>        // Unlock content<br>        case .failed, .purchasing, .deferred:<br>            break // do nothing<br>        }<br>    }<br>}<br></pre><br><br><h2 id="2">価格などのプロダクト情報を取得</h2><pre class='code'>SwiftyStoreKit.retrieveProductsInfo([&quot;プロダクトID&quot;]) { result in<br>    if let product = result.retrievedProducts.first {<br><br>        // ここでプロダクト情報が得られるので、うまく使いまわしたい。<br>        print(&quot;Product: \(product.localizedDescription), price: \(priceString)&quot;)<br><br>    } else if let invalidProductId = result.invalidProductIDs.first {<br>//        print(&quot;Invalid product identifier: \(invalidProductId)&quot;)<br>    } else {<br>//        print(&quot;Error: \(result.error)&quot;)<br>    }<br>}<br></pre><br><br><h2 id="3">初めて購入する場合の処理</h2><pre class='code'>SwiftyStoreKit.purchaseProduct(&quot;プロダクトID&quot;, quantity: 1, atomically: true) { result in<br>    switch result {<br>    case .success(let purchase):<br>//        print(&quot;Purchase Success: \(purchase.productId)&quot;)<br>        <br>        // 購入後の処理はここに記述しよう。例えばUser Default などのフラグを変更するとか。<br>        <br>    case .error(let error):<br>//        switch error.code {<br>//        case .unknown: print(&quot;Unknown error. Please contact support&quot;)<br>//        case .clientInvalid: print(&quot;Not allowed to make the payment&quot;)<br>//        case .paymentCancelled: break<br>//        case .paymentInvalid: print(&quot;The purchase identifier was invalid&quot;)<br>//        case .paymentNotAllowed: print(&quot;The device is not allowed to make the payment&quot;)<br>//        case .storeProductNotAvailable: print(&quot;The product is not available in the current storefront&quot;)<br>//        case .cloudServicePermissionDenied: print(&quot;Access to cloud service information is not allowed&quot;)<br>//        case .cloudServiceNetworkConnectionFailed: print(&quot;Could not connect to the network&quot;)<br>//        case .cloudServiceRevoked: print(&quot;User has revoked permission to use this cloud service&quot;)<br>        }<br>    }<br>}<br></pre><br><br><h2 id="4">リストア処理</h2><pre class='code'>SwiftyStoreKit.restorePurchases(atomically: true) { result in<br>    for product in result.restoredPurchases {<br>        if product.needsFinishTransaction {<br>            SwiftyStoreKit.finishTransaction(product.transaction)<br>        }<br>        <br>        if product.productId == &quot;プロダクトID1&quot; {<br>            // プロダクトID1のリストア後の処理を記述する<br>        } else if product.productId == &quot;プロダクトID2&quot; {<br>            // プロダクトID2のリストア後の処理を記述する<br>        }<br>        <br>    }<br>}<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br>iOSのアプリ内課金処理は複雑でわかりづらい。<br>良いライブラリがないか探していたところ、SwiftyStoreKitが大変便利だったので忘備録として残しておく。<br>ここでの処理は非消耗型の課金アイテムとする。<br><a href="https://github.com/bizz84/SwiftyStoreKit:embed">https://github.com/bizz84/SwiftyStoreKit:embed</a><br><br><br><h2 id="1">SwiftyStoreKitを使えるように準備</h2>podでインストールする。<br><span class="backSlash">pod 'SwiftyStoreKit'</span><br><br><br>インポートで宣言する。<br><span class="backSlash">import SwiftyStoreKit</span><br><br><br>下記コードをapplication(:didFinishLaunchingWithOptions)などに追加する。一度だけ呼ばれるべきだと書いてあるので。<br>Note that completeTransactions() should only be called once in your code, in application(:didFinishLaunchingWithOptions:).<br><br><pre class='code'>// おまじないのようなもの。下記コードをapplication(:didFinishLaunchingWithOptions)などに追加しよう。
+SwiftyStoreKit.completeTransactions(atomically: true) { purchases in
+    for purchase in purchases {
+        switch purchase.transaction.transactionState {
+        case .purchased, .restored:
+            if purchase.needsFinishTransaction {
+                SwiftyStoreKit.finishTransaction(purchase.transaction)
+            }
+        // Unlock content
+        case .failed, .purchasing, .deferred:
+            break // do nothing
+        }
+    }
+}
+</pre><br><br><h2 id="2">価格などのプロダクト情報を取得</h2><pre class='code'>SwiftyStoreKit.retrieveProductsInfo([&quot;プロダクトID&quot;]) { result in
+    if let product = result.retrievedProducts.first {
+
+        // ここでプロダクト情報が得られるので、うまく使いまわしたい。
+        print(&quot;Product: \(product.localizedDescription), price: \(priceString)&quot;)
+
+    } else if let invalidProductId = result.invalidProductIDs.first {
+//        print(&quot;Invalid product identifier: \(invalidProductId)&quot;)
+    } else {
+//        print(&quot;Error: \(result.error)&quot;)
+    }
+}
+</pre><br><br><h2 id="3">初めて購入する場合の処理</h2><pre class='code'>SwiftyStoreKit.purchaseProduct(&quot;プロダクトID&quot;, quantity: 1, atomically: true) { result in
+    switch result {
+    case .success(let purchase):
+//        print(&quot;Purchase Success: \(purchase.productId)&quot;)
+        
+        // 購入後の処理はここに記述しよう。例えばUser Default などのフラグを変更するとか。
+        
+    case .error(let error):
+//        switch error.code {
+//        case .unknown: print(&quot;Unknown error. Please contact support&quot;)
+//        case .clientInvalid: print(&quot;Not allowed to make the payment&quot;)
+//        case .paymentCancelled: break
+//        case .paymentInvalid: print(&quot;The purchase identifier was invalid&quot;)
+//        case .paymentNotAllowed: print(&quot;The device is not allowed to make the payment&quot;)
+//        case .storeProductNotAvailable: print(&quot;The product is not available in the current storefront&quot;)
+//        case .cloudServicePermissionDenied: print(&quot;Access to cloud service information is not allowed&quot;)
+//        case .cloudServiceNetworkConnectionFailed: print(&quot;Could not connect to the network&quot;)
+//        case .cloudServiceRevoked: print(&quot;User has revoked permission to use this cloud service&quot;)
+        }
+    }
+}
+</pre><br><br><h2 id="4">リストア処理</h2><pre class='code'>SwiftyStoreKit.restorePurchases(atomically: true) { result in
+    for product in result.restoredPurchases {
+        if product.needsFinishTransaction {
+            SwiftyStoreKit.finishTransaction(product.transaction)
+        }
+        
+        if product.productId == &quot;プロダクトID1&quot; {
+            // プロダクトID1のリストア後の処理を記述する
+        } else if product.productId == &quot;プロダクトID2&quot; {
+            // プロダクトID2のリストア後の処理を記述する
+        }
+        
+    }
+}
+</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift4-swiftystorekit.html&text=Swift4+%E3%82%A2%E3%83%97%E3%83%AA%E5%86%85%E8%AA%B2%E9%87%91%E3%83%A9%E3%82%A4%E3%83%96%E3%83%A9%E3%83%AASwiftyStoreKit%E3%81%8C%E4%BE%BF%E5%88%A9" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift4-swiftystorekit.html" target="_blank" title="Facebook"></a></li>

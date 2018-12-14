@@ -10,7 +10,7 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
 <meta content="https://araemon.github.io/blog/swift-discardableResult.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544755430"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544766059"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,12 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
 2018-05-21</time></div>
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre class='code'>@discardableResult<br>func vibrate() -&gt; Self {<br>    AudioServicesPlaySystemSound(1519)<br>    return self<br>}<br></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre class='code'>@discardableResult
+func vibrate() -&gt; Self {
+    AudioServicesPlaySystemSound(1519)
+    return self
+}
+</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-discardableResult.html&text=Swift%E3%81%A7%E3%83%A1%E3%82%BD%E3%83%83%E3%83%89%E3%83%81%E3%82%A7%E3%83%BC%E3%83%B3%E5%AE%9F%E8%A3%85%E3%80%81%E8%BF%94%E3%82%8A%E5%80%A4%E3%82%92%E4%BD%BF%E3%82%8F%E3%81%AA%E3%81%84%E6%99%82%E3%81%AEwarning%E3%82%92%E6%B6%88%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-discardableResult.html" target="_blank" title="Facebook"></a></li>
