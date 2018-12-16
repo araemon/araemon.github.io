@@ -10,7 +10,7 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
 <meta content="https://araemon.github.io/blog/swift-discardableResult.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ Swiftでメソッドチェーン実装、返り値を使わない時のwarning�
 2018-05-21</time></div>
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre class='code'>@discardableResult
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>メソッドチェーンを実装しようとした時に、返り値を使わない場合が多々ある。<br>Xcodeは関数の返り値を使わないと丁寧にwarningを出してくれるが、warningだらけになってしまうので対処したかった。<br>結論としては、@discardableResult アノテーションを付ければよいだけだった。<br><br><pre class='code'>@discardableResult
 func vibrate() -&gt; Self {
     AudioServicesPlaySystemSound(1519)
     return self
@@ -60,6 +60,15 @@ func vibrate() -&gt; Self {
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

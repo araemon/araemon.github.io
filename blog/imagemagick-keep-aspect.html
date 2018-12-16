@@ -10,7 +10,7 @@ ImageMagickでアスペクト比を維持しながら画像をリサイズする
 <meta content="https://araemon.github.io/blog/imagemagick-keep-aspect.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ ImageMagickでアスペクト比を維持しながら画像をリサイズする
 2018-05-11</time></div>
 <p>
 
-rubyで作ったResizer.rbをシェルスクリプトに書き直して改善してみた。<br>pngファイルで背景が透過だとjpgで黒塗りにされてしまうが、-flatten のオプションをつける事で白塗りになる。<br><br><br><h2 id="1">設計</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" class="default" /><br><br>1. Resizer.commandと同じディレクトリに変換したいpngまたはjpgファイルを置く（複数可）。<br>2. Resizer.commandをダブルクリックし、標準入力でリサイズしたい大きさを入力する。<br>3. 縦横がそのサイズに収まるようにアスペクト比を維持しながらjpgに置き換えられる。<br>4. 元画像はoriginalフォルダに格納される。<br><br><br><h2 id="2">実装</h2>resizer.command<br><pre class='code'>#!/bin/bash
+rubyで作ったResizer.rbをシェルスクリプトに書き直して改善してみた。<br>pngファイルで背景が透過だとjpgで黒塗りにされてしまうが、-flatten のオプションをつける事で白塗りになる。<br><br><br><h2 id="1">設計</h2><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729122748.jpg" class="default lazyload" /><br><br>1. Resizer.commandと同じディレクトリに変換したいpngまたはjpgファイルを置く（複数可）。<br>2. Resizer.commandをダブルクリックし、標準入力でリサイズしたい大きさを入力する。<br>3. 縦横がそのサイズに収まるようにアスペクト比を維持しながらjpgに置き換えられる。<br>4. 元画像はoriginalフォルダに格納される。<br><br><br><h2 id="2">実装</h2>resizer.command<br><pre class='code'>#!/bin/bash
 cd `dirname $0`
 
 #-flattenで透過画像を白塗り背景に
@@ -80,6 +80,15 @@ rm -Rf ./tmp
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

@@ -10,7 +10,7 @@
 <meta content="https://araemon.github.io/blog/hatena-root-domain-access.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180805/20180805115730.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@
 2018-08-05</time></div>
 <p>
 <ul id="toc"><li><a href="#1">これからやること</a></li><li><a href="#2">サーバー側をいじる</a></li><li><a href="#3">.htaccessファイルを101010.funのルートフォルダにおく。</a></li><li><a href="#4">101010.funのAレコードをサクラサーバーのIPへ設定する</a></li></li></ul>
-はてなブログで独自ドメインの設定をする場合、なぜかサブドメインのURLで設定でなければならないらしい。<br>サブドメインなしのURLでアクセスすると、当然だがDNS設定していないためにページエラーになってしまう。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180805/20180805115730.png" class="default" /><br><br>そこでルートドメイン (http://101010.fun/) でもアクセス出来るようにしてみる。<br><br>イメージはこんなかんじだ。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180808/20180808134214.png" width="300" /><br><br>この場合、別途サーバーを用意しなければならないのだが、自分の場合はすでにサクラサーバーをレンタル済みである。また他のドメインで運用中なので、バーチャルホストとして追記することになる。ここではバーチャルホスト自体の詳細説明は省く。<br><br>調べながらやったのでなんだかんだ一時間くらいかかった。<br><br><br><h2 id="1">これからやること</h2>* バーチャルホストに追記<br>* .htaccessを作成<br>* DNSサーバーの設定<br><br><br><h2 id="2">サーバー側をいじる</h2>どこか適当な所に101010.fun用のルートフォルダ(someWherePath)を作る。<br><br><pre class='code'>mkdir someWherePath
+はてなブログで独自ドメインの設定をする場合、なぜかサブドメインのURLで設定でなければならないらしい。<br>サブドメインなしのURLでアクセスすると、当然だがDNS設定していないためにページエラーになってしまう。<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180805/20180805115730.png" class="default lazyload" /><br><br>そこでルートドメイン (http://101010.fun/) でもアクセス出来るようにしてみる。<br><br>イメージはこんなかんじだ。<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180808/20180808134214.png" width="300" class="lazyload" /><br><br>この場合、別途サーバーを用意しなければならないのだが、自分の場合はすでにサクラサーバーをレンタル済みである。また他のドメインで運用中なので、バーチャルホストとして追記することになる。ここではバーチャルホスト自体の詳細説明は省く。<br><br>調べながらやったのでなんだかんだ一時間くらいかかった。<br><br><br><h2 id="1">これからやること</h2>* バーチャルホストに追記<br>* .htaccessを作成<br>* DNSサーバーの設定<br><br><br><h2 id="2">サーバー側をいじる</h2>どこか適当な所に101010.fun用のルートフォルダ(someWherePath)を作る。<br><br><pre class='code'>mkdir someWherePath
 </pre><br>所有者、パーミッションも適切に設定しておく。<br><br><br>バーチャルホストの設定ファイルを開いて以下のように追記。<br><br><pre class='code'>&lt;VirtualHost *:80&gt;
         ServerName 101010.fun
         DocumentRoot someWherePath
@@ -52,7 +52,7 @@
 </pre><br>Apacheをreloadする。<br><br><br><h2 id="3">.htaccessファイルを101010.funのルートフォルダにおく。</h2>www有りのURLに統一するため以下のように設定した。<br><br><pre class='code'>RewriteEngine On
 RewriteCond %{HTTP_HOST} ^101010\.fun
 RewriteRule ^(.*) https://www.101010.fun/$1 [R=301,L]
-</pre><br><br><h2 id="4">101010.funのAレコードをサクラサーバーのIPへ設定する</h2>DNSサーバーはムームードメインを使用しているため以下のような設定になる<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180805/20180805120122.png" class="default" /><br><br>しばらくすると問題なくwwwへ転送されるようになった。<br><br>DNSサーバーは1.1.1.1 を使っている。DNS設定変更の繁栄が早いためか、すぐに転送の確認ができた。<br><br><br>実は、これだとまだSSLでルートドメインアクセスした場合はアクセスできない。<br>サイトににアクセスするとオレオレ証明書エラーを吐いてしまう。<br><br>これを解決するにはLet's Encryptなどをサーバー側に設定する必要がある。しかしまぁ、アクセスされることもないと思うのでこの辺で妥協することにしよう。</p>
+</pre><br><br><h2 id="4">101010.funのAレコードをサクラサーバーのIPへ設定する</h2>DNSサーバーはムームードメインを使用しているため以下のような設定になる<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180805/20180805120122.png" class="default lazyload" /><br><br>しばらくすると問題なくwwwへ転送されるようになった。<br><br>DNSサーバーは1.1.1.1 を使っている。DNS設定変更の繁栄が早いためか、すぐに転送の確認ができた。<br><br><br>実は、これだとまだSSLでルートドメインアクセスした場合はアクセスできない。<br>サイトににアクセスするとオレオレ証明書エラーを吐いてしまう。<br><br>これを解決するにはLet's Encryptなどをサーバー側に設定する必要がある。しかしまぁ、アクセスされることもないと思うのでこの辺で妥協することにしよう。</p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/hatena-root-domain-access.html&text=%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0%E3%81%A7%E3%81%AE%E3%83%AB%E3%83%BC%E3%83%88%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E3%82%A2%E3%82%AF%E3%82%BB%E3%82%B9%E3%82%92www%E3%81%B8%E8%BB%A2%E9%80%81%E3%81%99%E3%82%8B%E3%81%BE%E3%81%A7" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/hatena-root-domain-access.html" target="_blank" title="Facebook"></a></li>
@@ -63,6 +63,15 @@ RewriteRule ^(.*) https://www.101010.fun/$1 [R=301,L]
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

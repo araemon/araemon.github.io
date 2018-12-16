@@ -10,7 +10,7 @@
 <meta content="https://araemon.github.io/blog/css-fukidashi.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180819/20180819200050.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@
 2018-09-02</time></div>
 <p>
 <ul id="toc"><li><a href="#1">出囃子</a></li><li><a href="#2">本編</a></li><li><a href="#3">images.weserv.nl</a></li></li></ul>
-<h2 id="1">出囃子</h2><p class="r-fuki ebi-niko">ねえねえ、このコメントのように吹き出しってどうやるの？</p><br><p class="l-fuki kaki-futu">いきなり、ずいぶんとメタ視点な質問だわね。</p><br><p class="r-fuki ebi-tere">そうかな？でも人のブログ見て、マネしたくなっちゃったんだよぉ。</p><br><p class="l-fuki kaki-niko">それなら、こちらの記事が参考になるんじゃないかしら。<br />https://www.notitle-weblog.com/entry/fukidashi<br><br><p class="r-fuki ebi-ase">なんだか難しそうだなぁー。できるかなぁー。</p><br><p class="l-fuki kaki-futu">何言ってるの、すでに吹き出してるじゃない！</p><br><p class="r-fuki ebi-kita">(ﾟ∀ﾟ)ブブブッ！</p><br><br><br><h2 id="2">本編</h2>ということで、こちらに詳しく書いてあるCSSの設定をお借りして吹き出しをやってみた。<br><br>こちらのサイトを参考にさせていただいた。<br><a href="https://www.notitle-weblog.com/entry/fukidashi">https://www.notitle-weblog.com/entry/fukidashi</a><br>吹き出しの画像は自分で用意する必要がある。丸型にクリッピングされるので、元画像を正方形の形で用意したい。<br><br>今までなら、そういった画像加工を画像編集ソフトやImageMagickで処理していた。ところがそういった道具を必要としなくても画像処理を簡単にできる、便利なサービスを見つけたので紹介したい。<br><br><br><h2 id="3">images.weserv.nl</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180819/20180819200050.jpg" width="300" /><br>こちらのサービスをご存知だろうか？<br><a href="https://images.weserv.nl/">https://images.weserv.nl/</a><br><br>なんでもいいので、ネット上にアップロードした画像のURLを上記サイトのパラメーターに指定してあげると、画像リサイズやエフェクト処理ができる。プロキシ経由というか、キャッシュサーバーというか、CDNというか。<br>とにかくわかるよね？<br>そのURLをブログに貼り付ければそのまま使える。（サービスが停止しない限りね）<br>実際にやってみよう。例えばこのえびふりゃの画像。<br><br><img src="https://apppppp.com/1/harmonize/ebi-tere.png" width="200" /><br><br>背景が透過色のPNGファイルで、縦横の長さが異なる長方形の画像だ。これを例えば、背景を黒にして、正方形の枠内に収まるように表示したかったら、URLのパラメーターをイジってあげれば良いだけ。画像編集ソフトもいらない。<br><br><br>`https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=white:image=https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=black<br>`<br><br>これをimgタグのsrcに指定するとこんな感じで出力される。<br><br><img src="https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=white:image=https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=black" width="200" /><br><br><p class="r-fuki ebi-kita">感動した！</p><br><br>画像サイズなどの小さな変更点は、いちいち画像編集ソフトやImageMagickで加工するのはめんどうだった。しかしこのサービスを利用すればそのような悩みはなくなる。「痒いところに手が届く」というのは、まさにこういうことだ。<br>さて、今までは一人称で説明文を書くのが辛かったけれど、えびふりゃ、かきふりゃが吹き出しで会話してくれるならだいぶ楽になりそうだ。<br></p>
+<h2 id="1">出囃子</h2><p class="r-fuki ebi-niko">ねえねえ、このコメントのように吹き出しってどうやるの？</p><br><p class="l-fuki kaki-futu">いきなり、ずいぶんとメタ視点な質問だわね。</p><br><p class="r-fuki ebi-tere">そうかな？でも人のブログ見て、マネしたくなっちゃったんだよぉ。</p><br><p class="l-fuki kaki-niko">それなら、こちらの記事が参考になるんじゃないかしら。<br />https://www.notitle-weblog.com/entry/fukidashi<br><br><p class="r-fuki ebi-ase">なんだか難しそうだなぁー。できるかなぁー。</p><br><p class="l-fuki kaki-futu">何言ってるの、すでに吹き出してるじゃない！</p><br><p class="r-fuki ebi-kita">(ﾟ∀ﾟ)ブブブッ！</p><br><br><br><h2 id="2">本編</h2>ということで、こちらに詳しく書いてあるCSSの設定をお借りして吹き出しをやってみた。<br><br>こちらのサイトを参考にさせていただいた。<br><a href="https://www.notitle-weblog.com/entry/fukidashi">https://www.notitle-weblog.com/entry/fukidashi</a><br>吹き出しの画像は自分で用意する必要がある。丸型にクリッピングされるので、元画像を正方形の形で用意したい。<br><br>今までなら、そういった画像加工を画像編集ソフトやImageMagickで処理していた。ところがそういった道具を必要としなくても画像処理を簡単にできる、便利なサービスを見つけたので紹介したい。<br><br><br><h2 id="3">images.weserv.nl</h2><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180819/20180819200050.jpg" width="300" class="lazyload" /><br>こちらのサービスをご存知だろうか？<br><a href="https://images.weserv.nl/">https://images.weserv.nl/</a><br><br>なんでもいいので、ネット上にアップロードした画像のURLを上記サイトのパラメーターに指定してあげると、画像リサイズやエフェクト処理ができる。プロキシ経由というか、キャッシュサーバーというか、CDNというか。<br>とにかくわかるよね？<br>そのURLをブログに貼り付ければそのまま使える。（サービスが停止しない限りね）<br>実際にやってみよう。例えばこのえびふりゃの画像。<br><br><img data-src="https://apppppp.com/1/harmonize/ebi-tere.png" width="200" class="lazyload" /><br><br>背景が透過色のPNGファイルで、縦横の長さが異なる長方形の画像だ。これを例えば、背景を黒にして、正方形の枠内に収まるように表示したかったら、URLのパラメーターをイジってあげれば良いだけ。画像編集ソフトもいらない。<br><br><br>`https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=white:image=https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=black<br>`<br><br>これをimgタグのsrcに指定するとこんな感じで出力される。<br><br><img data-src="https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=white:image=https://images.weserv.nl/?url=apppppp.com/1/harmonize/ebi-tere.png&w=300&h=300&t=letterbox&bg=black" width="200" class="lazyload" /><br><br><p class="r-fuki ebi-kita">感動した！</p><br><br>画像サイズなどの小さな変更点は、いちいち画像編集ソフトやImageMagickで加工するのはめんどうだった。しかしこのサービスを利用すればそのような悩みはなくなる。「痒いところに手が届く」というのは、まさにこういうことだ。<br>さて、今までは一人称で説明文を書くのが辛かったけれど、えびふりゃ、かきふりゃが吹き出しで会話してくれるならだいぶ楽になりそうだ。<br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/css-fukidashi.html&text=%E3%81%AF%E3%81%A6%E3%81%AA%E3%83%96%E3%83%AD%E3%82%B0%E3%81%A7%E5%90%B9%E3%81%8D%E5%87%BA%E3%81%97%E3%82%B3%E3%83%A1%E3%83%B3%E3%83%88%E3%81%AE%E8%A1%A8%E7%8F%BE%E3%81%A8%E3%80%81%E7%94%BB%E5%83%8F%E3%83%AA%E3%82%B5%E3%82%A4%E3%82%BA%E3%81%AE%E3%82%AD%E3%83%A3%E3%83%83%E3%82%B7%E3%83%A5%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/css-fukidashi.html" target="_blank" title="Facebook"></a></li>
@@ -55,6 +55,15 @@
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

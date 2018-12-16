@@ -10,7 +10,7 @@ ViewControllerが解放されない、Swiftでクロージャーで強参照し�
 <meta content="https://araemon.github.io/blog/swift-weak-strong-closure.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ ViewControllerが解放されない、Swiftでクロージャーで強参照し�
 2018-11-16</time></div>
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br>使い終わったViewControllerでdeinitが呼ばれていないことに気づいた。<br><br>メンテナンス性を上げようとしてカプセル化を行ったは良いが、クロージャーで強参照をしてしまっていた。<br>delegateや、rootViewcontrollerのようなパラメータにweakの指定はもちろんのこと、クロージャ内でも注意しないといけない。<br><br>Hoge.swift<br><pre class='code'>class Hoge: NSObject {
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br>使い終わったViewControllerでdeinitが呼ばれていないことに気づいた。<br><br>メンテナンス性を上げようとしてカプセル化を行ったは良いが、クロージャーで強参照をしてしまっていた。<br>delegateや、rootViewcontrollerのようなパラメータにweakの指定はもちろんのこと、クロージャ内でも注意しないといけない。<br><br>Hoge.swift<br><pre class='code'>class Hoge: NSObject {
     
     weak var rootViewController:UIViewController?
     var onSuccess:((Int) -&gt; ())?
@@ -65,6 +65,15 @@ ViewControllerが解放されない、Swiftでクロージャーで強参照し�
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

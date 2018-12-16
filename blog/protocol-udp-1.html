@@ -10,7 +10,7 @@ iPhoneでC言語を使ってUDP通信してみよう</title>
 <meta content="https://araemon.github.io/blog/protocol-udp-1.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128170938.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ iPhoneでC言語を使ってUDP通信してみよう</h1>
 2018-11-28</time></div>
 <p>
 
-<h2 id="1">iOS -> Mac with UDP</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128170938.jpg" class="default" /><br><br>PHPからプログラミングを入門した軟弱者の私としては、HTTP以下の低位レイヤーが苦手です。今までなんとなく誤魔化してきましたが、Arduinoに触れたことで学習意欲が湧きました。そこでiOSからMacへUDP送信を行なってみることにしました。学習がてらNSStreamを使わずに、あえてC言語で書いてみることにしました。<br><br>ところでUDPという言葉は、User Datagram Protocolの略です。データグラムというのは、配送が成功したかどうかの確認はしないので届くかどうか保証されないですよ、という意味なのだそうです。<br><br><br><h3>Mac側でUDPサーバーを立ち上げる</h3>まずはMacのターミナルを開き、netcatコマンドを使ってUDPサーバーを立ち上げます。<br>たったの一行でUDPサーバーが立ち上がってしまいます。シェルというのは大変便利ですね。<br><span class="backSlash">nc -u -l 8888</span><br><br>ところで、ポートが解放されているかどうかの確認で少しハマりました。そもそもUDPは一方的な送信なので、ポートが開いているかどうかのスキャンはできないということを分かっていませんでした。<br>例えば、8888ポートが開いているかどうかのコマンドは次のようになります。<br><span class="backSlash">nc -vz 192.168.100.101 8888</span><br><br>UDPサーバーを対象にはスキャンできません。次のように、TCPサーバーとして立ち上げた場合はポートスキャンできるようになります。<br><span class="backSlash">nc -l 8888</span><br><br>TCPのハンドシェイクを利用しているということなのでしょうね。<br><br><br><h3> iOSプログラミング、UDPクライアントを作る</h3>iOSのプログラミングを書いていきましょう。<br>Objective-CでC言語の関数を使いたい場合、<span class="backSlash">.m</span>ファイルを<span class="backSlash">.mm</span>の拡張子にすれば良いようです。<br><br>ViewController.mm<br><pre class='code'>#import &quot;ViewController.h&quot;
+<h2 id="1">iOS -> Mac with UDP</h2><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128170938.jpg" class="default lazyload" /><br><br>PHPからプログラミングを入門した軟弱者の私としては、HTTP以下の低位レイヤーが苦手です。今までなんとなく誤魔化してきましたが、Arduinoに触れたことで学習意欲が湧きました。そこでiOSからMacへUDP送信を行なってみることにしました。学習がてらNSStreamを使わずに、あえてC言語で書いてみることにしました。<br><br>ところでUDPという言葉は、User Datagram Protocolの略です。データグラムというのは、配送が成功したかどうかの確認はしないので届くかどうか保証されないですよ、という意味なのだそうです。<br><br><br><h3>Mac側でUDPサーバーを立ち上げる</h3>まずはMacのターミナルを開き、netcatコマンドを使ってUDPサーバーを立ち上げます。<br>たったの一行でUDPサーバーが立ち上がってしまいます。シェルというのは大変便利ですね。<br><span class="backSlash">nc -u -l 8888</span><br><br>ところで、ポートが解放されているかどうかの確認で少しハマりました。そもそもUDPは一方的な送信なので、ポートが開いているかどうかのスキャンはできないということを分かっていませんでした。<br>例えば、8888ポートが開いているかどうかのコマンドは次のようになります。<br><span class="backSlash">nc -vz 192.168.100.101 8888</span><br><br>UDPサーバーを対象にはスキャンできません。次のように、TCPサーバーとして立ち上げた場合はポートスキャンできるようになります。<br><span class="backSlash">nc -l 8888</span><br><br>TCPのハンドシェイクを利用しているということなのでしょうね。<br><br><br><h3> iOSプログラミング、UDPクライアントを作る</h3>iOSのプログラミングを書いていきましょう。<br>Objective-CでC言語の関数を使いたい場合、<span class="backSlash">.m</span>ファイルを<span class="backSlash">.mm</span>の拡張子にすれば良いようです。<br><br>ViewController.mm<br><pre class='code'>#import &quot;ViewController.h&quot;
 #include &lt;sys/types.h&gt;
 #include &lt;sys/socket.h&gt;
 #include &lt;arpa/inet.h&gt;
@@ -74,7 +74,7 @@ iPhoneでC言語を使ってUDP通信してみよう</h1>
     close(sock);
 }
 @end
-</pre><br>このように、UDPクライアントのプログラムは驚くほど簡単に書けることがわかりました。それでも慣れないC言語の関数が出てきたので少し調べてみることにしました。<br>まず、sockaddr_inという構造体に送信先アドレスやポート番号を設定しています。<br>そして、socketというクラスを初期化してます。初期化の時に、SOCK_DGRAMを指定してあげればUDPで通信してくれるようになります。<br>また、AF_INETはIPv4のインターネットプロトコルで通信するということのようです。<br>さて、これで先ほどMac側で立ち上げたターミナル画面に"HELLO"というメッセージが表示されるようになりました。<br><br><h3>UDPのプロトコル仕様を確認してみる</h3><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128173752.jpg" class="default" /><br>UDPプロトコルの仕様を確認してみると、ヘッダ部とデータ部に別れているのがわかります。とてもシンプルで、送信のイメージがつきやすいですね。<br>また、ポートが16ビットの長さということは、2の16乗 = 65536番まで指定できるということがわかります。<br><br><br><h2 id="2"> Mac -> iOS with UDP</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128194800.jpg" class="default" /><br>UDPのことがだいぶ分かってきたところで、今度は、Mac側からUDPソケットをiPhoneへ送信しみたいと思います。<br><br>UDPサーバーのプログラミングを行なっていきます。先ほどのUDPクライアントのプログラムよりは複雑になってきますが、丁寧にみていけば難しいことはありません。<br>注意するべきところは、UDPソケットを受信するためのrecv関数はメインスレッドで動かしてしまうと、UIが固まってしまいます。そのため、NSThreadを使ってスレッド処理になっています。<br>下記プログラムは、buf配列のメモリ解放を行ってないのでご注意ください。<br><br><pre class='code'>//
+</pre><br>このように、UDPクライアントのプログラムは驚くほど簡単に書けることがわかりました。それでも慣れないC言語の関数が出てきたので少し調べてみることにしました。<br>まず、sockaddr_inという構造体に送信先アドレスやポート番号を設定しています。<br>そして、socketというクラスを初期化してます。初期化の時に、SOCK_DGRAMを指定してあげればUDPで通信してくれるようになります。<br>また、AF_INETはIPv4のインターネットプロトコルで通信するということのようです。<br>さて、これで先ほどMac側で立ち上げたターミナル画面に"HELLO"というメッセージが表示されるようになりました。<br><br><h3>UDPのプロトコル仕様を確認してみる</h3><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128173752.jpg" class="default lazyload" /><br>UDPプロトコルの仕様を確認してみると、ヘッダ部とデータ部に別れているのがわかります。とてもシンプルで、送信のイメージがつきやすいですね。<br>また、ポートが16ビットの長さということは、2の16乗 = 65536番まで指定できるということがわかります。<br><br><br><h2 id="2"> Mac -> iOS with UDP</h2><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128194800.jpg" class="default lazyload" /><br>UDPのことがだいぶ分かってきたところで、今度は、Mac側からUDPソケットをiPhoneへ送信しみたいと思います。<br><br>UDPサーバーのプログラミングを行なっていきます。先ほどのUDPクライアントのプログラムよりは複雑になってきますが、丁寧にみていけば難しいことはありません。<br>注意するべきところは、UDPソケットを受信するためのrecv関数はメインスレッドで動かしてしまうと、UIが固まってしまいます。そのため、NSThreadを使ってスレッド処理になっています。<br>下記プログラムは、buf配列のメモリ解放を行ってないのでご注意ください。<br><br><pre class='code'>//
 //  ViewController.mm
 //
 
@@ -148,6 +148,15 @@ iPhoneでC言語を使ってUDP通信してみよう</h1>
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

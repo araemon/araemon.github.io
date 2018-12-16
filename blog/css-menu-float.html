@@ -10,7 +10,7 @@ CSSで横並びでメニューボタン配置してみる</title>
 <meta content="https://araemon.github.io/blog/css-menu-float.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101918.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -50,7 +50,7 @@ CSSで横並びでメニューボタン配置してみる</h1>
   &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link3&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Link4&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
-</pre><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101918.png" width="300" /><br><br><br><h2 id="2">CSSでボタンを作成する</h2><br><h3>ulの操作</h3>丸ぽちを取り除く<br><pre class='code'>.nav {
+</pre><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101918.png" width="300" class="lazyload" /><br><br><br><h2 id="2">CSSでボタンを作成する</h2><br><h3>ulの操作</h3>丸ぽちを取り除く<br><pre class='code'>.nav {
   list-style: none;
 }
 </pre><br><br><h3>liの操作</h3>横幅を指定、背景色ボーダライン、テキストを中央に<br><br><pre class='code'>.nav li {
@@ -83,7 +83,7 @@ CSSで横並びでメニューボタン配置してみる</h1>
   font-weight: bold;
 }
 
-</pre><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101937.png" width="300" /><br><br><br><br><h2 id="4">本題</h2><br>いよいよ横並びにしてく<br><br>liにfloatで横並びになる<br><pre class='code'>.nav li {
+</pre><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101937.png" width="300" class="lazyload" /><br><br><br><br><h2 id="4">本題</h2><br>いよいよ横並びにしてく<br><br>liにfloatで横並びになる<br><pre class='code'>.nav li {
   float: left;
 }
 </pre><br>このままだと次の要素も回り込んでしまうので、ulに回り込みをさせないための処理を追加<br><br><pre class='code'>.nav {
@@ -123,7 +123,7 @@ CSSで横並びでメニューボタン配置してみる</h1>
   font-weight: bold;
 }
 
-</pre><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101953.png" class="default" /><br></p>
+</pre><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101953.png" class="default lazyload" /><br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/css-menu-float.html&text=CSS%E3%81%A7%E6%A8%AA%E4%B8%A6%E3%81%B3%E3%81%A7%E3%83%A1%E3%83%8B%E3%83%A5%E3%83%BC%E3%83%9C%E3%82%BF%E3%83%B3%E9%85%8D%E7%BD%AE%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/css-menu-float.html" target="_blank" title="Facebook"></a></li>
@@ -134,6 +134,15 @@ CSSで横並びでメニューボタン配置してみる</h1>
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

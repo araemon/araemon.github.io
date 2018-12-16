@@ -10,7 +10,7 @@ CentOS 6.x に無料SSL Let's Encrypt を導入する</title>
 <meta content="https://araemon.github.io/blog/centos6-lets-encrypt.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ CentOS 6.x に無料SSL Let's Encrypt を導入する</h1>
 2018-08-06</time></div>
 <p>
 <ul id="toc"><li><a href="#1">条件</a></li><li><a href="#2">手順</a></li><li><a href="#3">curlのアップデート</a></li><li><a href="#4">certbotをインストール</a></li><li><a href="#5">Apacheを停止</a></li><li><a href="#6">certbotを使って鍵を作成</a></li><li><a href="#7">Apacheに鍵のパスを記述</a></li><li><a href="#8">Apache 再起動</a></li><li><a href="#9">サブドメインでもLet's Encryptを使えるようにする</a></li><li><a href="#10">自動更新の設定</a></li><li><a href="#11">faviconでエラー</a></li><li><a href="#12">.htaccessでhttpsへリダイレクト</a></li></li></ul>
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" class="default" /><br><br><h2 id="1">条件</h2>* Apacheのバージョンは2.2.15以上とする<br>* オレオレ証明書を既に使っている<br>* 443ポートは解放済み<br>* バーチャルホストで運営している<br>* CentOS 6.x<br><br>この条件で以下作業を行なっていく。<br>rootになって/rootディレクトリで操作した。<br><br><br><h2 id="2">手順</h2>1. certbotをダウンロード<br>2. Apacheを停止<br>3. certbotを使って鍵を作成<br>4. Apacheに鍵のパスを記述<br>5. Apacheを再起動<br>6. 自動更新の設定<br><br><br><h2 id="3">curlのアップデート</h2>**curlが古いとうまくいかないので事前にアップデートしておく。**<br><span class="backSlash">yum update curl</span><br><br><br><h2 id="4">certbotをインストール</h2><span class="backSlash">git clone https://github.com/letsencrypt/letsencrypt</span><br><br><br><h2 id="5">Apacheを停止</h2>Apacheを止めないと証明書を作れないので止めておく。<br><span class="backSlash">/etc/rc.d/init.d/stop</span><br><br><br><h2 id="6">certbotを使って鍵を作成</h2>いくつか質問されるが難しいことはない。<br><pre class='code'>cd letsencrypt
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" class="default lazyload" /><br><br><h2 id="1">条件</h2>* Apacheのバージョンは2.2.15以上とする<br>* オレオレ証明書を既に使っている<br>* 443ポートは解放済み<br>* バーチャルホストで運営している<br>* CentOS 6.x<br><br>この条件で以下作業を行なっていく。<br>rootになって/rootディレクトリで操作した。<br><br><br><h2 id="2">手順</h2>1. certbotをダウンロード<br>2. Apacheを停止<br>3. certbotを使って鍵を作成<br>4. Apacheに鍵のパスを記述<br>5. Apacheを再起動<br>6. 自動更新の設定<br><br><br><h2 id="3">curlのアップデート</h2>**curlが古いとうまくいかないので事前にアップデートしておく。**<br><span class="backSlash">yum update curl</span><br><br><br><h2 id="4">certbotをインストール</h2><span class="backSlash">git clone https://github.com/letsencrypt/letsencrypt</span><br><br><br><h2 id="5">Apacheを停止</h2>Apacheを止めないと証明書を作れないので止めておく。<br><span class="backSlash">/etc/rc.d/init.d/stop</span><br><br><br><h2 id="6">certbotを使って鍵を作成</h2>いくつか質問されるが難しいことはない。<br><pre class='code'>cd letsencrypt
 
 ./letsencrypt-auto certonly -a standalone -d hogedomain.com
 </pre><br>/etc/letsencrypt/live/hogedomain.com/ 内に鍵が作られた<br><br><pre class='code'>ls /etc/letsencrypt/live/hogedomain.com/
@@ -115,6 +115,15 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

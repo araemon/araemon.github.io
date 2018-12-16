@@ -10,7 +10,7 @@ OGPが反映されない。ブログカードを実装するまで</title>
 <meta content="https://araemon.github.io/blog/html-ogp-blog-card.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ OGPが反映されない。ブログカードを実装するまで</h1>
 2018-05-23</time></div>
 <p>
 <ul id="toc"><li><a href="#1">ブログカードとOpen Graph Protocol(OPG)</a></li><li><a href="#2">OGPが反映されない</a></li><li><a href="#3">バーチャルホストの鍵のパスをいじる</a></li><li><a href="#4">VirtualHost 443の複数記述</a></li><li><a href="#5">SSL Server Test</a></li><li><a href="#6">画像キャッシュサービス</a></li></li></ul>
-<h2 id="1">ブログカードとOpen Graph Protocol(OPG)</h2>URLをつけて投稿するとSNSなどにカードのように表示されるこれ。<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" class="default" /><br><br>どうやるかというとhtmlのメタタグにこんな感じでサイト情報を埋め込むことでコントロールできる。<br><br><pre class='code'>&lt;meta content=&quot;description説明が入ります&quot; name=&quot;description&quot; /&gt;
+<h2 id="1">ブログカードとOpen Graph Protocol(OPG)</h2>URLをつけて投稿するとSNSなどにカードのように表示されるこれ。<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg" class="default lazyload" /><br><br>どうやるかというとhtmlのメタタグにこんな感じでサイト情報を埋め込むことでコントロールできる。<br><br><pre class='code'>&lt;meta content=&quot;description説明が入ります&quot; name=&quot;description&quot; /&gt;
 &lt;meta content=&quot;og:titleタイトルが入ります&quot; property=&quot;og:title&quot; /&gt;
 &lt;meta content=&quot;article&quot; property=&quot;og:type&quot; /&gt;
 &lt;meta content=&quot;https://works.kamityping.com/post/2018/index.html&quot; property=&quot;og:url&quot; /&gt;
@@ -79,6 +79,15 @@ SSLCertificateChainFile /somewherepath/chain.pem
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

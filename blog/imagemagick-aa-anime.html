@@ -10,7 +10,7 @@ ImageMagickでGifアニメを作ってみるお！</title>
 <meta content="https://araemon.github.io/blog/imagemagick-aa-anime.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123638.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935729"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ ImageMagickでGifアニメを作ってみるお！</h1>
 2018-05-10</time></div>
 <p>
 <ul id="toc"><li><a href="#1">素材の用意</a></li><li><a href="#2">ImageMagickをインストール</a></li><li><a href="#3">ConvertでアニメーションGifを作成</a></li></li></ul>
-<h2 id="1">素材の用意</h2>３枚の画像を用意してみたお！<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123638.jpg" width="200" /><br><hr><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123654.jpg" width="200" /><br><hr><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123712.jpg" width="200" /><br><br>2chの顔文字とAA【顔文字ちゃんねる】より<br><a href="http://kaomojich.com/aa/o-o-o/">http://kaomojich.com/aa/o-o-o/</a><br><br><br><h2 id="2">ImageMagickをインストール</h2>brewでImageMagickをインストールするお！<br><span class="backSlash">brew install imagemagick</span><br><br><br><h2 id="3">ConvertでアニメーションGifを作成</h2>convertコマンドが使えるようになったお！<br><span class="backSlash">convert -delay 70 -loop 0 aa*.jpg aa_anime1.gif</span><br><br>delayは100分の1秒単位なので注意するお！<br><br><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123742.gif" width="200" /><br><br>出来たおね！<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4844326473.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<h2 id="1">素材の用意</h2>３枚の画像を用意してみたお！<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123638.jpg" width="200" class="lazyload" /><br><hr><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123654.jpg" width="200" class="lazyload" /><br><hr><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123712.jpg" width="200" class="lazyload" /><br><br>2chの顔文字とAA【顔文字ちゃんねる】より<br><a href="http://kaomojich.com/aa/o-o-o/">http://kaomojich.com/aa/o-o-o/</a><br><br><br><h2 id="2">ImageMagickをインストール</h2>brewでImageMagickをインストールするお！<br><span class="backSlash">brew install imagemagick</span><br><br><br><h2 id="3">ConvertでアニメーションGifを作成</h2>convertコマンドが使えるようになったお！<br><span class="backSlash">convert -delay 70 -loop 0 aa*.jpg aa_anime1.gif</span><br><br>delayは100分の1秒単位なので注意するお！<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123742.gif" width="200" class="lazyload" /><br><br>出来たおね！<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4844326473.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4844326473/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/imagemagick-aa-anime.html&text=ImageMagick%E3%81%A7Gif%E3%82%A2%E3%83%8B%E3%83%A1%E3%82%92%E4%BD%9C%E3%81%A3%E3%81%A6%E3%81%BF%E3%82%8B%E3%81%8A%EF%BC%81" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/imagemagick-aa-anime.html" target="_blank" title="Facebook"></a></li>
@@ -55,6 +55,15 @@ ImageMagickでGifアニメを作ってみるお！</h1>
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

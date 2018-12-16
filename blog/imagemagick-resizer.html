@@ -10,7 +10,7 @@ RMagickを使ってアスペクト比を維持しながら画像をリサイズ�
 <meta content="https://araemon.github.io/blog/imagemagick-resizer.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123052.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935729"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ RMagickを使ってアスペクト比を維持しながら画像をリサイズ�
 2018-05-11</time></div>
 <p>
 <ul id="toc"><li><a href="#1">仕様を考えてみる</a></li><li><a href="#2">出来上がったプログラムがこちら</a></li><li><a href="#3">RMagickのインストールでつまづく</a></li><li><a href="#4">感想</a></li></li></ul>
-<h2 id="1">仕様を考えてみる</h2><img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123052.jpg" class="default" /><br><br>1. Rubyで書いたResizer.rbと同じフォルダに、リサイズしたいPNGまたはJPEGファイルを配置。<br>2. Resizerを実行すると、リサイズされた画像がresizedディレクトリに格納され元のデータはmasterへ移動される。<br>3. 指定サイズの正方形の大きさの枠内におさまるように、アスペクト比を維持しながらJPEGフォーマットに変換する。<br>4. RMagick (RubyでImageMagickを動かす)を使う。<br><br><br><h2 id="2">出来上がったプログラムがこちら</h2>resizer.rb<br><pre class='code'>require 'date'
+<h2 id="1">仕様を考えてみる</h2><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123052.jpg" class="default lazyload" /><br><br>1. Rubyで書いたResizer.rbと同じフォルダに、リサイズしたいPNGまたはJPEGファイルを配置。<br>2. Resizerを実行すると、リサイズされた画像がresizedディレクトリに格納され元のデータはmasterへ移動される。<br>3. 指定サイズの正方形の大きさの枠内におさまるように、アスペクト比を維持しながらJPEGフォーマットに変換する。<br>4. RMagick (RubyでImageMagickを動かす)を使う。<br><br><br><h2 id="2">出来上がったプログラムがこちら</h2>resizer.rb<br><pre class='code'>require 'date'
 require 'RMagick'
 require 'fileutils'
 
@@ -92,6 +92,15 @@ sudo gem install rmagick
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

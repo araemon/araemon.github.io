@@ -10,7 +10,7 @@ Swiftで一度だけ実行したい時に使えるファンクション</title>
 <meta content="https://araemon.github.io/blog/swift-once-exec.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1544934774"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1544935728"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,7 +44,7 @@ Swiftで一度だけ実行したい時に使えるファンクション</h1>
 2018-05-22</time></div>
 <p>
 
-<img src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default" /><br><br>viewDidLayoutSubviewsなど何度も呼び出されてしまうファンクション内で一度だけ実行したい処理があった場合に以下のような書き方をしていた。<br>これだと毎回フラグを宣言、条件分岐するのは面倒だし、可読性がよくないなと思っていた。<br><br><pre class='code'>var isFirst = false
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>viewDidLayoutSubviewsなど何度も呼び出されてしまうファンクション内で一度だけ実行したい処理があった場合に以下のような書き方をしていた。<br>これだと毎回フラグを宣言、条件分岐するのは面倒だし、可読性がよくないなと思っていた。<br><br><pre class='code'>var isFirst = false
 
 override func viewDidLayoutSubviews() { // updateLayout
   if !isFirst {
@@ -72,6 +72,15 @@ override func viewDidLayoutSubviews() { // updateLayout
 </article>
 </div>
             </div>
+
+            <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>
