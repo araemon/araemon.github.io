@@ -10,7 +10,7 @@ SSH(SCP)でディレクトリ丸ごと、通信を圧縮してアップロード
 <meta content="https://araemon.github.io/blog/ssh-scp-upload-compression.html" property="og:url" />
 <meta content="https://araemon.github.io" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,39 +44,39 @@ SSH(SCP)でディレクトリ丸ごと、通信を圧縮してアップロード
 2018-05-14</time></div>
 <p>
 
-scpを使う。<br><br><pre class='code'>scp -C arcfour128 -r targetDir username@hogehoge.jp:/home/username/
-</pre><br>-r をつけるとディレクトリを丸ごとコピーしてくれる（上書きされるので注意）。<br><br>-C オプションをつけると通信を圧縮してくれるのでアップロードが速くなる。<br><br>使える暗号化方式は<br><br><pre class='code'>man ssh_config
-</pre><br>で調べられる。<br><br>Ciphers(暗号)の項目を見つける。<br><br><pre class='code'>Ciphers
-             Specifies the ciphers allowed and their order of preference.  Multiple ciphers must be comma-
-             separated.  If the specified value begins with a `+' character, then the specified ciphers will
-             be appended to the default set instead of replacing them.  If the specified value begins with a
-             `-' character, then the specified ciphers (including wildcards) will be removed from the
-             default set instead of replacing them.
-
-             The supported ciphers are:
-
-                   3des-cbc
-                   aes128-cbc
-                   aes192-cbc
-                   aes256-cbc
-                   aes128-ctr
-                   aes192-ctr
-                   aes256-ctr
-                   aes128-gcm@openssh.com
-                   aes256-gcm@openssh.com
-                   chacha20-poly1305@openssh.com
-
-             The default is:
-
-                   chacha20-poly1305@openssh.com,
-                   aes128-ctr,aes192-ctr,aes256-ctr,
-                   aes128-gcm@openssh.com,aes256-gcm@openssh.com,
-                   aes128-cbc,aes192-cbc,aes256-cbc
-
-             The list of available ciphers may also be obtained using &quot;ssh -Q cipher&quot;.
-
-
-</pre><br>aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour128,<br><br>arcfour256,arcfour,aes192-cbc,aes256-cbc,aes128-ctr,<br><br>aes192-ctr,aes256-ctr<br><br><table><thead><tr><th> 暗号化方式   </th><th> スループット </th></tr></thead><tbody><tr><td> aes128-cbc   </td><td> 36.6MB/s     </td></tr><tr><td> 3des-cbc     </td><td> 11.5MB/s     </td></tr><tr><td> blowfish-cbc </td><td> 41.7MB/s     </td></tr><tr><td> cast128-cbc  </td><td> 32.6MB/s     </td></tr><tr><td> arcfour128   </td><td> 83.3MB/s     </td></tr><tr><td> arcfour256   </td><td> 83.3MB/s     </td></tr><tr><td> arcfour      </td><td> 79.0MB/s     </td></tr><tr><td> aes192-cbc   </td><td> 31.9MB/s     </td></tr><tr><td> aes256-cbc   </td><td> 28.9MB/s     </td></tr><tr><td> aes128-ctr   </td><td> 30.6MB/s     </td></tr><tr><td> aes192-ctr   </td><td> 28.3MB/s     </td></tr><tr><td> aes256-ctr   </td><td> 25.9MB/s     </td></tr></tbody></table><br>参考:<br><a href="http://d.hatena.ne.jp/rx7/20101025/p1">http://d.hatena.ne.jp/rx7/20101025/p1</a><br></p>
+scpを使う。<br><br><pre class='code'><span>scp -C arcfour128 -r targetDir username@hogehoge.jp:/home/username/
+</span></pre><br>-r をつけるとディレクトリを丸ごとコピーしてくれる（上書きされるので注意）。<br><br>-C オプションをつけると通信を圧縮してくれるのでアップロードが速くなる。<br><br>使える暗号化方式は<br><br><pre class='code'><span>man ssh_config
+</span></pre><br>で調べられる。<br><br>Ciphers(暗号)の項目を見つける。<br><br><pre class='code'><span>Ciphers
+</span><span>             Specifies the ciphers allowed and their order of preference.  Multiple ciphers must be comma-
+</span><span>             separated.  If the specified value begins with a `+' character, then the specified ciphers will
+</span><span>             be appended to the default set instead of replacing them.  If the specified value begins with a
+</span><span>             `-' character, then the specified ciphers (including wildcards) will be removed from the
+</span><span>             default set instead of replacing them.
+</span><span>
+</span><span>             The supported ciphers are:
+</span><span>
+</span><span>                   3des-cbc
+</span><span>                   aes128-cbc
+</span><span>                   aes192-cbc
+</span><span>                   aes256-cbc
+</span><span>                   aes128-ctr
+</span><span>                   aes192-ctr
+</span><span>                   aes256-ctr
+</span><span>                   aes128-gcm@openssh.com
+</span><span>                   aes256-gcm@openssh.com
+</span><span>                   chacha20-poly1305@openssh.com
+</span><span>
+</span><span>             The default is:
+</span><span>
+</span><span>                   chacha20-poly1305@openssh.com,
+</span><span>                   aes128-ctr,aes192-ctr,aes256-ctr,
+</span><span>                   aes128-gcm@openssh.com,aes256-gcm@openssh.com,
+</span><span>                   aes128-cbc,aes192-cbc,aes256-cbc
+</span><span>
+</span><span>             The list of available ciphers may also be obtained using &quot;ssh -Q cipher&quot;.
+</span><span>
+</span><span>
+</span></pre><br>aes128-cbc,3des-cbc,blowfish-cbc,cast128-cbc,arcfour128,<br><br>arcfour256,arcfour,aes192-cbc,aes256-cbc,aes128-ctr,<br><br>aes192-ctr,aes256-ctr<br><br><table><thead><tr><th> 暗号化方式   </th><th> スループット </th></tr></thead><tbody><tr><td> aes128-cbc   </td><td> 36.6MB/s     </td></tr><tr><td> 3des-cbc     </td><td> 11.5MB/s     </td></tr><tr><td> blowfish-cbc </td><td> 41.7MB/s     </td></tr><tr><td> cast128-cbc  </td><td> 32.6MB/s     </td></tr><tr><td> arcfour128   </td><td> 83.3MB/s     </td></tr><tr><td> arcfour256   </td><td> 83.3MB/s     </td></tr><tr><td> arcfour      </td><td> 79.0MB/s     </td></tr><tr><td> aes192-cbc   </td><td> 31.9MB/s     </td></tr><tr><td> aes256-cbc   </td><td> 28.9MB/s     </td></tr><tr><td> aes128-ctr   </td><td> 30.6MB/s     </td></tr><tr><td> aes192-ctr   </td><td> 28.3MB/s     </td></tr><tr><td> aes256-ctr   </td><td> 25.9MB/s     </td></tr></tbody></table><br>参考:<br><a href="http://d.hatena.ne.jp/rx7/20101025/p1">http://d.hatena.ne.jp/rx7/20101025/p1</a><br></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/ssh-scp-upload-compression.html&text=SSH%28SCP%29%E3%81%A7%E3%83%87%E3%82%A3%E3%83%AC%E3%82%AF%E3%83%88%E3%83%AA%E4%B8%B8%E3%81%94%E3%81%A8%E3%80%81%E9%80%9A%E4%BF%A1%E3%82%92%E5%9C%A7%E7%B8%AE%E3%81%97%E3%81%A6%E3%82%A2%E3%83%83%E3%83%97%E3%83%AD%E3%83%BC%E3%83%89%E3%81%97%E3%81%A6%E3%81%BF%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/ssh-scp-upload-compression.html" target="_blank" title="Facebook"></a></li>
@@ -86,7 +86,7 @@ scpを使う。<br><br><pre class='code'>scp -C arcfour128 -r targetDir username
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="imagemagick-keep-aspect.html">&lt; ImageMagickでアスペクト比を維持しながら画像をリサイズする</a></li><li class="next"><a href="mac-shell-rsync.html">サーバーにアップロードするための神コマンド『rsync』！ &gt;</a></li></ul>
+<a href="shell-command-oboegaki.html">&lt; シェルスクリプト・コマンドの覚え書き</a></li><li class="next"><a href="mac-shell-rsync.html">サーバーにアップロードするための神コマンド『rsync』！ &gt;</a></li></ul>
 </article>
 </div>
             </div>

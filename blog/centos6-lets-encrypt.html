@@ -10,7 +10,7 @@ CentOS 6.x に無料SSL Let's Encrypt を導入する</title>
 <meta content="https://araemon.github.io/blog/centos6-lets-encrypt.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,67 +44,67 @@ CentOS 6.x に無料SSL Let's Encrypt を導入する</h1>
 2018-08-06</time></div>
 <p>
 <ul id="toc"><li><a href="#1">条件</a></li><li><a href="#2">手順</a></li><li><a href="#3">curlのアップデート</a></li><li><a href="#4">certbotをインストール</a></li><li><a href="#5">Apacheを停止</a></li><li><a href="#6">certbotを使って鍵を作成</a></li><li><a href="#7">Apacheに鍵のパスを記述</a></li><li><a href="#8">Apache 再起動</a></li><li><a href="#9">サブドメインでもLet's Encryptを使えるようにする</a></li><li><a href="#10">自動更新の設定</a></li><li><a href="#11">faviconでエラー</a></li><li><a href="#12">.htaccessでhttpsへリダイレクト</a></li></li></ul>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" class="default lazyload" /><br><br><h2 id="1">条件</h2>* Apacheのバージョンは2.2.15以上とする<br>* オレオレ証明書を既に使っている<br>* 443ポートは解放済み<br>* バーチャルホストで運営している<br>* CentOS 6.x<br><br>この条件で以下作業を行なっていく。<br>rootになって/rootディレクトリで操作した。<br><br><br><h2 id="2">手順</h2>1. certbotをダウンロード<br>2. Apacheを停止<br>3. certbotを使って鍵を作成<br>4. Apacheに鍵のパスを記述<br>5. Apacheを再起動<br>6. 自動更新の設定<br><br><br><h2 id="3">curlのアップデート</h2>**curlが古いとうまくいかないので事前にアップデートしておく。**<br><span class="backSlash">yum update curl</span><br><br><br><h2 id="4">certbotをインストール</h2><span class="backSlash">git clone https://github.com/letsencrypt/letsencrypt</span><br><br><br><h2 id="5">Apacheを停止</h2>Apacheを止めないと証明書を作れないので止めておく。<br><span class="backSlash">/etc/rc.d/init.d/stop</span><br><br><br><h2 id="6">certbotを使って鍵を作成</h2>いくつか質問されるが難しいことはない。<br><pre class='code'>cd letsencrypt
-
-./letsencrypt-auto certonly -a standalone -d hogedomain.com
-</pre><br>/etc/letsencrypt/live/hogedomain.com/ 内に鍵が作られた<br><br><pre class='code'>ls /etc/letsencrypt/live/hogedomain.com/
-README  cert.pem  chain.pem  fullchain.pem  privkey.pem
-</pre><br><h2 id="7">Apacheに鍵のパスを記述</h2>Apacheにこの鍵のパスを設定する。<br><br><pre class='code'>vi /etc/httpd/conf.d/ssl.conf
-
-##以下を書き換える
-SSLCertificateFile /etc/letsencrypt/live/hogedomain.com/fullchain.pem
-SSLCertificateKeyFile /etc/letsencrypt/live/hogedomain.com/privkey.pem
-</pre><br><h2 id="8">Apache 再起動</h2>停止していたApacheを起動する。<br><span class="backSlash">/etc/rc.d/init.d/httpd start</span><br><br>これでルートドメインにSSL付きでアクセスできる。<br><br><h2 id="9">サブドメインでもLet's Encryptを使えるようにする</h2>サブドメイン毎に設定してやらなければならない。<br>やり方はルートドメインの時と同じ。<br><span class="backSlash">./letsencrypt-auto certonly -a standalone -d sub.hogedomain.com</span><br><br><pre class='code'>vi /etc/httpd/conf.d/virtualhost.conf
-
-##以下を追加
-&amp;lt;VirtualHost *:443&amp;gt;
-    ServerName sub.hogedomain.com
-    DocumentRoot /somewhere/hogedomain/sub
-
-    SSLEngine on
-    SSLCertificateFile /etc/letsencrypt/live/sub.hogedomain.com/fullchain.pem
-    SSLCertificateKeyFile /etc/letsencrypt/live/sub.hogedomain.com/privkey.pem
-
-    ErrorLog logs/sslvirtual_error_log
-    CustomLog logs/sslvirtual_access_log combined env=!no_log
-   NameVirtualhost *:443
-&amp;lt;/VirtualHost&amp;gt;
-</pre><br><br><h2 id="10">自動更新の設定</h2>Let's Encryptは３ヶ月しか有効期限がないので、自動更新するとよい。更新のためのコマンドをcronする。<br>まず、下記のコマンドが正常に動作し、証明書が更新されるかをテスト。<br>renewは、すべての証明書を更新するコマンド。--post-hookオプションで指定したコマンドは、renew後に実行される。ただし、renewは期限が迫らないうちは、実行がスキップされ、その場合はpost-hookも実行されない。<br><a href="https://qiita.com/takahiko/items/a08895550727b95b6c36">https://qiita.com/takahiko/items/a08895550727b95b6c36</a><br><br>記事のように自動更新の設定をしていたのだが、なぜかその後に更新をしてくださいという内容のメールが来てしまった。<br><br><pre class='code'>Hello,
-
-Your certificate (or certificates) for the names listed below will expire in 20 days (on 18 Aug 18 07:08 +0000). Please make sure to renew your certificate before then, or visitors to your website will encounter errors.
-
-We recommend renewing certificates automatically when they have a third of their
-total lifetime left. For Let's Encrypt's current 90-day certificates, that means
-renewing 30 days before expiration. See
-https://letsencrypt.org/docs/integration-guide/ for details.
-
-hogehoge.com
-
-For any questions or support, please visit https://community.letsencrypt.org/. Unfortunately, we can't provide support by email.
-
-If you are receiving this email in error, unsubscribe at http://mandrillapp.com/track/unsub.php?u=30850198&amp;id=e6af6ce87eeb49cab9f7c4584c8d49da.Xdoz7jXx662gLBduhGy%2FwZtnakk%3D&amp;r=https%3A%2F%2Fmandrillapp.com%2Funsub%3Fmd_email%3Daraemonz%2540gmail.com
-
-Regards,
-The Let's Encrypt Team
-</pre><br>どうも、Apacheを停止してから更新処理をしていなかったのが原因のようだ。<br><br><pre class='code'>Saving debug log to /var/log/letsencrypt/letsencrypt.log
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Processing /etc/letsencrypt/renewal/hogehoge.com.conf
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-Cert is due for renewal, auto-renewing...
-Plugins selected: Authenticator standalone, Installer None
-Renewing an existing certificate
-Performing the following challenges:
-tls-sni-01 challenge for hogehoge.com
-Cleaning up challenges
-Attempting to renew cert (hogehoge.com) from /etc/letsencrypt/renewal/hogehoge.com.conf produced an unexpected error: Problem binding to port 443: Could not bind to IPv4 or IPv6.. Skipping.
-</pre><br>ということで以下のようにcronに登録してみた。<br>毎月の7日、04時00分に実行する。<br><br><pre class='code'>vi /etc/cron.d/letsencrypt
-
-00 04 01 * * root /etc/rc.d/init.d/httpd stop &amp;&amp; /usr/bin/certbot-auto renew &amp;&amp; /etc/rc.d/init.d/httpd start
-</pre><br><span class="backSlash">分 時 日 月 曜日 <実行コマンド></span><br><br><br><h2 id="11">faviconでエラー</h2>ブラウザーが小さい警告表示を出していた。<br>原因はfaviconだった。<br>ブラウザーがfaviconを勝手にリクエストするようで、faviconを設置していなかったためにhttpでリダイレクトエラーが出たということ。<br>faviconを設置して無事エラーはなくなった。<br><br><br><h2 id="12">.htaccessでhttpsへリダイレクト</h2>httpでアクセスしても自動でhttpsへリダイレクトするように.htaccessを編集。<br><br><pre class='code'>RewriteEngine On
-RewriteCond %{HTTPS} off
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
-</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729102849.jpg" class="default lazyload" /><br><br><h2 id="1">条件</h2>* Apacheのバージョンは2.2.15以上とする<br>* オレオレ証明書を既に使っている<br>* 443ポートは解放済み<br>* バーチャルホストで運営している<br>* CentOS 6.x<br><br>この条件で以下作業を行なっていく。<br>rootになって/rootディレクトリで操作した。<br><br><br><h2 id="2">手順</h2>1. certbotをダウンロード<br>2. Apacheを停止<br>3. certbotを使って鍵を作成<br>4. Apacheに鍵のパスを記述<br>5. Apacheを再起動<br>6. 自動更新の設定<br><br><br><h2 id="3">curlのアップデート</h2>**curlが古いとうまくいかないので事前にアップデートしておく。**<br><span class="backSlash">yum update curl</span><br><br><br><h2 id="4">certbotをインストール</h2><span class="backSlash">git clone https://github.com/letsencrypt/letsencrypt</span><br><br><br><h2 id="5">Apacheを停止</h2>Apacheを止めないと証明書を作れないので止めておく。<br><span class="backSlash">/etc/rc.d/init.d/stop</span><br><br><br><h2 id="6">certbotを使って鍵を作成</h2>いくつか質問されるが難しいことはない。<br><pre class='code'><span>cd letsencrypt
+</span><span>
+</span><span>./letsencrypt-auto certonly -a standalone -d hogedomain.com
+</span></pre><br>/etc/letsencrypt/live/hogedomain.com/ 内に鍵が作られた<br><br><pre class='code'><span>ls /etc/letsencrypt/live/hogedomain.com/
+</span><span>README  cert.pem  chain.pem  fullchain.pem  privkey.pem
+</span></pre><br><h2 id="7">Apacheに鍵のパスを記述</h2>Apacheにこの鍵のパスを設定する。<br><br><pre class='code'><span>vi /etc/httpd/conf.d/ssl.conf
+</span><span>
+</span><span>##以下を書き換える
+</span><span>SSLCertificateFile /etc/letsencrypt/live/hogedomain.com/fullchain.pem
+</span><span>SSLCertificateKeyFile /etc/letsencrypt/live/hogedomain.com/privkey.pem
+</span></pre><br><h2 id="8">Apache 再起動</h2>停止していたApacheを起動する。<br><span class="backSlash">/etc/rc.d/init.d/httpd start</span><br><br>これでルートドメインにSSL付きでアクセスできる。<br><br><h2 id="9">サブドメインでもLet's Encryptを使えるようにする</h2>サブドメイン毎に設定してやらなければならない。<br>やり方はルートドメインの時と同じ。<br><span class="backSlash">./letsencrypt-auto certonly -a standalone -d sub.hogedomain.com</span><br><br><pre class='code'><span>vi /etc/httpd/conf.d/virtualhost.conf
+</span><span>
+</span><span>##以下を追加
+</span><span>&amp;lt;VirtualHost *:443&amp;gt;
+</span><span>    ServerName sub.hogedomain.com
+</span><span>    DocumentRoot /somewhere/hogedomain/sub
+</span><span>
+</span><span>    SSLEngine on
+</span><span>    SSLCertificateFile /etc/letsencrypt/live/sub.hogedomain.com/fullchain.pem
+</span><span>    SSLCertificateKeyFile /etc/letsencrypt/live/sub.hogedomain.com/privkey.pem
+</span><span>
+</span><span>    ErrorLog logs/sslvirtual_error_log
+</span><span>    CustomLog logs/sslvirtual_access_log combined env=!no_log
+</span><span>   NameVirtualhost *:443
+</span><span>&amp;lt;/VirtualHost&amp;gt;
+</span></pre><br><br><h2 id="10">自動更新の設定</h2>Let's Encryptは３ヶ月しか有効期限がないので、自動更新するとよい。更新のためのコマンドをcronする。<br>まず、下記のコマンドが正常に動作し、証明書が更新されるかをテスト。<br>renewは、すべての証明書を更新するコマンド。--post-hookオプションで指定したコマンドは、renew後に実行される。ただし、renewは期限が迫らないうちは、実行がスキップされ、その場合はpost-hookも実行されない。<br><a href="https://qiita.com/takahiko/items/a08895550727b95b6c36">https://qiita.com/takahiko/items/a08895550727b95b6c36</a><br><br>記事のように自動更新の設定をしていたのだが、なぜかその後に更新をしてくださいという内容のメールが来てしまった。<br><br><pre class='code'><span>Hello,
+</span><span>
+</span><span>Your certificate (or certificates) for the names listed below will expire in 20 days (on 18 Aug 18 07:08 +0000). Please make sure to renew your certificate before then, or visitors to your website will encounter errors.
+</span><span>
+</span><span>We recommend renewing certificates automatically when they have a third of their
+</span><span>total lifetime left. For Let's Encrypt's current 90-day certificates, that means
+</span><span>renewing 30 days before expiration. See
+</span><span>https://letsencrypt.org/docs/integration-guide/ for details.
+</span><span>
+</span><span>hogehoge.com
+</span><span>
+</span><span>For any questions or support, please visit https://community.letsencrypt.org/. Unfortunately, we can't provide support by email.
+</span><span>
+</span><span>If you are receiving this email in error, unsubscribe at http://mandrillapp.com/track/unsub.php?u=30850198&amp;id=e6af6ce87eeb49cab9f7c4584c8d49da.Xdoz7jXx662gLBduhGy%2FwZtnakk%3D&amp;r=https%3A%2F%2Fmandrillapp.com%2Funsub%3Fmd_email%3Daraemonz%2540gmail.com
+</span><span>
+</span><span>Regards,
+</span><span>The Let's Encrypt Team
+</span></pre><br>どうも、Apacheを停止してから更新処理をしていなかったのが原因のようだ。<br><br><pre class='code'><span>Saving debug log to /var/log/letsencrypt/letsencrypt.log
+</span><span>
+</span><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span><span>Processing /etc/letsencrypt/renewal/hogehoge.com.conf
+</span><span>- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+</span><span>Cert is due for renewal, auto-renewing...
+</span><span>Plugins selected: Authenticator standalone, Installer None
+</span><span>Renewing an existing certificate
+</span><span>Performing the following challenges:
+</span><span>tls-sni-01 challenge for hogehoge.com
+</span><span>Cleaning up challenges
+</span><span>Attempting to renew cert (hogehoge.com) from /etc/letsencrypt/renewal/hogehoge.com.conf produced an unexpected error: Problem binding to port 443: Could not bind to IPv4 or IPv6.. Skipping.
+</span></pre><br>ということで以下のようにcronに登録してみた。<br>毎月の7日、04時00分に実行する。<br><br><pre class='code'><span>vi /etc/cron.d/letsencrypt
+</span><span>
+</span><span>00 04 01 * * root /etc/rc.d/init.d/httpd stop &amp;&amp; /usr/bin/certbot-auto renew &amp;&amp; /etc/rc.d/init.d/httpd start
+</span></pre><br><span class="backSlash">分 時 日 月 曜日 <実行コマンド></span><br><br><br><h2 id="11">faviconでエラー</h2>ブラウザーが小さい警告表示を出していた。<br>原因はfaviconだった。<br>ブラウザーがfaviconを勝手にリクエストするようで、faviconを設置していなかったためにhttpでリダイレクトエラーが出たということ。<br>faviconを設置して無事エラーはなくなった。<br><br><br><h2 id="12">.htaccessでhttpsへリダイレクト</h2>httpでアクセスしても自動でhttpsへリダイレクトするように.htaccessを編集。<br><br><pre class='code'><span>RewriteEngine On
+</span><span>RewriteCond %{HTTPS} off
+</span><span>RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+</span></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/centos6-lets-encrypt.html&text=CentOS+6.x+%E3%81%AB%E7%84%A1%E6%96%99SSL+Let%27s+Encrypt+%E3%82%92%E5%B0%8E%E5%85%A5%E3%81%99%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/centos6-lets-encrypt.html" target="_blank" title="Facebook"></a></li>

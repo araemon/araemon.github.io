@@ -10,7 +10,7 @@ Pandocでmarkdownからhtmlへスタンドアロンオプションをつけて�
 <meta content="https://araemon.github.io/blog/pandoc-markdown-html.html" property="og:url" />
 <meta content="https://apppppp.com/1/system/base64.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,8 +44,8 @@ Pandocでmarkdownからhtmlへスタンドアロンオプションをつけて�
 2018-08-08</time></div>
 <p>
 
-Markdownからhtmlに変換するときのお話。<br><br>htmlで画像を表示する場合、通常、画像パスを指定してimgタグで画像を参照するとおもう。それを今回は、画像データーをBase64にエンコードし、直接htmlのソースに書き込んでしまおうということである。こうすることで、htmlファイルをpdfのように一つのファイルで管理ができるようになる。<br><br>アプリ内のヘルプページ用に、このhtmlファイルを使おうと思った。<br><br>というのも、アプリのローカライズ言語が多ければ多いほど、言語別にヘルプ用の画像を管理しなければならない。そうなると、xcode内にそれらの画像を置くわけだから、他のリソースとごっちゃになりそうだ。だから、htmlをpdfのように単一ファイルとして扱えるようになってしまえば、ファイルの階層構造も気にせず少しは楽になるかなと思ったわけだ。<br><br>ヘルプページはブログなどへ飛ばしてしまえばいいではないか思うかもしれない。私も、今でもそうしている。しかし、Analyticsを解析していた時に、中国からのアクセスで閲覧に以上に時間がかかっていることに気がついた。というか閲覧できていない状況だろう。<br><br>中国ではICP登録しないと、こちらのブログなどへアクセスできないのだ。つまり中国政府の検閲がかかってしまっている。そんなこともあり、ヘルプページをアプリ内に埋め込んで配信する必要ができてたわけだ。<br><br>さて、実際やる手順としては、pandocを使って以下のように<br><span class="backSlash">-s --self-contained</span><br>オプションをつけて実行する。<br><br><pre class='code'>pandoc hoge.md -s --self-contained -t html5 -o hoge.html
-</pre><br>するとこのように、img タグに画像が文字列として埋め込まれてhtmlファイルが出力される。<br><br><img data-src="https://apppppp.com/1/system/base64.jpg" class="default lazyload" /><br><br>あとはWKwebviewで、このhtmlを参照してあげればよい。</p>
+Markdownからhtmlに変換するときのお話。<br><br>htmlで画像を表示する場合、通常、画像パスを指定してimgタグで画像を参照するとおもう。それを今回は、画像データーをBase64にエンコードし、直接htmlのソースに書き込んでしまおうということである。こうすることで、htmlファイルをpdfのように一つのファイルで管理ができるようになる。<br><br>アプリ内のヘルプページ用に、このhtmlファイルを使おうと思った。<br><br>というのも、アプリのローカライズ言語が多ければ多いほど、言語別にヘルプ用の画像を管理しなければならない。そうなると、xcode内にそれらの画像を置くわけだから、他のリソースとごっちゃになりそうだ。だから、htmlをpdfのように単一ファイルとして扱えるようになってしまえば、ファイルの階層構造も気にせず少しは楽になるかなと思ったわけだ。<br><br>ヘルプページはブログなどへ飛ばしてしまえばいいではないか思うかもしれない。私も、今でもそうしている。しかし、Analyticsを解析していた時に、中国からのアクセスで閲覧に以上に時間がかかっていることに気がついた。というか閲覧できていない状況だろう。<br><br>中国ではICP登録しないと、こちらのブログなどへアクセスできないのだ。つまり中国政府の検閲がかかってしまっている。そんなこともあり、ヘルプページをアプリ内に埋め込んで配信する必要ができてたわけだ。<br><br>さて、実際やる手順としては、pandocを使って以下のように<br><span class="backSlash">-s --self-contained</span><br>オプションをつけて実行する。<br><br><pre class='code'><span>pandoc hoge.md -s --self-contained -t html5 -o hoge.html
+</span></pre><br>するとこのように、img タグに画像が文字列として埋め込まれてhtmlファイルが出力される。<br><br><img data-src="https://apppppp.com/1/system/base64.jpg" class="default lazyload" /><br><br>あとはWKwebviewで、このhtmlを参照してあげればよい。</p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/pandoc-markdown-html.html&text=Pandoc%E3%81%A7markdown%E3%81%8B%E3%82%89html%E3%81%B8%E3%82%B9%E3%82%BF%E3%83%B3%E3%83%89%E3%82%A2%E3%83%AD%E3%83%B3%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%82%92%E3%81%A4%E3%81%91%E3%81%A6%E5%A4%89%E6%8F%9B%E3%81%99%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/pandoc-markdown-html.html" target="_blank" title="Facebook"></a></li>

@@ -10,7 +10,7 @@ Swift4でUITalbeViewの最下部にスクロールしたい</title>
 <meta content="https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,14 +44,14 @@ Swift4でUITalbeViewの最下部にスクロールしたい</h1>
 2018-05-21</time></div>
 <p>
 
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>最下部にスクロールするには<span class="backSlash">scrollToRow</span>を使うが、<span class="backSlash">tableView.reloadData()</span> 後すぐに実行すると正しくスクロールできない。<br>タイマーでタイミングを少しずらすことでうまくいった。<br><pre class='code'>//tableViewに追加する処理をした後
-
-tableView.reloadData()
-
-DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-    self.tableView.scrollToRow(at: IndexPath(row: self.items.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)
-}
-</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>最下部にスクロールするには<span class="backSlash">scrollToRow</span>を使うが、<span class="backSlash">tableView.reloadData()</span> 後すぐに実行すると正しくスクロールできない。<br>タイマーでタイミングを少しずらすことでうまくいった。<br><pre class='code'><span>//tableViewに追加する処理をした後
+</span><span>
+</span><span>tableView.reloadData()
+</span><span>
+</span><span>DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+</span><span>    self.tableView.scrollToRow(at: IndexPath(row: self.items.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)
+</span><span>}
+</span></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html&text=Swift4%E3%81%A7UITalbeView%E3%81%AE%E6%9C%80%E4%B8%8B%E9%83%A8%E3%81%AB%E3%82%B9%E3%82%AF%E3%83%AD%E3%83%BC%E3%83%AB%E3%81%97%E3%81%9F%E3%81%84" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift4-UITalbeView-scrollToRow.html" target="_blank" title="Facebook"></a></li>
@@ -61,7 +61,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="swift-UILongPressGestureRecognizer.html">&lt; SwiftのUILongPressGestureRecognizerは二回呼ばれる</a></li><li class="next"><a href="swift-once-exec.html">Swiftで一度だけ実行したい時に使えるファンクション &gt;</a></li></ul>
+<a href="fastlane-frameit.html">&lt; App Store用のスクショ作成</a></li><li class="next"><a href="swift-discardableResult.html">Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい &gt;</a></li></ul>
 </article>
 </div>
             </div>

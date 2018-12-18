@@ -10,7 +10,7 @@
 <meta content="https://araemon.github.io/blog/apache-virtualhost-htaccess.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,17 +44,17 @@
 2018-09-02</time></div>
 <p>
 
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" class="lazyload" /><br>「バーチャルホストのドメインでアクセス」した場合と、「メインドメイン + フォルダを指定してアクセス」した場合の動作が異なることを発見した。<br>どうも、バーチャルホストでのアクセスだと.htaccessが読み込まれないようであった。<br>原因は、「AllowOverride None」を追記してしまったこと。下記のように「AllowOverride All」としたら、.htaccessの設定がちゃんと反映されるようになった。<br><pre class='code'>&lt;VirtualHost *:80&amp;gt;
-        ServerName hoge.xxxxxxxxxxx.com
-        DocumentRoot /home/xxxxxxxxxxx/hoge
-        &amp;lt;Directory &quot;/home/xxxxxxxxxxx/hoge&quot;&amp;gt;
-             Options FollowSymLinks
-             AllowOverride All
-             Order deny,allow
-             Allow from all
-        &amp;lt;/Directory&amp;gt;
-&lt;/VirtualHost&amp;gt;
-</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180901/20180901094614.png" width="300" class="lazyload" /><br>「バーチャルホストのドメインでアクセス」した場合と、「メインドメイン + フォルダを指定してアクセス」した場合の動作が異なることを発見した。<br>どうも、バーチャルホストでのアクセスだと.htaccessが読み込まれないようであった。<br>原因は、「AllowOverride None」を追記してしまったこと。下記のように「AllowOverride All」としたら、.htaccessの設定がちゃんと反映されるようになった。<br><pre class='code'><span>&lt;VirtualHost *:80&amp;gt;
+</span><span>        ServerName hoge.xxxxxxxxxxx.com
+</span><span>        DocumentRoot /home/xxxxxxxxxxx/hoge
+</span><span>        &amp;lt;Directory &quot;/home/xxxxxxxxxxx/hoge&quot;&amp;gt;
+</span><span>             Options FollowSymLinks
+</span><span>             AllowOverride All
+</span><span>             Order deny,allow
+</span><span>             Allow from all
+</span><span>        &amp;lt;/Directory&amp;gt;
+</span><span>&lt;/VirtualHost&amp;gt;
+</span></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4873113814.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4873113814/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/apache-virtualhost-htaccess.html&text=%E3%83%90%E3%83%BC%E3%83%81%E3%83%A3%E3%83%AB%E3%83%9B%E3%82%B9%E3%83%88%E3%81%A7.htaccess%E3%81%8C%E7%84%A1%E8%A6%96%E3%81%95%E3%82%8C%E3%82%8B%EF%BC%9F" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/apache-virtualhost-htaccess.html" target="_blank" title="Facebook"></a></li>
@@ -64,7 +64,7 @@
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="css-fukidashi.html">&lt; はてなブログで吹き出しコメントの表現と、画像リサイズのキャッシュサービス</a></li><li class="next"><a href="apache-favicon-error.html">Directory index forbidden by Options directiveエラーとFile does not exist favicon.ico &gt;</a></li></ul>
+<a href="keep_it_simple_stupid.html">&lt; Keep it Simple, Stupid</a></li><li class="next"><a href="css-fukidashi.html">はてなブログで吹き出しコメントの表現と、画像リサイズのキャッシュサービス &gt;</a></li></ul>
 </article>
 </div>
             </div>

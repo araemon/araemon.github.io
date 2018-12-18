@@ -10,7 +10,7 @@ GitHub Pagesのトラブルシューティング</title>
 <meta content="https://araemon.github.io/blog/github-pages.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,25 +44,25 @@ GitHub Pagesのトラブルシューティング</h1>
 2018-05-09</time></div>
 <p>
 
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" width="200" class="lazyload" /><br>GitHub Pagesでサイトを運用する際につまづいた事を忘備録として残しておきます。<br>Octocatロゴは https://github.com/logos から利用させてもらっています。<br><br><br><h2 id="1">サイトが反映されない</h2>サイトが何時間もたってもビルドできていないと思ったら、こんなメールが届いていた。<br><pre class='code'>The page build failed for the `master` branch with the following error:
-
-The symbolic link `/works` targets a file which does not exist within your site's repository. For more information, see https://help.github.com/articles/page-build-failed-symlink-does-not-exist-within-your-site-s-repository/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
-</pre><br>要はシンボリックリンクがサイト内に含まれていてビルドエラーになっているよという事だった。<b>シンボリックリンクを見つけて削除</b>したら一瞬でビルドできた。<br><br><br><h2 id="2">DNS設定に関するwarning</h2><pre class='code'>The page build completed successfully, but returned the following warning for the `master` branch:
-
-Your site's DNS settings are using a custom subdomain, works.kamityping.com, that's set up as an A record. We recommend you change this to a CNAME record pointing at araemon.github.io. For more information, see https://help.github.com/articles/using-a-custom-domain-with-github-pages/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
-</pre><br>DNSのAレコードにサブドメインを割り当てないでくれとのことの様だ。<br>サブドメインはCNAMEで登録してくれと。<br>DNSの事がよくわかっていないのだが、なんとか解決できた。<br><br>digコマンドで確認してみる<br><br><span class="backSlash">dig works.kamityping.com</span><br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130030.jpg" class="default lazyload" /><br><br>サブドメイン(works.kamityping.com)を直接GithubのサーバーIPアドレスに割り当てていた。これがいけないらしい。<br>次の様にDNSの設定を変えたら今のところワーニングのメールが来なくなったので、うまくできたのかな？<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130045.jpg" width="300" class="lazyload" /><br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130101.jpg" class="default lazyload" /><br><br><br>こんな感じで名前解決されているということか<br><br><span class="backSlash">works.kamityping.com.</span><br>　↓<br><span class="backSlash">araemon.github.io.</span><br>　↓<br><span class="backSlash">sni.github.map.fastly.net.</span><br>　↓<br><span class="backSlash">185.199.108.153</span><br><span class="backSlash">185.199.109.153</span><br><span class="backSlash">185.199.110.153</span><br><span class="backSlash">185.199.111.153</span><br><br>追記:<br>GitHub Pagesにはユーザーサイトとプロジェクトサイトがある様で、プロジェクトサイトで動かしていたようだ。cname割り当てれば問題ないのだけど、なんだか構造がわかりづらい。<br>また、ルートドメインをユーザーサイトに割り当てるにはムームードメインのDNSでは一筋縄にはいかないようで、GitHubにしたらシンプルかなと思ったがそうでもないことがわかった。月に10万リクエストの制限もあるしWebでサービスを提供するなら素直にレンタルサーバー使った方が効率良さそうだ。<br>ということで元のさくらサーバーに引っ越すことに。静的HTMLだからコピペすれば良いだけなので引っ越し作業は一瞬だ。<br>今回はGitHub Pagesを試したことでGitの構造が理解できて良い勉強になったということで。</p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" width="200" class="lazyload" /><br>GitHub Pagesでサイトを運用する際につまづいた事を忘備録として残しておきます。<br>Octocatロゴは https://github.com/logos から利用させてもらっています。<br><br><br><h2 id="1">サイトが反映されない</h2>サイトが何時間もたってもビルドできていないと思ったら、こんなメールが届いていた。<br><pre class='code'><span>The page build failed for the `master` branch with the following error:
+</span><span>
+</span><span>The symbolic link `/works` targets a file which does not exist within your site's repository. For more information, see https://help.github.com/articles/page-build-failed-symlink-does-not-exist-within-your-site-s-repository/.
+</span><span>
+</span><span>For information on troubleshooting Jekyll see:
+</span><span>
+</span><span>  https://help.github.com/articles/troubleshooting-jekyll-builds
+</span><span>
+</span><span>If you have any questions you can contact us by replying to this email.
+</span></pre><br>要はシンボリックリンクがサイト内に含まれていてビルドエラーになっているよという事だった。<b>シンボリックリンクを見つけて削除</b>したら一瞬でビルドできた。<br><br><br><h2 id="2">DNS設定に関するwarning</h2><pre class='code'><span>The page build completed successfully, but returned the following warning for the `master` branch:
+</span><span>
+</span><span>Your site's DNS settings are using a custom subdomain, works.kamityping.com, that's set up as an A record. We recommend you change this to a CNAME record pointing at araemon.github.io. For more information, see https://help.github.com/articles/using-a-custom-domain-with-github-pages/.
+</span><span>
+</span><span>For information on troubleshooting Jekyll see:
+</span><span>
+</span><span>  https://help.github.com/articles/troubleshooting-jekyll-builds
+</span><span>
+</span><span>If you have any questions you can contact us by replying to this email.
+</span></pre><br>DNSのAレコードにサブドメインを割り当てないでくれとのことの様だ。<br>サブドメインはCNAMEで登録してくれと。<br>DNSの事がよくわかっていないのだが、なんとか解決できた。<br><br>digコマンドで確認してみる<br><br><span class="backSlash">dig works.kamityping.com</span><br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130030.jpg" class="default lazyload" /><br><br>サブドメイン(works.kamityping.com)を直接GithubのサーバーIPアドレスに割り当てていた。これがいけないらしい。<br>次の様にDNSの設定を変えたら今のところワーニングのメールが来なくなったので、うまくできたのかな？<br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130045.jpg" width="300" class="lazyload" /><br><br><img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130101.jpg" class="default lazyload" /><br><br><br>こんな感じで名前解決されているということか<br><br><span class="backSlash">works.kamityping.com.</span><br>　↓<br><span class="backSlash">araemon.github.io.</span><br>　↓<br><span class="backSlash">sni.github.map.fastly.net.</span><br>　↓<br><span class="backSlash">185.199.108.153</span><br><span class="backSlash">185.199.109.153</span><br><span class="backSlash">185.199.110.153</span><br><span class="backSlash">185.199.111.153</span><br><br>追記:<br>GitHub Pagesにはユーザーサイトとプロジェクトサイトがある様で、プロジェクトサイトで動かしていたようだ。cname割り当てれば問題ないのだけど、なんだか構造がわかりづらい。<br>また、ルートドメインをユーザーサイトに割り当てるにはムームードメインのDNSでは一筋縄にはいかないようで、GitHubにしたらシンプルかなと思ったがそうでもないことがわかった。月に10万リクエストの制限もあるしWebでサービスを提供するなら素直にレンタルサーバー使った方が効率良さそうだ。<br>ということで元のさくらサーバーに引っ越すことに。静的HTMLだからコピペすれば良いだけなので引っ越し作業は一瞬だ。<br>今回はGitHub Pagesを試したことでGitの構造が理解できて良い勉強になったということで。</p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/github-pages.html&text=GitHub+Pages%E3%81%AE%E3%83%88%E3%83%A9%E3%83%96%E3%83%AB%E3%82%B7%E3%83%A5%E3%83%BC%E3%83%86%E3%82%A3%E3%83%B3%E3%82%B0" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/github-pages.html" target="_blank" title="Facebook"></a></li>
@@ -72,7 +72,7 @@ If you have any questions you can contact us by replying to this email.
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="mac-shell-script-command.html">&lt; Macのシェルで使えるコマンドやスクリプトを書いて覚えていこう！</a></li><li class="next"><a href="punctuation-marks.html">プログラミングで使う句読点(Punctuation marks)の読み方 &gt;</a></li></ul>
+<a href="mac-shortcut-key.html">&lt; Macで使えるショートカットキーの覚え書き</a></li><li class="next"><a href="punctuation-marks.html">プログラミングで使う句読点(Punctuation marks)の読み方 &gt;</a></li></ul>
 </article>
 </div>
             </div>

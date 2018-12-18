@@ -10,7 +10,7 @@
 <meta content="https://araemon.github.io/about/about-introduce.html" property="og:url" />
 <meta content="https://araemon.github.io" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,51 +44,51 @@
 2018-12-13</time></div>
 <p>
 
-このサイトは元々アプリのためのヘルプページや宣伝に使っていたのですが、今ではプログラミングのモチベーション、および「未来の自分」のために忘備録などを残すことにしています。<br><br>以前まで「はてなブログ有料版」を使っていたのですが、「GitHub Pages」に引っ越すことにしました。<br>今更ながらかもしれませんが、無料でできるgithub.ioがカッコ良いなと思ったのです。<br>「GitHub Pages」は動的なCGIなどは使えませんが、Staticなコンテンツなら無料で置くことができます。<br><br>さて、このサイトのHTMLファイルの書き出しは、全て自前のプログラムで組んでいます。<br>Hugoなどの静的サイトジェネレーターは使っておりません。<br><br>HTMLファイルの出力は、Mac上でPHPとシェルスクリプトを動かして行なっています。<br>とは言っても、PHPで生成したHTMLを、リダイレクトでファイルに書き込んでいるだけなのです。<br>動的コンテンツを作ることに比べて、たいして変わらないことに気づきました。<br><pre class='code'>ob_start();
-include &quot;./template/index.php&quot;;
-$resultHtml = ob_get_contents();
-ob_end_clean();
-
-$writePath = &quot;./contents/index.html&quot;;
-
-file_put_contents($writePath, $resultHtml);
-</pre><br>VScodeとVimをエディターとして、フルスクラッチで約1週間くらいの工程でベースの出来上がりです。<br><br>MarkDownの変換も以前はPandocを使っていましたが、それもやめました。<br>自分だけのなんちゃってMarkDownを採用しています。<br>そもそもMarkDownをHTMLに変換するのは、正規表現で簡単にできることに気づきました。<br>そして、自作プログラムならば独自の記述を付け足すことができるので、通常のMarkDownより使い勝手を良くすることができます。チューニングってやつですね。<br>例えば<br><span class="backSlash">image300:画像パス</span><br>のように書くことで、widthを300pxに指定するようにしました。<br><pre class='code'>if (preg_match('/^image([0-9]+):/', $line, $matches) == true) {
-        $width = $matches[1];
-        $line = str_replace(array(&quot;\r&quot;, &quot;\n&quot;, &quot;image&quot; . $width . &quot;:&quot;), '', $line);
-        return '&lt;img src=&quot;' . $line . &quot;\&quot; width=\&quot;&quot; . $width . &quot;\&quot; /&gt;\n&quot;;
-}
-</pre><br><br>さらに、MarkDownファイルを更新したら、つまり記事を作成したり修正したりしたら、自動でHTML変換をして欲しいと思いました。<br>そこで、ファイルのmodify timestampを監視して処理を実行するBashスクリプトを次のように組んでみました。<br><pre class='code'>function checkTimeStamp () {
-  local nowTime=`date +%s`
-  lastTime=0
-  lastFile=''
-
-  for file in ${srcDir}*.md; do
-    modifyTime=`stat -f &quot;%m&quot; $file`
-
-    if [ $(($modifyTime)) -gt $(($lastTime)) ]; then
-        lastTime=$modifyTime
-        lastFile=$file
-    fi
-  done
-  echo $lastTime
-
-}
-
-lastTime=0
-
-while :
-  do
-      resultTime=$(checkTimeStamp)
-      if [ $resultTime -gt $lastTime ]; then
-        lastTime=$resultTime
-        echo &quot;Do convert...&quot;
-        doConverter
-        echo &quot;Did converted !&quot;
-      fi
-  
-  sleep 5
-done
-</pre><br>自前ジェネレーターにはシンプルな機能しかありませんが、軽量でミニマムな仕様になったので快適です。<br>外部のライブラリーを使わずに自前のプログラミング処理をすることで、精神衛生上にもよくなりました。<br>また、CSS、レシポンシブルデザインなどの勉強にもなりました。<br>何より自分でプログラミングして作ることは、楽しいものです。</p>
+このサイトは元々アプリのためのヘルプページや宣伝に使っていたのですが、今ではプログラミングのモチベーション、および「未来の自分」のために忘備録などを残すことにしています。<br><br>以前まで「はてなブログ有料版」を使っていたのですが、「GitHub Pages」に引っ越すことにしました。<br>今更ながらかもしれませんが、無料でできるgithub.ioがカッコ良いなと思ったのです。<br>「GitHub Pages」は動的なCGIなどは使えませんが、Staticなコンテンツなら無料で置くことができます。<br><br>さて、このサイトのHTMLファイルの書き出しは、全て自前のプログラムで組んでいます。<br>Hugoなどの静的サイトジェネレーターは使っておりません。<br><br>HTMLファイルの出力は、Mac上でPHPとシェルスクリプトを動かして行なっています。<br>とは言っても、PHPで生成したHTMLを、リダイレクトでファイルに書き込んでいるだけなのです。<br>動的コンテンツを作ることに比べて、たいして変わらないことに気づきました。<br><pre class='code'><span>ob_start();
+</span><span>include &quot;./template/index.php&quot;;
+</span><span>$resultHtml = ob_get_contents();
+</span><span>ob_end_clean();
+</span><span>
+</span><span>$writePath = &quot;./contents/index.html&quot;;
+</span><span>
+</span><span>file_put_contents($writePath, $resultHtml);
+</span></pre><br>VScodeとVimをエディターとして、フルスクラッチで約1週間くらいの工程でベースの出来上がりです。<br><br>MarkDownの変換も以前はPandocを使っていましたが、それもやめました。<br>自分だけのなんちゃってMarkDownを採用しています。<br>そもそもMarkDownをHTMLに変換するのは、正規表現で簡単にできることに気づきました。<br>そして、自作プログラムならば独自の記述を付け足すことができるので、通常のMarkDownより使い勝手を良くすることができます。チューニングってやつですね。<br>例えば<br><span class="backSlash">image300:画像パス</span><br>のように書くことで、widthを300pxに指定するようにしました。<br><pre class='code'><span>if (preg_match('/^image([0-9]+):/', $line, $matches) == true) {
+</span><span>        $width = $matches[1];
+</span><span>        $line = str_replace(array(&quot;\r&quot;, &quot;\n&quot;, &quot;image&quot; . $width . &quot;:&quot;), '', $line);
+</span><span>        return '&lt;img src=&quot;' . $line . &quot;\&quot; width=\&quot;&quot; . $width . &quot;\&quot; /&gt;\n&quot;;
+</span><span>}
+</span></pre><br><br>さらに、MarkDownファイルを更新したら、つまり記事を作成したり修正したりしたら、自動でHTML変換をして欲しいと思いました。<br>そこで、ファイルのmodify timestampを監視して処理を実行するBashスクリプトを次のように組んでみました。<br><pre class='code'><span>function checkTimeStamp () {
+</span><span>  local nowTime=`date +%s`
+</span><span>  lastTime=0
+</span><span>  lastFile=''
+</span><span>
+</span><span>  for file in ${srcDir}*.md; do
+</span><span>    modifyTime=`stat -f &quot;%m&quot; $file`
+</span><span>
+</span><span>    if [ $(($modifyTime)) -gt $(($lastTime)) ]; then
+</span><span>        lastTime=$modifyTime
+</span><span>        lastFile=$file
+</span><span>    fi
+</span><span>  done
+</span><span>  echo $lastTime
+</span><span>
+</span><span>}
+</span><span>
+</span><span>lastTime=0
+</span><span>
+</span><span>while :
+</span><span>  do
+</span><span>      resultTime=$(checkTimeStamp)
+</span><span>      if [ $resultTime -gt $lastTime ]; then
+</span><span>        lastTime=$resultTime
+</span><span>        echo &quot;Do convert...&quot;
+</span><span>        doConverter
+</span><span>        echo &quot;Did converted !&quot;
+</span><span>      fi
+</span><span>  
+</span><span>  sleep 5
+</span><span>done
+</span></pre><br>自前ジェネレーターにはシンプルな機能しかありませんが、軽量でミニマムな仕様になったので快適です。<br>外部のライブラリーを使わずに自前のプログラミング処理をすることで、精神衛生上にもよくなりました。<br>また、CSS、レシポンシブルデザインなどの勉強にもなりました。<br>何より自分でプログラミングして作ることは、楽しいものです。</p>
 </article>
 </div>
             </div>

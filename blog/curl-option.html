@@ -10,7 +10,7 @@ cURLの使えそうなオプションメモ</title>
 <meta content="https://araemon.github.io/blog/curl-option.html" property="og:url" />
 <meta content="https://araemon.github.io" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,100 +44,100 @@ cURLの使えそうなオプションメモ</h1>
 2018-05-23</time></div>
 <p>
 <ul id="toc"><li><a href="#1">HEAD リクエストする</a></li><li><a href="#2">リクエストヘッダ、レスポンスヘッダ、SSL/TLS handshakeをみる</a></li><li><a href="#3">ユーザーエージェントを偽装する</a></li></li></ul>
-<h2 id="1">HEAD リクエストする</h2><br><pre class='code'>curl -I https://works.kamityping.com/post/2018/harmonize-ja.html
-
-HTTP/1.1 200 OK
-Date: Wed, 23 May 2018 13:17:41 GMT
-Server: Apache
-Last-Modified: Wed, 23 May 2018 12:16:12 GMT
-ETag: &quot;1a0014-3b73-56cde8024fb00&quot;
-Accept-Ranges: bytes
-Content-Length: 15219
-Vary: Accept-Encoding,User-Agent
-Connection: close
-Content-Type: text/html
-</pre><br>Googleをみてみる。<br><br><pre class='code'>curl -I https://www.google.co.jp/
-
-HTTP/2 200
-birthtime: &quot;2018-05-23&quot;
-mtime: &quot;2018-05-23&quot;
-expires: -1
-cache-control: private, max-age=0
-content-type: text/html; charset=Shift_JIS
-p3p: CP=&quot;This is not a P3P policy! See g.co/p3phelp for more info.&quot;
-server: gws
-x-xss-protection: 1; mode=block
-x-frame-options: SAMEORIGIN
-set-cookie: 1P_JAR=2018-05-23-13; expires=Fri, 22-Jun-2018 13:19:03 GMT; path=/; domain=.google.co.jp
-set-cookie: NID=130=Z1_NdyJN6fhaDsLmr68L6XcQoGc4mxeJKTNmgJ4HyyVF1jlRuxdbZ1wnDgei5HmJdYoa2xof4SJvFUx2DNQrwz2Kt5KLvcVILbN9MMft7b33NTSjeaYJJ1VH-7tCxr0y; expires=Thu, 22-Nov-2018 13:19:03 GMT; path=/; domain=.google.co.jp; HttpOnly
-alt-svc: hq=&quot;:443&quot;; ma=2592000; quic=51303433; quic=51303432; quic=51303431; quic=51303339; quic=51303335,quic=&quot;:443&quot;; ma=2592000; v=&quot;43,42,41,39,35&quot;
-accept-ranges: none
-vary: Accept-Encoding
-</pre><br><br><h2 id="2">リクエストヘッダ、レスポンスヘッダ、SSL/TLS handshakeをみる</h2><br>ヘッダだけ表示させるために、標準出力は/dev/nullに捨てている<br><br>参考:<br><a href="https://qiita.com/takc923/items/1b508bb370c78b7a9d44">https://qiita.com/takc923/items/1b508bb370c78b7a9d44</a><br><br>curl --verbose https://google.com 1> /dev/null<br><br><pre class='code'>curl --verbose https://works.kamityping.com/post/2018/harmonize-ja.html 1&gt; /dev/null
-
-  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
-                                 Dload  Upload   Total   Spent    Left  Speed
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 133.242.155.84...
-* TCP_NODELAY set
-* Connected to works.kamityping.com (133.242.155.84) port 443 (#0)
-  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* ALPN, offering h2
-* ALPN, offering http/1.1
-* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
-* successfully set certificate verify locations:
-*   CAfile: /etc/ssl/cert.pem
-  CApath: none
-* TLSv1.2 (OUT), TLS handshake, Client hello (1):
-} [512 bytes data]
-* TLSv1.2 (IN), TLS handshake, Server hello (2):
-{ [93 bytes data]
-* TLSv1.2 (IN), TLS handshake, Certificate (11):
-{ [2746 bytes data]
-* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
-{ [333 bytes data]
-* TLSv1.2 (IN), TLS handshake, Server finished (14):
-{ [4 bytes data]
-* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
-} [70 bytes data]
-* TLSv1.2 (OUT), TLS change cipher, Client hello (1):
-} [1 bytes data]
-* TLSv1.2 (OUT), TLS handshake, Finished (20):
-} [16 bytes data]
-* TLSv1.2 (IN), TLS change cipher, Client hello (1):
-{ [1 bytes data]
-* TLSv1.2 (IN), TLS handshake, Finished (20):
-{ [16 bytes data]
-* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
-* ALPN, server did not agree to a protocol
-* Server certificate:
-*  subject: CN=works.kamityping.com
-*  start date: May 20 07:08:05 2018 GMT
-*  expire date: Aug 18 07:08:05 2018 GMT
-*  subjectAltName: host &quot;works.kamityping.com&quot; matched cert's &quot;works.kamityping.com&quot;
-*  issuer: C=US; O=Let's Encrypt; CN=Let's Encrypt Authority X3
-*  SSL certificate verify ok.
-&gt; GET /post/2018/harmonize-ja.html HTTP/1.1
-&gt; Host: works.kamityping.com
-&gt; User-Agent: curl/7.54.0
-&gt; Accept: */*
-&gt;
-&lt; HTTP/1.1 200 OK
-&lt; Date: Wed, 23 May 2018 13:25:06 GMT
-&lt; Server: Apache
-&lt; Last-Modified: Wed, 23 May 2018 12:16:12 GMT
-&lt; ETag: &quot;1a0014-3b73-56cde8024fb00&quot;
-&lt; Accept-Ranges: bytes
-&lt; Content-Length: 15219
-&lt; Vary: Accept-Encoding,User-Agent
-&lt; Connection: close
-&lt; Content-Type: text/html
-&lt;
-{ [15219 bytes data]
-100 15219  100 15219    0     0  36943      0 --:--:-- --:--:-- --:--:-- 36939
-* Closing connection 0
-* TLSv1.2 (OUT), TLS alert, Client hello (1):
-} [2 bytes data]
-</pre><br><br><h2 id="3">ユーザーエージェントを偽装する</h2><br><pre class='code'>curl --verbose -A  &quot;Mozilla/5.0 (iPhone; CPU iPhone OS 11_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1&quot; https://www.google.com 1&gt; /dev/null
-</pre></p>
+<h2 id="1">HEAD リクエストする</h2><br><pre class='code'><span>curl -I https://works.kamityping.com/post/2018/harmonize-ja.html
+</span><span>
+</span><span>HTTP/1.1 200 OK
+</span><span>Date: Wed, 23 May 2018 13:17:41 GMT
+</span><span>Server: Apache
+</span><span>Last-Modified: Wed, 23 May 2018 12:16:12 GMT
+</span><span>ETag: &quot;1a0014-3b73-56cde8024fb00&quot;
+</span><span>Accept-Ranges: bytes
+</span><span>Content-Length: 15219
+</span><span>Vary: Accept-Encoding,User-Agent
+</span><span>Connection: close
+</span><span>Content-Type: text/html
+</span></pre><br>Googleをみてみる。<br><br><pre class='code'><span>curl -I https://www.google.co.jp/
+</span><span>
+</span><span>HTTP/2 200
+</span><span>birthtime: &quot;2018-05-23&quot;
+</span><span>mtime: &quot;2018-05-23&quot;
+</span><span>expires: -1
+</span><span>cache-control: private, max-age=0
+</span><span>content-type: text/html; charset=Shift_JIS
+</span><span>p3p: CP=&quot;This is not a P3P policy! See g.co/p3phelp for more info.&quot;
+</span><span>server: gws
+</span><span>x-xss-protection: 1; mode=block
+</span><span>x-frame-options: SAMEORIGIN
+</span><span>set-cookie: 1P_JAR=2018-05-23-13; expires=Fri, 22-Jun-2018 13:19:03 GMT; path=/; domain=.google.co.jp
+</span><span>set-cookie: NID=130=Z1_NdyJN6fhaDsLmr68L6XcQoGc4mxeJKTNmgJ4HyyVF1jlRuxdbZ1wnDgei5HmJdYoa2xof4SJvFUx2DNQrwz2Kt5KLvcVILbN9MMft7b33NTSjeaYJJ1VH-7tCxr0y; expires=Thu, 22-Nov-2018 13:19:03 GMT; path=/; domain=.google.co.jp; HttpOnly
+</span><span>alt-svc: hq=&quot;:443&quot;; ma=2592000; quic=51303433; quic=51303432; quic=51303431; quic=51303339; quic=51303335,quic=&quot;:443&quot;; ma=2592000; v=&quot;43,42,41,39,35&quot;
+</span><span>accept-ranges: none
+</span><span>vary: Accept-Encoding
+</span></pre><br><br><h2 id="2">リクエストヘッダ、レスポンスヘッダ、SSL/TLS handshakeをみる</h2><br>ヘッダだけ表示させるために、標準出力は/dev/nullに捨てている<br><br>参考:<br><a href="https://qiita.com/takc923/items/1b508bb370c78b7a9d44">https://qiita.com/takc923/items/1b508bb370c78b7a9d44</a><br><br>curl --verbose https://google.com 1> /dev/null<br><br><pre class='code'><span>curl --verbose https://works.kamityping.com/post/2018/harmonize-ja.html 1&gt; /dev/null
+</span><span>
+</span><span>  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+</span><span>                                 Dload  Upload   Total   Spent    Left  Speed
+</span><span>  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0*   Trying 133.242.155.84...
+</span><span>* TCP_NODELAY set
+</span><span>* Connected to works.kamityping.com (133.242.155.84) port 443 (#0)
+</span><span>  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* ALPN, offering h2
+</span><span>* ALPN, offering http/1.1
+</span><span>* Cipher selection: ALL:!EXPORT:!EXPORT40:!EXPORT56:!aNULL:!LOW:!RC4:@STRENGTH
+</span><span>* successfully set certificate verify locations:
+</span><span>*   CAfile: /etc/ssl/cert.pem
+</span><span>  CApath: none
+</span><span>* TLSv1.2 (OUT), TLS handshake, Client hello (1):
+</span><span>} [512 bytes data]
+</span><span>* TLSv1.2 (IN), TLS handshake, Server hello (2):
+</span><span>{ [93 bytes data]
+</span><span>* TLSv1.2 (IN), TLS handshake, Certificate (11):
+</span><span>{ [2746 bytes data]
+</span><span>* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
+</span><span>{ [333 bytes data]
+</span><span>* TLSv1.2 (IN), TLS handshake, Server finished (14):
+</span><span>{ [4 bytes data]
+</span><span>* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
+</span><span>} [70 bytes data]
+</span><span>* TLSv1.2 (OUT), TLS change cipher, Client hello (1):
+</span><span>} [1 bytes data]
+</span><span>* TLSv1.2 (OUT), TLS handshake, Finished (20):
+</span><span>} [16 bytes data]
+</span><span>* TLSv1.2 (IN), TLS change cipher, Client hello (1):
+</span><span>{ [1 bytes data]
+</span><span>* TLSv1.2 (IN), TLS handshake, Finished (20):
+</span><span>{ [16 bytes data]
+</span><span>* SSL connection using TLSv1.2 / ECDHE-RSA-AES256-GCM-SHA384
+</span><span>* ALPN, server did not agree to a protocol
+</span><span>* Server certificate:
+</span><span>*  subject: CN=works.kamityping.com
+</span><span>*  start date: May 20 07:08:05 2018 GMT
+</span><span>*  expire date: Aug 18 07:08:05 2018 GMT
+</span><span>*  subjectAltName: host &quot;works.kamityping.com&quot; matched cert's &quot;works.kamityping.com&quot;
+</span><span>*  issuer: C=US; O=Let's Encrypt; CN=Let's Encrypt Authority X3
+</span><span>*  SSL certificate verify ok.
+</span><span>&gt; GET /post/2018/harmonize-ja.html HTTP/1.1
+</span><span>&gt; Host: works.kamityping.com
+</span><span>&gt; User-Agent: curl/7.54.0
+</span><span>&gt; Accept: */*
+</span><span>&gt;
+</span><span>&lt; HTTP/1.1 200 OK
+</span><span>&lt; Date: Wed, 23 May 2018 13:25:06 GMT
+</span><span>&lt; Server: Apache
+</span><span>&lt; Last-Modified: Wed, 23 May 2018 12:16:12 GMT
+</span><span>&lt; ETag: &quot;1a0014-3b73-56cde8024fb00&quot;
+</span><span>&lt; Accept-Ranges: bytes
+</span><span>&lt; Content-Length: 15219
+</span><span>&lt; Vary: Accept-Encoding,User-Agent
+</span><span>&lt; Connection: close
+</span><span>&lt; Content-Type: text/html
+</span><span>&lt;
+</span><span>{ [15219 bytes data]
+</span><span>100 15219  100 15219    0     0  36943      0 --:--:-- --:--:-- --:--:-- 36939
+</span><span>* Closing connection 0
+</span><span>* TLSv1.2 (OUT), TLS alert, Client hello (1):
+</span><span>} [2 bytes data]
+</span></pre><br><br><h2 id="3">ユーザーエージェントを偽装する</h2><br><pre class='code'><span>curl --verbose -A  &quot;Mozilla/5.0 (iPhone; CPU iPhone OS 11_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/11.0 Mobile/15E148 Safari/604.1&quot; https://www.google.com 1&gt; /dev/null
+</span></pre></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/curl-option.html&text=cURL%E3%81%AE%E4%BD%BF%E3%81%88%E3%81%9D%E3%81%86%E3%81%AA%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B3%E3%83%A1%E3%83%A2" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/curl-option.html" target="_blank" title="Facebook"></a></li>

@@ -10,7 +10,7 @@ MeCabで形態素解析</title>
 <meta content="https://araemon.github.io/blog/mac-mecab.html" property="og:url" />
 <meta content="https://araemon.github.io" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,74 +44,74 @@ MeCabで形態素解析</h1>
 2018-12-14</time></div>
 <p>
 <ul id="toc"><li><a href="#1">MacにMeCabをセットアップ</a></li><li><a href="#2">使い方</a></li><li><a href="#3">シェルスクリプトで使いやすくしてみる</a></li></li></ul>
-<h2 id="1">MacにMeCabをセットアップ</h2>形態素解析のMeCabを使ってみることにしました。<br><a href="http://taku910.github.io/mecab/">http://taku910.github.io/mecab/</a><br><br>自分の環境がMacですので、MeCab本体をbrewからインストールしてみます。<br><span class="backSlash">brew install mecab</span><br><br>このままでは<span class="backSlash">param.cpp(69) [ifs] no such file or directory: /usr/local/lib/mecab/dic/ipadic/dicrc</span>とエラーが出てしまいました。辞書が無いと使えないようです。下記のコマンドで辞書をインストールしてみます。<br><span class="backSlash">brew install mecab-ipadic</span><br><br><br><h2 id="2">使い方</h2>セットアップが完了したところで、Macのターミナル上で<span class="backSlash">mecab</span>と入力してreturnを押します。<br>そして解析したい文章を入力します。例えば「下記のコマンドで辞書をインストールしてみます。」と入力してみました。<br>すると、このような形で文章が品詞分けされました。<br><br><table><thead><tr><th>テキスト</th><th>品詞</th></tr></thead><tbody><tr><td>下記	</td><td>名詞,一般,*,*,*,*,下記,カキ,カキ</td></tr><tr><td>の	</td><td>助詞,連体化,*,*,*,*,の,ノ,ノ</td></tr><tr><td>コマンド	</td><td>名詞,一般,*,*,*,*,コマンド,コマンド,コマンド</td></tr><tr><td>で	</td><td>助詞,格助詞,一般,*,*,*,で,デ,デ</td></tr><tr><td>辞書	</td><td>名詞,一般,*,*,*,*,辞書,ジショ,ジショ</td></tr><tr><td>を	</td><td>助詞,格助詞,一般,*,*,*,を,ヲ,ヲ</td></tr><tr><td>インストール	</td><td>名詞,一般,*,*,*,*,インストール,インストール,インストール</td></tr><tr><td>し	</td><td>動詞,自立,*,*,サ変・スル,連用形,する,シ,シ</td></tr><tr><td>て	</td><td>助詞,接続助詞,*,*,*,*,て,テ,テ</td></tr><tr><td>み	</td><td>動詞,非自立,*,*,一段,連用形,みる,ミ,ミ</td></tr><tr><td>ます	</td><td>助動詞,*,*,*,特殊・マス,基本形,ます,マス,マス</td></tr><tr><td>。	</td><td>記号,句点,*,*,*,*,。,。,。</td></tr></tbody></table><br><br><br><h2 id="3">シェルスクリプトで使いやすくしてみる</h2>mecabを実用的に使えるようにするにはシェルスクリプトを組む必要があります。<br>まずは単純にファイルを解析して、行ごとに処理できるようにしてみます。<br><pre class='code'>#!/bin/bash
-
-file=&quot;post/about-introduce.md&quot;
-mecab $file | while read line
-do
-    echo $line     
-done
-</pre><br>つぎに、上記の$line変数をタグ区切りで分けてみます。<br>awkコマンドは-Fオプションで区切り文字を指定しない限り、タブまたは半角スペースで区切ってくれます。そしてMeCabの出力はタグ区切りとなっています。ですから、次のように書くことができます。<br><pre class='code'>do
-    text=`echo $line | awk '{print $1}'`
-    hinshi=`echo $line | awk '{print $2}'`
-done
-</pre>これでテキスト部分と品詞に別れました。<br><br>それでは品詞の中から「名詞,一般」という文字が含まれている行だけを抽出してみましょう。<br><pre class='code'>do
-    text=`echo $line | awk '{print $1}'`
-    hinshi=`echo $line | awk '{print $2}'`
-    meishi=`echo $hinshi | grep 名詞,一般`
-    if [ &quot;$meishi&quot; = &quot;&quot; ]; then
-        continue
-    fi
-
-    echo $text
-
-done
-</pre>プログラミング中に<span class="backSlash"> [: =: unary operator expected</span>このようなエラーが吐き出されてしまいました。<br><span class="backSlash">if [ "$meishi" = "" ]; then</span>のように変数をダブルクオーテーションで囲ってあげることで回避できました。<br><br><br>さて、これで無事「名詞,一般」のみの行をフィルタリングすることができました。<br><pre class='code'>サイト
-about
-サイト
-アプリ
-ヘルプ
-ページ
-モチベーション
-忘備
-ブログ
-有料
-Pages
-無料
-github
-io
-カッコ
-サイト
-書き出し
-自前
-サイトジェネレーター
-シェル
-スクリプト
-PHP
-HTML
-リダイレクト
-ファイル
-</pre><br>PHPのexecから使えるように、もう少し改良したのがこちらです。<br>mecabDeKaiseki.sh<br><pre class='code'>#!/bin/bash
-
-CMDNAME=`basename $0`
-if [ $# -ne 2 ]; then
-    echo &quot;Usage: $CMDNAME filepath hinshi&quot; 1&gt;&amp;2
-    exit 1
-fi
-
-file=$1
-filter=$2
-
-mecab $file | while read line
-do
-    text=`echo $line | awk '{print $1}'`
-    hinshi=`echo $line | awk '{print $2}'`
-    meishi=`echo $hinshi | grep &quot;$filter&quot;`
-    if [ -n &quot;$meishi&quot; ]; then
-        echo $text
-    fi
-done
-</pre>ターミナルで使う場合は第一引数にファイルパスを、第二引数にフィルタリングしたい品詞の文字列を渡してあげます。<br><span class="backSlash">./mecabDeKaiseki.sh post/about-introduce.md "名詞,一般"</span><br><br>簡易的な実装ではありますが、これでMeCabを気軽に利用できるようになりました。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4797377623/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4797377623.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4797377623/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<h2 id="1">MacにMeCabをセットアップ</h2>形態素解析のMeCabを使ってみることにしました。<br><a href="http://taku910.github.io/mecab/">http://taku910.github.io/mecab/</a><br><br>自分の環境がMacですので、MeCab本体をbrewからインストールしてみます。<br><span class="backSlash">brew install mecab</span><br><br>このままでは<span class="backSlash">param.cpp(69) [ifs] no such file or directory: /usr/local/lib/mecab/dic/ipadic/dicrc</span>とエラーが出てしまいました。辞書が無いと使えないようです。下記のコマンドで辞書をインストールしてみます。<br><span class="backSlash">brew install mecab-ipadic</span><br><br><br><h2 id="2">使い方</h2>セットアップが完了したところで、Macのターミナル上で<span class="backSlash">mecab</span>と入力してreturnを押します。<br>そして解析したい文章を入力します。例えば「下記のコマンドで辞書をインストールしてみます。」と入力してみました。<br>すると、このような形で文章が品詞分けされました。<br><br><table><thead><tr><th>テキスト</th><th>品詞</th></tr></thead><tbody><tr><td>下記	</td><td>名詞,一般,*,*,*,*,下記,カキ,カキ</td></tr><tr><td>の	</td><td>助詞,連体化,*,*,*,*,の,ノ,ノ</td></tr><tr><td>コマンド	</td><td>名詞,一般,*,*,*,*,コマンド,コマンド,コマンド</td></tr><tr><td>で	</td><td>助詞,格助詞,一般,*,*,*,で,デ,デ</td></tr><tr><td>辞書	</td><td>名詞,一般,*,*,*,*,辞書,ジショ,ジショ</td></tr><tr><td>を	</td><td>助詞,格助詞,一般,*,*,*,を,ヲ,ヲ</td></tr><tr><td>インストール	</td><td>名詞,一般,*,*,*,*,インストール,インストール,インストール</td></tr><tr><td>し	</td><td>動詞,自立,*,*,サ変・スル,連用形,する,シ,シ</td></tr><tr><td>て	</td><td>助詞,接続助詞,*,*,*,*,て,テ,テ</td></tr><tr><td>み	</td><td>動詞,非自立,*,*,一段,連用形,みる,ミ,ミ</td></tr><tr><td>ます	</td><td>助動詞,*,*,*,特殊・マス,基本形,ます,マス,マス</td></tr><tr><td>。	</td><td>記号,句点,*,*,*,*,。,。,。</td></tr></tbody></table><br><br><br><h2 id="3">シェルスクリプトで使いやすくしてみる</h2>mecabを実用的に使えるようにするにはシェルスクリプトを組む必要があります。<br>まずは単純にファイルを解析して、行ごとに処理できるようにしてみます。<br><pre class='code'><span>#!/bin/bash
+</span><span>
+</span><span>file=&quot;post/about-introduce.md&quot;
+</span><span>mecab $file | while read line
+</span><span>do
+</span><span>    echo $line     
+</span><span>done
+</span></pre><br>つぎに、上記の$line変数をタグ区切りで分けてみます。<br>awkコマンドは-Fオプションで区切り文字を指定しない限り、タブまたは半角スペースで区切ってくれます。そしてMeCabの出力はタグ区切りとなっています。ですから、次のように書くことができます。<br><pre class='code'><span>do
+</span><span>    text=`echo $line | awk '{print $1}'`
+</span><span>    hinshi=`echo $line | awk '{print $2}'`
+</span><span>done
+</span></pre>これでテキスト部分と品詞に別れました。<br><br>それでは品詞の中から「名詞,一般」という文字が含まれている行だけを抽出してみましょう。<br><pre class='code'><span>do
+</span><span>    text=`echo $line | awk '{print $1}'`
+</span><span>    hinshi=`echo $line | awk '{print $2}'`
+</span><span>    meishi=`echo $hinshi | grep 名詞,一般`
+</span><span>    if [ &quot;$meishi&quot; = &quot;&quot; ]; then
+</span><span>        continue
+</span><span>    fi
+</span><span>
+</span><span>    echo $text
+</span><span>
+</span><span>done
+</span></pre>プログラミング中に<span class="backSlash"> [: =: unary operator expected</span>このようなエラーが吐き出されてしまいました。<br><span class="backSlash">if [ "$meishi" = "" ]; then</span>のように変数をダブルクオーテーションで囲ってあげることで回避できました。<br><br><br>さて、これで無事「名詞,一般」のみの行をフィルタリングすることができました。<br><pre class='code'><span>サイト
+</span><span>about
+</span><span>サイト
+</span><span>アプリ
+</span><span>ヘルプ
+</span><span>ページ
+</span><span>モチベーション
+</span><span>忘備
+</span><span>ブログ
+</span><span>有料
+</span><span>Pages
+</span><span>無料
+</span><span>github
+</span><span>io
+</span><span>カッコ
+</span><span>サイト
+</span><span>書き出し
+</span><span>自前
+</span><span>サイトジェネレーター
+</span><span>シェル
+</span><span>スクリプト
+</span><span>PHP
+</span><span>HTML
+</span><span>リダイレクト
+</span><span>ファイル
+</span></pre><br>PHPのexecから使えるように、もう少し改良したのがこちらです。<br>mecabDeKaiseki.sh<br><pre class='code'><span>#!/bin/bash
+</span><span>
+</span><span>CMDNAME=`basename $0`
+</span><span>if [ $# -ne 2 ]; then
+</span><span>    echo &quot;Usage: $CMDNAME filepath hinshi&quot; 1&gt;&amp;2
+</span><span>    exit 1
+</span><span>fi
+</span><span>
+</span><span>file=$1
+</span><span>filter=$2
+</span><span>
+</span><span>mecab $file | while read line
+</span><span>do
+</span><span>    text=`echo $line | awk '{print $1}'`
+</span><span>    hinshi=`echo $line | awk '{print $2}'`
+</span><span>    meishi=`echo $hinshi | grep &quot;$filter&quot;`
+</span><span>    if [ -n &quot;$meishi&quot; ]; then
+</span><span>        echo $text
+</span><span>    fi
+</span><span>done
+</span></pre>ターミナルで使う場合は第一引数にファイルパスを、第二引数にフィルタリングしたい品詞の文字列を渡してあげます。<br><span class="backSlash">./mecabDeKaiseki.sh post/about-introduce.md "名詞,一般"</span><br><br>簡易的な実装ではありますが、これでMeCabを気軽に利用できるようになりました。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4797377623/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/4797377623.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/4797377623/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/mac-mecab.html&text=MeCab%E3%81%A7%E5%BD%A2%E6%85%8B%E7%B4%A0%E8%A7%A3%E6%9E%90" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/mac-mecab.html" target="_blank" title="Facebook"></a></li>

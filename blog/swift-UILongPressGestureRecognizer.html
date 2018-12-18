@@ -10,7 +10,7 @@ SwiftのUILongPressGestureRecognizerは二回呼ばれる</title>
 <meta content="https://araemon.github.io/blog/swift-UILongPressGestureRecognizer.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,20 +44,20 @@ SwiftのUILongPressGestureRecognizerは二回呼ばれる</h1>
 2018-05-21</time></div>
 <p>
 
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br><pre class='code'>let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressedButton))
-button.addGestureRecognizer(longPressRecognizer)
-</pre><br>こんな感じで登録したlongPressedButton関数は二回呼ばれる。<br>アラートなど呼び出す時は二度呼ばれてしまうので注意が必要。<br>UIGestureRecognizerのstateで下記のように切り分ける。<br><br><pre class='code'>@objc func longPressedButton(sender:UIGestureRecognizer) {
-
-    if (sender.state == .began){
-      print(&quot;長押し開始のタイミング&quot;)      
-      /*
-      何かアラート処理を書いたり
-      */
-    } else if (sender.state == .ended) {
-      print(&quot;長押し終了のタイミング&quot;)      
-    }
-}
-</pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br><pre class='code'><span>let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(ViewController.longPressedButton))
+</span><span>button.addGestureRecognizer(longPressRecognizer)
+</span></pre><br>こんな感じで登録したlongPressedButton関数は二回呼ばれる。<br>アラートなど呼び出す時は二度呼ばれてしまうので注意が必要。<br>UIGestureRecognizerのstateで下記のように切り分ける。<br><br><pre class='code'><span>@objc func longPressedButton(sender:UIGestureRecognizer) {
+</span><span>
+</span><span>    if (sender.state == .began){
+</span><span>      print(&quot;長押し開始のタイミング&quot;)      
+</span><span>      /*
+</span><span>      何かアラート処理を書いたり
+</span><span>      */
+</span><span>    } else if (sender.state == .ended) {
+</span><span>      print(&quot;長押し終了のタイミング&quot;)      
+</span><span>    }
+</span><span>}
+</span></pre><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-UILongPressGestureRecognizer.html&text=Swift%E3%81%AEUILongPressGestureRecognizer%E3%81%AF%E4%BA%8C%E5%9B%9E%E5%91%BC%E3%81%B0%E3%82%8C%E3%82%8B" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-UILongPressGestureRecognizer.html" target="_blank" title="Facebook"></a></li>
@@ -67,7 +67,7 @@ button.addGestureRecognizer(longPressRecognizer)
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="swift-discardableResult.html">&lt; Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい</a></li><li class="next"><a href="swift4-UITalbeView-scrollToRow.html">Swift4でUITalbeViewの最下部にスクロールしたい &gt;</a></li></ul>
+<a href="swift-discardableResult.html">&lt; Swiftでメソッドチェーン実装、返り値を使わない時のwarningを消したい</a></li><li class="next"><a href="swift-once-exec.html">Swiftで一度だけ実行したい時に使えるファンクション &gt;</a></li></ul>
 </article>
 </div>
             </div>

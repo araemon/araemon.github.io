@@ -10,7 +10,7 @@ Swiftで一度だけ実行したい時に使えるファンクション</title>
 <meta content="https://araemon.github.io/blog/swift-once-exec.html" property="og:url" />
 <meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,24 +44,24 @@ Swiftで一度だけ実行したい時に使えるファンクション</h1>
 2018-05-22</time></div>
 <p>
 
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>viewDidLayoutSubviewsなど何度も呼び出されてしまうファンクション内で一度だけ実行したい処理があった場合に以下のような書き方をしていた。<br>これだと毎回フラグを宣言、条件分岐するのは面倒だし、可読性がよくないなと思っていた。<br><br><pre class='code'>var isFirst = false
-
-override func viewDidLayoutSubviews() { // updateLayout
-  if !isFirst {
-     isFirst = true
-
-    // 一度だけ実行したい処理を書く
-  }  
-}
-</pre><br>クロージャーとlazyを使ったスマートな書き方を見つけたので参考にさせていただいた。<br><a href="https://qiita.com/codelynx/items/f0243d631f2448e89026">https://qiita.com/codelynx/items/f0243d631f2448e89026</a><br><br><pre class='code'>private lazy var onceUpdateLayout: (()-&gt;())? = {
-  // 一度だけ実行したい処理を書く
-    return nil
-}()
-
-override func viewDidLayoutSubviews() { // updateLayout
-  onceUpdateLayout?()
-}
-</pre><br>処理をファンクションに分離できたため<span class="backSlash">何をしているのか</span>がわかり可読性が上がった。<br><br>他にも色々な書き方がいろいろあるようだ。<br><br>クロージャー(Closures)は名前のない関数で変数として扱われる。<br>lazy(lazy stored property）は、参照されるときに初めて初期値が設定されるプロパティ。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
+<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br><br>viewDidLayoutSubviewsなど何度も呼び出されてしまうファンクション内で一度だけ実行したい処理があった場合に以下のような書き方をしていた。<br>これだと毎回フラグを宣言、条件分岐するのは面倒だし、可読性がよくないなと思っていた。<br><br><pre class='code'><span>var isFirst = false
+</span><span>
+</span><span>override func viewDidLayoutSubviews() { // updateLayout
+</span><span>  if !isFirst {
+</span><span>     isFirst = true
+</span><span>
+</span><span>    // 一度だけ実行したい処理を書く
+</span><span>  }  
+</span><span>}
+</span></pre><br>クロージャーとlazyを使ったスマートな書き方を見つけたので参考にさせていただいた。<br><a href="https://qiita.com/codelynx/items/f0243d631f2448e89026">https://qiita.com/codelynx/items/f0243d631f2448e89026</a><br><br><pre class='code'><span>private lazy var onceUpdateLayout: (()-&gt;())? = {
+</span><span>  // 一度だけ実行したい処理を書く
+</span><span>    return nil
+</span><span>}()
+</span><span>
+</span><span>override func viewDidLayoutSubviews() { // updateLayout
+</span><span>  onceUpdateLayout?()
+</span><span>}
+</span></pre><br>処理をファンクションに分離できたため<span class="backSlash">何をしているのか</span>がわかり可読性が上がった。<br><br>他にも色々な書き方がいろいろあるようだ。<br><br>クロージャー(Closures)は名前のない関数で変数として扱われる。<br>lazy(lazy stored property）は、参照されるときに初めて初期値が設定されるプロパティ。<br><br><div class="amazon-item"><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" target="_blank"><img src="http://images-jp.amazon.com/images/P/480071169X.09.LZZZZZZZ.jpg" width="250px" /></a><a href="https://www.amazon.co.jp/exec/obidos/ASIN/480071169X/101010fun-22/" class="button" target="_blank">Amazonで購入する</a></div></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-once-exec.html&text=Swift%E3%81%A7%E4%B8%80%E5%BA%A6%E3%81%A0%E3%81%91%E5%AE%9F%E8%A1%8C%E3%81%97%E3%81%9F%E3%81%84%E6%99%82%E3%81%AB%E4%BD%BF%E3%81%88%E3%82%8B%E3%83%95%E3%82%A1%E3%83%B3%E3%82%AF%E3%82%B7%E3%83%A7%E3%83%B3" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-once-exec.html" target="_blank" title="Facebook"></a></li>
@@ -71,7 +71,7 @@ override func viewDidLayoutSubviews() { // updateLayout
         </ul>
 <ul id="prevNext">
 <li class="prev">
-<a href="swift4-UITalbeView-scrollToRow.html">&lt; Swift4でUITalbeViewの最下部にスクロールしたい</a></li><li class="next"><a href="ruby-curl-websocket.html">RubyとcURLではじめてのWebSocketを試してみる &gt;</a></li></ul>
+<a href="swift-UILongPressGestureRecognizer.html">&lt; SwiftのUILongPressGestureRecognizerは二回呼ばれる</a></li><li class="next"><a href="ruby-curl-websocket.html">RubyとcURLではじめてのWebSocketを試してみる &gt;</a></li></ul>
 </article>
 </div>
             </div>

@@ -10,7 +10,7 @@ Arduinoで温度ロガーを作るまで</title>
 <meta content="https://araemon.github.io/blog/arduino-bluetooth.html" property="og:url" />
 <meta content="https://araemon.github.io/images/arduino-1.jpg" property="og:image" />
 <link rel="stylesheet" type="text/css" href="/css/icon.css"  />
-<link rel="stylesheet" type="text/css" href="/css/main.css?1545054737"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545118800"  />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
 </head>
@@ -44,438 +44,438 @@ Arduinoで温度ロガーを作るまで</h1>
 2018-11-19</time></div>
 <p>
 <ul id="toc"><li><a href="#1">Bluetoothモジュールを秋葉原まで買いに行く (2018/11/19)</a></li><li><a href="#2">BluetoothモジュールからのメッセージをiPhoneで受信する (2018/11/20)</a></li><li><a href="#3">iOSとArudinoのBluetooth通信 (2018/11/21)</a></li><li><a href="#4">ESP-WROOM-02でWiFi通信するまで、その1 (2018-11-23)</a></li><li><a href="#5">ESP-WROOM-02でWiFi通信するまで、その2 (2018-11-24)</a></li><li><a href="#6">やっぱりBluetooth通信にもどす、その1 (2018-11-24)</a></li><li><a href="#7">温度センサーDHT11を実装してみる (2018-11-24)</a></li><li><a href="#8">ESP-WROOM-02でSSLでHTTPSリクエストしてみる (2018/11/26)</a></li></li></ul>
-<h2 id="1">Bluetoothモジュールを秋葉原まで買いに行く (2018/11/19)</h2><img data-src="/images/arduino-1.jpg" width="300" class="lazyload" /><br><br>ほとんど手をつけずに眠っていた、Arduino Unoスターターキット。<br>アプリ開発の息抜きに、温度センサーで遊んでみる。<br><br>先日キャンプで、寝るときの寒さに死ぬ思いをしたので、テント内とテント外の温度変化的なものをログれれば、などと考えているのである。<br>Arduinoにはタイムスタンプがないので（できないことはないのだが）、温度データーをスマホに飛ばしてスマホのunixtimeスタンプを使うことにする。<br>通信は、Wifi、Bluetooth、はたまたライン入力を使った音声データでのシリアル通信などを考えたが（FM変調的な）、汎用性を考えると素直にBluetoothを使った方が良さそうである。<br><br>ところで、プログラミングのような不健康で孤独な作業には、適度な運動が必要だ。<br>そんな口実をイチイチつけ、Bluetoothモジュールを買いに秋葉原まで歩くことにした。<br>赤羽から秋葉原までは二時間程度、意外と近い。<br><br><img data-src="/images/arduino-2.jpg" width="300" class="lazyload" /><br><br>GoogleMapのチートは２回だけ、ほぼカンで歩いた。<br>田端あたりの土地勘がないため、焦りが形跡に出ていて面白い。<br>今度行くとしたら東大経由または上野経由が面白そうだな。<br>秋月電子、千石電商と回った。千石電商で小一時間、悩む。<br>結局このBluefruit LE UART Friendを2100円で購入。<br><br><img data-src="/images/arduino-3.jpg" width="300" class="lazyload" /><br><br>ググってみると英語のみの情報しかないので辛いが、まぁなんとかなることでしょう。<br>付近の萌え萌えキュンにはあえて目もくれてやらず、安定のケバブを食べ、硬派を気取りそそくさと帰途につく。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="2">BluetoothモジュールからのメッセージをiPhoneで受信する (2018/11/20)</h2>まずは、Bluefruitの半田付け。<br>ピンを数カ所やるだけなので、物足りない半田付け作業だ。<br><br>トライアンドエラーでやっていくうちに、配線はこうなった。<br><br><table><thead><tr><th> Bluefruit </th><th> Arduino    </th></tr></thead><tbody><tr><td> DFU       </td><td> 未接続     </td></tr><tr><td> GND       </td><td> GND        </td></tr><tr><td> RTS       </td><td> 未接続     </td></tr><tr><td> VIN       </td><td> 5V         </td></tr><tr><td> RXI       </td><td> DIGITAL 9  </td></tr><tr><td> TXO       </td><td> DIGITAL 10 </td></tr><tr><td> CTS       </td><td> DIGITAL 11 </td></tr><tr><td> MOD       </td><td> 未接続     </td></tr></tbody></table><br>また、スイッチはUART側にしておく。<br><br>スマホからBluefruitに接続する専用のアプリがあるのでインストールする。<br><a href="https://itunes.apple.com/jp/app/adafruit-bluefruit-le-connect/id830125974?mt=8&amp;uo=4">https://itunes.apple.com/jp/app/adafruit-bluefruit-le-connect/id830...</a><br><a href="https://play.google.com/store/apps/details?id=com.adafruit.bluefruit.le.connect">https://play.google.com/store/apps/details?id=com.adafruit.bluefrui...</a><br><br>Arduinoにプログラムを書き込まなくても電源を入れれば、Bluefruitとは接続できる。<br><br><img data-src="/images/arduino-4.jpg" width="300" class="lazyload" /><br><br>今度はArduinoのIDE側の設定をしていく。<br><br>Bluefruit LE UART Friendの情報はこちら。<br><a href="https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-uart-friend/introduction">https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-ua...</a><br><br>英語の情報できついが、なんとかやっていく。<br><br>サンプルコード（Adafruit_BluefruitLE_nRF51）をダウンロードする。<br><a href="https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-uart-friend/software">https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-ua...</a><br><br>解凍したらフォルダ名をAdafruit_BluefruitLE_nRF51にしてArduinoのライブラリフォルダに取り入れる。<br>場所はDocuments -> Arduino -> librariesになっていると思う。<br>これでArduino IDEのスケッチ例の中にAdafruit_BluefruitLE_nRF51のサンプルコードが入った。<br><br>サンプルコードを元に改造していく。<br>いらなそうなものは削って見やすくすると仕組みが分かってくる。<br>こちらは「debug」という文字を1秒間に一回、アプリへ送信するだけのプログラムだ。<br><br><pre class='code'>#include &lt;Arduino.h&gt;
-#include &lt;SPI.h&gt;
-#include &quot;Adafruit_BLE.h&quot;
-#include &quot;Adafruit_BluefruitLE_SPI.h&quot;
-#include &quot;Adafruit_BluefruitLE_UART.h&quot;
-
-
-#if SOFTWARE_SERIAL_AVAILABLE
-  #include &lt;SoftwareSerial.h&gt;
-#endif
-
-// Arduino UNOの場合この設定でうまくいった
-//
-#define BLUEFRUIT_SWUART_RXD_PIN       9    // Required for software serial!
-#define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
-#define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
-#define BLUEFRUIT_UART_RTS_PIN         -1    // Optional, set to -1 if unused
-#define BLUEFRUIT_UART_MODE_PIN        -1    // Set to -1 if unused
-#define VERBOSE_MODE                   true  // If set to 'true' enables debug output
-
-SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
-
-Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
-                      BLUEFRUIT_UART_CTS_PIN, BLUEFRUIT_UART_RTS_PIN);
-
-
-void error(const __FlashStringHelper*err) {
-  Serial.println(err);
-  while (1);
-}
-
-
-void setup(void)
-{
-  while (!Serial); // required for Flora &amp; Micro
-  delay(500);
-
-
-  Serial.begin(9600);
-
-  if ( !ble.begin(VERBOSE_MODE) )
-  {
-    error(F(&quot;Couldn't find Bluefruit, make sure it's in CoMmanD mode &amp; check wiring?&quot;));
-  }
-  Serial.println( F(&quot;OK!&quot;) );
-
-}
-
-void loop(void)
-{
-  delay(1000);
-  ble.write(&quot;debug\n&quot;);
-}
-</pre><br>結果を見てみよう。<br><br><iframe width="560" height="315" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/ji9QMKKZXmk"></iframe><br><a href="https://youtube.com/watch?v=ji9QMKKZXmk">Success! Connecting Arduino and smartphone with Bluetooth.</a><br><br>みごと、接続成功！⚡️<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="3">iOSとArudinoのBluetooth通信 (2018/11/21)</h2>今度はiOSからArduinoへメッセージを投げて、さらにそのメッセージをArduinoから受け取ってみる。<br><br><img data-src="/images/arduino-5.jpg" width="300" class="lazyload" /><br><br>Swiftでこんな感じのiOSアプリを作ってみることにした。<br>これができるようになればBluetoothでArduinoからデータを読み込んだり、Arduinoを操作したりすることができるようになる。<br><br><img data-src="/images/arduino-6.jpg" width="300" class="lazyload" /><br><br><br><pre class='code'>import UIKit
-import CoreBluetooth
-
-class ViewController: UIViewController {
-
-    @IBOutlet weak var reciveTextView: UITextView!
-    
-    
-    let kUARTServiceUUID = &quot;6E400001-B5A3-F393-E0A9-E50E24DCCA9E&quot; // UARTサービス
-    let kTXCharacteristicUUID = &quot;6E400002-B5A3-F393-E0A9-E50E24DCCA9E&quot; // ペリフェラルへ送信用
-    let kRXCharacteristicUUID = &quot;6E400003-B5A3-F393-E0A9-E50E24DCCA9E&quot; // ペリフェラルからの受信用
-
-    var centralManager: CBCentralManager!
-    var peripheral: CBPeripheral!
-    var serviceUUID : CBUUID!
-    var kTXCBCharacteristic: CBCharacteristic!
-    var kRXCBCharacteristic: CBCharacteristic!
-//    var charcteristicUUID: CBUUID!
-    var charcteristicUUIDs: [CBUUID]!
-    
-    @IBOutlet weak var sendMessageTextField: UITextField!
-    @IBAction func clickedConnectButton(_ sender: Any) {
-        setup()
-    }
-    
-
-    @IBAction func clickedWriteButton(_ sender: Any) {
-        let peripheral = self.peripheral
-        if(peripheral == nil) { return }
-        
-        let writeData = sendMessageTextField.text!.data(using: .utf8)!
-        peripheral!.writeValue(writeData, for: kTXCBCharacteristic, type: .withResponse)
-        sendMessageTextField.text = &quot;&quot;
-    }
-    
-
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-    }
-
-    /// セントラルマネージャー、UUIDの初期化
-    private func setup() {
-        centralManager = CBCentralManager()
-        centralManager.delegate = self as CBCentralManagerDelegate
-//        centralManager.scanForPeripherals(withServices: nil, options: nil)
-
-        serviceUUID = CBUUID(string: kUARTServiceUUID)
-        charcteristicUUIDs = [CBUUID(string: kTXCharacteristicUUID), CBUUID(string: kRXCharacteristicUUID)]
-    }
-
-}
-
-//MARK : - CBCentralManagerDelegate
-extension ViewController: CBCentralManagerDelegate {
-    
-    func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        
-        switch central.state {
-            
-        //電源ONを待って、スキャンする
-        case CBManagerState.poweredOn:
-            let services: [CBUUID] = [serviceUUID]
-            centralManager?.scanForPeripherals(withServices: services,
-                                               options: nil)
-        default:
-            break
-        }
-    }
-    
-    /// ペリフェラルを発見すると呼ばれる
-    func centralManager(_ central: CBCentralManager,
-                        didDiscover peripheral: CBPeripheral,
-                        advertisementData: [String : Any],
-                        rssi RSSI: NSNumber) {
-        
-        self.peripheral = peripheral
-        centralManager?.stopScan()
-        
-        //接続開始
-        central.connect(peripheral, options: nil)
-    }
-    
-    /// 接続されると呼ばれる
-    func centralManager(_ central: CBCentralManager,
-                        didConnect peripheral: CBPeripheral) {
-        
-        peripheral.delegate = self
-        peripheral.discoverServices([serviceUUID])
-    }
-}
-
-//MARK : - CBPeripheralDelegate
-extension ViewController: CBPeripheralDelegate {
-    
-    /// サービス発見時に呼ばれる
-    func peripheral(_ peripheral: CBPeripheral,
-                    didDiscoverServices error: Error?) {
-        
-        if error != nil {
-            print(error.debugDescription)
-            return
-        }
-        
-        //キャリアクタリスティク探索開始
-        peripheral.discoverCharacteristics(charcteristicUUIDs,
-                                           for: (peripheral.services?.first)!)
-    }
-    
-    /// キャリアクタリスティク発見時に呼ばれる
-    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
-        
-        if error != nil {
-            print(error.debugDescription)
-            return
-        }
-
-        for characteristics in service.characteristics! {
-            if(characteristics.uuid == CBUUID(string: kTXCharacteristicUUID)) {
-//                peripheral.setNotifyValue(true, for: (service.characteristics?[1])!)
-                self.kTXCBCharacteristic = characteristics
-                addMessageToTextView(&quot;Found TX characteristics !\n&quot;)
-            } else if(characteristics.uuid == CBUUID(string: kRXCharacteristicUUID)) {
-                self.kRXCBCharacteristic = characteristics
-                addMessageToTextView(&quot;Found RX characteristics !\n&quot;)
-            }
-        }
-        
-        if(self.kRXCBCharacteristic != nil) {
-            startReciving()
-        }
-    }
-    
-    private func startReciving() {
-        peripheral.setNotifyValue(true, for: kRXCBCharacteristic)
-        addMessageToTextView(&quot;Start monitoring the message from Arduino.\n\n&quot;)
-    }
-
-
-    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
-        print(#function)
-        if error != nil {
-            print(error.debugDescription)
-            return
-        }
-    }
-    
-    /// データ更新時に呼ばれる
-    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
-        
-        if error != nil {
-            print(error.debugDescription)
-            return
-        }
-        updateWithData(data: characteristic.value!)
-    }
-    
-    private func updateWithData(data : Data) {
-        if let dataString = String(data: data, encoding: String.Encoding.utf8) {
-            addMessageToTextView(dataString)
-        }
-    }
-    
-    private func addMessageToTextView(_ message:String) {
-        reciveTextView.text = reciveTextView.text + message
-        scrollToBottom(reciveTextView)
-    }
-    
-    private func scrollToBottom(_ textView:UITextView) {
-        textView.selectedRange = NSRange(location: textView.text.count, length: 0)
-        textView.isScrollEnabled = true
-        
-        let scrollY = textView.contentSize.height - textView.bounds.height
-        let scrollPoint = CGPoint(x: 0, y: scrollY &gt; 0 ? scrollY : 0)
-        textView.setContentOffset(scrollPoint, animated: true)
-    }
-}
-</pre><br>Arduino側のスケッチはこうなった。<br><br><pre class='code'>#include &lt;string.h&gt;
-#include &lt;Arduino.h&gt;
-#include &lt;SPI.h&gt;
-#include &quot;Adafruit_BLE.h&quot;
-#include &quot;Adafruit_BluefruitLE_SPI.h&quot;
-#include &quot;Adafruit_BluefruitLE_UART.h&quot;
-
-
-#if SOFTWARE_SERIAL_AVAILABLE
-  #include &lt;SoftwareSerial.h&gt;
-#endif
-
-// Arduino UNOの場合この設定でうまくいった
-//
-#define BLUEFRUIT_SWUART_RXD_PIN       9    // Required for software serial!
-#define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
-#define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
-#define BLUEFRUIT_UART_RTS_PIN         -1    // Optional, set to -1 if unused
-#define BLUEFRUIT_UART_MODE_PIN        -1    // Set to -1 if unused
-#define VERBOSE_MODE                   false  // If set to 'true' enables debug output
-
-SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
-
-Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
-                      BLUEFRUIT_UART_CTS_PIN, BLUEFRUIT_UART_RTS_PIN);
-
-
-
-void error(const __FlashStringHelper*err) {
-  Serial.println(err);
-  while (1);
-}
-
-
-
-void setup(void)
-{
-  while (!Serial); // required for Flora &amp; Micro
-  delay(500);
-
-
-  Serial.begin(9600);
-
-  if ( !ble.begin(VERBOSE_MODE) )
-  {
-    error(F(&quot;Couldn't find Bluefruit, make sure it's in CoMmanD mode &amp; check wiring?&quot;));
-  }
-  Serial.println( F(&quot;OK!&quot;) );
-}
-
-
-void loop(void)
-{
-
-  int n = 0;
-  int maxMessageLength = 50;
-  char recivedMessage[maxMessageLength];
-
-   while ( ble.available() ) {    
-    int c = ble.read();
-    // 起動時に255(0xFF)の出力をスルー
-    if(c != 0xFF) {
-      if(maxMessageLength &gt; (n - 1)) {
-        recivedMessage[n] = (char)c;
-        n++;
-      }
-    }
-  }
-
-  if(n &gt; 0) {
-    recivedMessage[n] = '\0';
-    ble.write(&quot;Arduino got your message is...\n&quot;);
-    ble.write(recivedMessage);
-    ble.write(&quot;\n&quot;);
-  }
-
-  
-}
-</pre><br>見事、対話に成功した！<br><br><iframe width="560" height="315" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/bH0tcbTb9Pw"></iframe><br><a href="https://youtube.com/watch?v=bH0tcbTb9Pw">Successfully talked with iOS and Arduino on a Bluetooth connection!</a><br><br><br>[参考]<br>SwiftのBluetooth処理の大部分はこちらを参考にさせていただいた。<br><a href="https://qiita.com/eKushida/items/def628e0eff6c106d467">https://qiita.com/eKushida/items/def628e0eff6c106d467</a><br><br>UUIDはbluefruitのサイトに記されている。<br><a href="https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/adding-app-support">https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefru...</a><br><br>Bluetooth用語に戸惑っていたが、こちらを読めばざっくりイメージがつく。<br><a href="http://jellyware.jp/kurage/bluejelly/ble_guide.html">http://jellyware.jp/kurage/bluejelly/ble_guide.html</a><br><br><br><h2 id="4">ESP-WROOM-02でWiFi通信するまで、その1 (2018-11-23)</h2>Arduinoの情報を漁ってみると、数年前にESP-WROOM-02という画期的なWifiモジュールが出ていた事を知った。<br><br>早速、秋月電子で買ってきた。<br><br><img data-src="/images/arduino-7.jpg" width="300" class="lazyload" /><br><br>1280円という安さもそうだが、Arduino UNOなどをわざわざ買わなくても、Arduino IDEで開発できてしまう事だ。<br>ちょっとしたセンサをつけて、IoT化なんてことができてしまうのだろう。<br><br>開発環境はMacBookPro(macOS Mojave 10.14)でおこなっていく。<br><br>秋月のESP-WROOM-02開発キットマニュアル。手順通り進めていく。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br><br><br><h3>動作確認</h3>1. USBで直接つなぐと赤くLEDランプがつく。<br>2. Arduino IDEを立ち上げ、新規スケッチを開いておく。<br>3. メニューのツール->シリアルポートの一覧から、それらしきものを見つけ選択。<br>4. その後、シリアルモニターを立ち上げ、改行を「CRおよびLF」にし、通信速度を「115200bps」を選択する。<br>5. ESP-WROOM-02のRSTスイッチを押すと、文字化けしたメッセージが出てくるが、最後にReadyと帰って来ればおk。<br>6. 今度はシリアルから「AT」と入力して、OKと返ってくればおkだ。<br><br><br><h3>Arduinoスケッチを書き込んでみる</h3>半田付けをささっと終わらせ、Lチカ確認できるようにする。<br><br><img data-src="/images/arduino-8.jpg" width="300" class="lazyload" /><br><br>IEDの設定は、秋月のマニュアル通り進めていく。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br>何度かエラーの体験をしたが、この設定でうまく書き込めた。<br><img data-src="/images/arduino-9.jpg" width="300" class="lazyload" /><br><br>書き込みをするときは、毎回次の手順を忘れないこと。<br><b>RSTとPGMを同時に押して、RSTからPGMの順番に離していく。</b><br><br><h3>成功！</h3>とりあえず、青色ダイオードのLチカに成功した。<br><a href="https://youtu.be/sinwrMGVUTw">https://youtu.be/sinwrMGVUTw</a><br><br>次回はいよいよWifi経由で通信してみよう。<br><br>追記:<br>ちなみにESP-WROOM-02でLチカさせるのに70mA必要のようだ。<br><img data-src="/images/arduino-10.jpg" width="300" class="lazyload" /><br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B071DY11SB/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B071DY11SB&linkCode=as2&tag=101010fun-22&linkId=c80ca15f8446fb8540d7b719425ae88e"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B071DY11SB&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B071DY11SB" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="5">ESP-WROOM-02でWiFi通信するまで、その2 (2018-11-24)</h2>秋月電子のマニュアル通り、ESP-WROOM-02をアクセスポイントにしてWiFiでダイレクトに接続してみる。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br>スケッチ例の、ESP8266WiFi -> WiFiAccessPointを開く。<br><img data-src="/images/arduino-11.jpg" width="300" class="lazyload" /><br><br>サンプルコードをちょっとだけ編集する。<br><br><pre class='code'>#include &lt;ESP8266WiFi.h&gt;
-#include &lt;WiFiClient.h&gt;
-#include &lt;ESP8266WebServer.h&gt;
-
-/* Set these to your desired credentials. */
-const char *ssid = &quot;MyFi&quot;;
-const char *password = &quot;88888888&quot;; // 8文字以上でないといけない？
-
-ESP8266WebServer server(80);
-
-/* Just a little test message.  Go to http://192.168.4.1 in a web browser
-   connected to this access point to see it.
-*/
-void handleRoot() {
-  server.send(200, &quot;text/html&quot;, &quot;&amp;lt;h1&amp;gt;Hello world!&amp;lt;/h1&amp;gt;&quot;);
-}
-
-void setup() {
-  delay(1000);
-  Serial.begin(115200);
-  Serial.println();
-  Serial.print(&quot;Configuring access point...&quot;);
-  /* You can remove the password parameter if you want the AP to be open. */
-  WiFi.softAP(ssid, password);
-
-  IPAddress myIP = WiFi.softAPIP();
-  Serial.print(&quot;AP IP address: &quot;);
-  Serial.println(myIP);
-  server.on(&quot;/&quot;, handleRoot);
-  server.begin();
-  Serial.println(&quot;HTTP server started&quot;);
-}
-
-void loop() {
-  server.handleClient();
-}
-</pre><br>スケッチをESP-WROOM-02に書き込む。<br>自分で設定したSSIDがWiFi接続にあらわれるので、それを選択してパスワードを入力する。<br>ちなみにパスワードは8文字以上でないと機能してくれないようだ。<br><br><img data-src="/images/arduino-12.jpg" width="300" class="lazyload" /><br><br>シリアルモニタを開いてRSTボタンを押せば、ESP-WROOM-02のIPアドレスを教えてくれる。<br>ブラウザから  http://192.168.4.1/ へアクセス。<br><br><img data-src="/images/arduino-13.jpg" width="300" class="lazyload" /><br><br>みごとWiFi通信に成功した！<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B07D7ZL1KJ/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B07D7ZL1KJ&linkCode=as2&tag=101010fun-22&linkId=bfd0fe0f241f23dabd7ee48f209b684b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B07D7ZL1KJ&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B07D7ZL1KJ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="6">やっぱりBluetooth通信にもどす、その1 (2018-11-24)</h2>ESP-WROOM-02に浮気してしまったが、秋葉まで歩いているうちに少し冷静になった。<br><br><img data-src="/images/arduino-14.jpg" width="300" class="lazyload" /><br><br>素直にArduino UNOを使った方がデバッギングしやすいのでは？<br>センサで遊んだり、特性を調べたり、手段が目的化してしまう人にはArduino UNOが良いんではないだろうかと。<br>個人で使うには、Arduino UnoでBluetooth通信がスマートではないのかと。<br><br>二日間さわってみて、ESP-WROOM-02の不満がある。<br><br>1. ADコンバーターが貧弱、1端子で1Vの範囲、使いづらい。<br>2. 書き込みエラーが起こりやすい。（書き込みリセットスイッチを押し忘れるから)<br>3. そもそもWiFi経由でログとる必要あるの？<br>4. 電力消費が気になる。<br>5. 電源供給を自前しなければならない。<br><br>1の<b>「ADコンバーターが貧弱、1端子で1Vの範囲、使いづらい。」</b>の件、Arduino UNOは5V、1024bit分解能のADコンバーターが5もついている。<br>1024bitはお遊びには十分、本気を出すなら自前でADコンバーターを用意すれば良い。<br><br>2の<b>「書き込みエラーが起こりやすい。」</b>の件、これは、Arduino UNOはよくできていて、リセットボタン押さずともスケッチ書き込みができる。<br>PCのプログラミングに慣れっこの世代にはとても大切な心遣いではないだろうか？<br><br>3の<b>「そもそもWiFi経由でログとる必要あるの？」</b>の件、「それを言っちゃあ、お終いよ」でもでも、IoTにするメリットは、巨大資本のメリットでしかないのでは？<br>IoT家電化すると、物レベルで人々の行動ログを取れてAnalytiscできるわけ。フィードバックが得られるから、IoT家電をバラまいた方がよりコスパ高い製品が作れるでしょう。<br><br>4の<b>「電力消費が気になる。」</b>の件、感覚的にBLEよりはWiFiの消費電力の方が大きそう。<br><br>5の<b>「電源供給を自前しなければならない。」</b>の件、ESP-WROOM-02でちょこっとテストしたいときは、電源供給が貧弱なので別途自前で電源回路を組んだり、いちいち電源のことまで考えたりしなければならない。目的がはっきりしていて、回路ができ上がっているならばよいが。比べてArduino UNOは5V、3.3Vの電源が簡単に取れるのでセンサー回路設計に集中しやすい。<br><br>そんなこんな思って、Arduino UNOをもう一度見直してみた。まずはデバッグ環境整えるべきかなと。<br>ブレッドボードを占有しているBluetoothモジュールは、どこかに納めたい。<br>しかし、これだけのためにシールドは大げさすぎるだろう。<br>ちょうどロゴの所にスペースがあったので、Bluetoothモジュールを埋め込んでみた。<br><br><img data-src="/images/arduino-15.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-16.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-17.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-18.jpg" width="300" class="lazyload" /><br>電源は3端子レギュレーターへ直接接続。<br>これで左側のブレッドボードがスッキリした。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="7">温度センサーDHT11を実装してみる (2018-11-24)</h2><img data-src="/images/arduino-19.jpg" width="300" class="lazyload" /><br><br>湿度と温度が測れるデジタルセンサDHT11をArduinoに2チャンネルで接続してみた。<br>屋外の気温と、屋内の気温を測定している。<br>Bluefruit LE UART Friendを通して、Bluetooth経由でiOSと接続。<br>Arduinoからの温度データをiOSアプリで受信している画像だ。<br><br>温度センサは取り変え可能なように、3極のオーディオケーブルとミニフォンプラグで取り付けてみた。<br>5V電源、GND、DATAである。<br><img data-src="/images/arduino-20.jpg" width="300" class="lazyload" /><br><br>実際ここまでやってみたが、Arduino母体から有線でセンサを配線するというのがどうも気に入らない。<br>センサの位置は、その時々のアイデアで、雰囲気で位置を決めたいものである。<br>有線に縛られたくないのである。<br>そうなると、やっぱりESP-WROOM-02に戻るのかなぁ。。。<br><br><br><h2 id="8">ESP-WROOM-02でSSLでHTTPSリクエストしてみる (2018/11/26)</h2>スケッチ例のサンプルESP8266WiFi -> HTTPSRequestを元にHTTPSでリクエストを投げてみた。<br>3秒間に一回、SSL経由でPOSTデータを投げている。<br>尚、送信先のサーバーには、Let's encryptを設定済みだ。<br><br><pre class='code'>#include &lt;ESP8266WiFi.h&gt;
-#include &lt;WiFiClientSecure.h&gt;
-
-const char* ssid = &quot;Router SSID&quot;;
-const char* password = &quot;Router Password&quot;;
-
-const char* host = &quot;example.com&quot;;
-const int httpsPort = 443;
-
-void setup() {
-  Serial.begin(115200);
-
-  wifiInitialize();
-
-}
-
-void loop() {  
-  String url = &quot;/somedir/echo.php&quot;;
-  String postData = &quot;message=88888&quot;;
-  httpsPost(url, postData);
-
-  delay(3000);
-}
-
-void wifiInitialize() {
-  Serial.println();
-  Serial.print(&quot;connecting to &quot;);
-  Serial.println(ssid);
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(ssid, password);
-  while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(&quot;.&quot;);
-  }
-  Serial.println(&quot;&quot;);
-  Serial.println(&quot;WiFi connected&quot;);
-  Serial.println(&quot;IP address: &quot;);
-  Serial.println(WiFi.localIP());
-}
-
-void httpsPost(String url, String postData) {
-  // Use WiFiClientSecure class to create TLS connection
-  WiFiClientSecure client;
-  Serial.print(&quot;connecting to &quot;);
-  Serial.println(host);
-  if (!client.connect(host, httpsPort)) {
-    Serial.println(&quot;connection failed&quot;);
-    return;
-  }
-
-  Serial.print(&quot;requesting URL: &quot;);
-  Serial.println(url);
-
-  client.println(&quot;POST &quot; + url + &quot; HTTP/1.1&quot;);
-  client.println(&quot;Host: &quot; + (String)host);
-  client.println(&quot;User-Agent: ESP8266/001&quot;);
-  client.println(&quot;Connection: close&quot;);
-  client.println(&quot;Content-Type: application/x-www-form-urlencoded;&quot;);
-  client.print(&quot;Content-Length: &quot;);
-  client.println(postData.length());
-  client.println();
-  client.println(postData);
-
-  Serial.println(&quot;request sent&quot;);
-  while (client.connected()) {
-    String line = client.readStringUntil('\n');
-    if (line == &quot;\r&quot;) {
-      Serial.println(&quot;headers received&quot;);
-      break;
-    }
-  }
-  String line = client.readStringUntil('\n');
-  Serial.println(&quot;reply was:&quot;);
-  Serial.println(&quot;==========&quot;);
-  Serial.println(line);
-  Serial.println(&quot;==========&quot;);
-  Serial.println(&quot;closing connection&quot;);
-}
-</pre>サーバー側のスクリプトはこちら、いたって簡単な処理だ。<br><br><pre class='code'>&lt;?php
-
-$message = $_POST[&quot;message&quot;];
-$useragent = $_SERVER['HTTP_USER_AGENT'];
-
-echo &quot;Your message is \&quot;&quot;. $message. &quot;, UserAgent is \&quot;&quot;. $useragent. &quot;\&quot;\n&quot;;
-
-?&gt;
-</pre><br><img data-src="/images/arduino-21.jpg" width="300" class="lazyload" /><br><br>GETでパラメーターを渡してしまうと、SSLの意味がないと思うのでPOSTで送信した。<br>これを元にセンサの値をサーバーへ投げて、サーバー側ではUnixtimestampと共にデータをログって行こうと思う。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B07D7ZL1KJ/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B07D7ZL1KJ&linkCode=as2&tag=101010fun-22&linkId=bfd0fe0f241f23dabd7ee48f209b684b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B07D7ZL1KJ&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B07D7ZL1KJ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
+<h2 id="1">Bluetoothモジュールを秋葉原まで買いに行く (2018/11/19)</h2><img data-src="/images/arduino-1.jpg" width="300" class="lazyload" /><br><br>ほとんど手をつけずに眠っていた、Arduino Unoスターターキット。<br>アプリ開発の息抜きに、温度センサーで遊んでみる。<br><br>先日キャンプで、寝るときの寒さに死ぬ思いをしたので、テント内とテント外の温度変化的なものをログれれば、などと考えているのである。<br>Arduinoにはタイムスタンプがないので（できないことはないのだが）、温度データーをスマホに飛ばしてスマホのunixtimeスタンプを使うことにする。<br>通信は、Wifi、Bluetooth、はたまたライン入力を使った音声データでのシリアル通信などを考えたが（FM変調的な）、汎用性を考えると素直にBluetoothを使った方が良さそうである。<br><br>ところで、プログラミングのような不健康で孤独な作業には、適度な運動が必要だ。<br>そんな口実をイチイチつけ、Bluetoothモジュールを買いに秋葉原まで歩くことにした。<br>赤羽から秋葉原までは二時間程度、意外と近い。<br><br><img data-src="/images/arduino-2.jpg" width="300" class="lazyload" /><br><br>GoogleMapのチートは２回だけ、ほぼカンで歩いた。<br>田端あたりの土地勘がないため、焦りが形跡に出ていて面白い。<br>今度行くとしたら東大経由または上野経由が面白そうだな。<br>秋月電子、千石電商と回った。千石電商で小一時間、悩む。<br>結局このBluefruit LE UART Friendを2100円で購入。<br><br><img data-src="/images/arduino-3.jpg" width="300" class="lazyload" /><br><br>ググってみると英語のみの情報しかないので辛いが、まぁなんとかなることでしょう。<br>付近の萌え萌えキュンにはあえて目もくれてやらず、安定のケバブを食べ、硬派を気取りそそくさと帰途につく。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="2">BluetoothモジュールからのメッセージをiPhoneで受信する (2018/11/20)</h2>まずは、Bluefruitの半田付け。<br>ピンを数カ所やるだけなので、物足りない半田付け作業だ。<br><br>トライアンドエラーでやっていくうちに、配線はこうなった。<br><br><table><thead><tr><th> Bluefruit </th><th> Arduino    </th></tr></thead><tbody><tr><td> DFU       </td><td> 未接続     </td></tr><tr><td> GND       </td><td> GND        </td></tr><tr><td> RTS       </td><td> 未接続     </td></tr><tr><td> VIN       </td><td> 5V         </td></tr><tr><td> RXI       </td><td> DIGITAL 9  </td></tr><tr><td> TXO       </td><td> DIGITAL 10 </td></tr><tr><td> CTS       </td><td> DIGITAL 11 </td></tr><tr><td> MOD       </td><td> 未接続     </td></tr></tbody></table><br>また、スイッチはUART側にしておく。<br><br>スマホからBluefruitに接続する専用のアプリがあるのでインストールする。<br><a href="https://itunes.apple.com/jp/app/adafruit-bluefruit-le-connect/id830125974?mt=8&amp;uo=4">https://itunes.apple.com/jp/app/adafruit-bluefruit-le-connect/id830...</a><br><a href="https://play.google.com/store/apps/details?id=com.adafruit.bluefruit.le.connect">https://play.google.com/store/apps/details?id=com.adafruit.bluefrui...</a><br><br>Arduinoにプログラムを書き込まなくても電源を入れれば、Bluefruitとは接続できる。<br><br><img data-src="/images/arduino-4.jpg" width="300" class="lazyload" /><br><br>今度はArduinoのIDE側の設定をしていく。<br><br>Bluefruit LE UART Friendの情報はこちら。<br><a href="https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-uart-friend/introduction">https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-ua...</a><br><br>英語の情報できついが、なんとかやっていく。<br><br>サンプルコード（Adafruit_BluefruitLE_nRF51）をダウンロードする。<br><a href="https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-uart-friend/software">https://learn.adafruit.com/introducing-the-adafruit-bluefruit-le-ua...</a><br><br>解凍したらフォルダ名をAdafruit_BluefruitLE_nRF51にしてArduinoのライブラリフォルダに取り入れる。<br>場所はDocuments -> Arduino -> librariesになっていると思う。<br>これでArduino IDEのスケッチ例の中にAdafruit_BluefruitLE_nRF51のサンプルコードが入った。<br><br>サンプルコードを元に改造していく。<br>いらなそうなものは削って見やすくすると仕組みが分かってくる。<br>こちらは「debug」という文字を1秒間に一回、アプリへ送信するだけのプログラムだ。<br><br><pre class='code'><span>#include &lt;Arduino.h&gt;
+</span><span>#include &lt;SPI.h&gt;
+</span><span>#include &quot;Adafruit_BLE.h&quot;
+</span><span>#include &quot;Adafruit_BluefruitLE_SPI.h&quot;
+</span><span>#include &quot;Adafruit_BluefruitLE_UART.h&quot;
+</span><span>
+</span><span>
+</span><span>#if SOFTWARE_SERIAL_AVAILABLE
+</span><span>  #include &lt;SoftwareSerial.h&gt;
+</span><span>#endif
+</span><span>
+</span><span>// Arduino UNOの場合この設定でうまくいった
+</span><span>//
+</span><span>#define BLUEFRUIT_SWUART_RXD_PIN       9    // Required for software serial!
+</span><span>#define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
+</span><span>#define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
+</span><span>#define BLUEFRUIT_UART_RTS_PIN         -1    // Optional, set to -1 if unused
+</span><span>#define BLUEFRUIT_UART_MODE_PIN        -1    // Set to -1 if unused
+</span><span>#define VERBOSE_MODE                   true  // If set to 'true' enables debug output
+</span><span>
+</span><span>SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
+</span><span>
+</span><span>Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
+</span><span>                      BLUEFRUIT_UART_CTS_PIN, BLUEFRUIT_UART_RTS_PIN);
+</span><span>
+</span><span>
+</span><span>void error(const __FlashStringHelper*err) {
+</span><span>  Serial.println(err);
+</span><span>  while (1);
+</span><span>}
+</span><span>
+</span><span>
+</span><span>void setup(void)
+</span><span>{
+</span><span>  while (!Serial); // required for Flora &amp; Micro
+</span><span>  delay(500);
+</span><span>
+</span><span>
+</span><span>  Serial.begin(9600);
+</span><span>
+</span><span>  if ( !ble.begin(VERBOSE_MODE) )
+</span><span>  {
+</span><span>    error(F(&quot;Couldn't find Bluefruit, make sure it's in CoMmanD mode &amp; check wiring?&quot;));
+</span><span>  }
+</span><span>  Serial.println( F(&quot;OK!&quot;) );
+</span><span>
+</span><span>}
+</span><span>
+</span><span>void loop(void)
+</span><span>{
+</span><span>  delay(1000);
+</span><span>  ble.write(&quot;debug\n&quot;);
+</span><span>}
+</span></pre><br>結果を見てみよう。<br><br><iframe width="560" height="315" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/ji9QMKKZXmk"></iframe><br><a href="https://youtube.com/watch?v=ji9QMKKZXmk">Success! Connecting Arduino and smartphone with Bluetooth.</a><br><br>みごと、接続成功！⚡️<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="3">iOSとArudinoのBluetooth通信 (2018/11/21)</h2>今度はiOSからArduinoへメッセージを投げて、さらにそのメッセージをArduinoから受け取ってみる。<br><br><img data-src="/images/arduino-5.jpg" width="300" class="lazyload" /><br><br>Swiftでこんな感じのiOSアプリを作ってみることにした。<br>これができるようになればBluetoothでArduinoからデータを読み込んだり、Arduinoを操作したりすることができるようになる。<br><br><img data-src="/images/arduino-6.jpg" width="300" class="lazyload" /><br><br><br><pre class='code'><span>import UIKit
+</span><span>import CoreBluetooth
+</span><span>
+</span><span>class ViewController: UIViewController {
+</span><span>
+</span><span>    @IBOutlet weak var reciveTextView: UITextView!
+</span><span>    
+</span><span>    
+</span><span>    let kUARTServiceUUID = &quot;6E400001-B5A3-F393-E0A9-E50E24DCCA9E&quot; // UARTサービス
+</span><span>    let kTXCharacteristicUUID = &quot;6E400002-B5A3-F393-E0A9-E50E24DCCA9E&quot; // ペリフェラルへ送信用
+</span><span>    let kRXCharacteristicUUID = &quot;6E400003-B5A3-F393-E0A9-E50E24DCCA9E&quot; // ペリフェラルからの受信用
+</span><span>
+</span><span>    var centralManager: CBCentralManager!
+</span><span>    var peripheral: CBPeripheral!
+</span><span>    var serviceUUID : CBUUID!
+</span><span>    var kTXCBCharacteristic: CBCharacteristic!
+</span><span>    var kRXCBCharacteristic: CBCharacteristic!
+</span><span>//    var charcteristicUUID: CBUUID!
+</span><span>    var charcteristicUUIDs: [CBUUID]!
+</span><span>    
+</span><span>    @IBOutlet weak var sendMessageTextField: UITextField!
+</span><span>    @IBAction func clickedConnectButton(_ sender: Any) {
+</span><span>        setup()
+</span><span>    }
+</span><span>    
+</span><span>
+</span><span>    @IBAction func clickedWriteButton(_ sender: Any) {
+</span><span>        let peripheral = self.peripheral
+</span><span>        if(peripheral == nil) { return }
+</span><span>        
+</span><span>        let writeData = sendMessageTextField.text!.data(using: .utf8)!
+</span><span>        peripheral!.writeValue(writeData, for: kTXCBCharacteristic, type: .withResponse)
+</span><span>        sendMessageTextField.text = &quot;&quot;
+</span><span>    }
+</span><span>    
+</span><span>
+</span><span>    
+</span><span>    override func viewDidLoad() {
+</span><span>        super.viewDidLoad()
+</span><span>        
+</span><span>    }
+</span><span>
+</span><span>    /// セントラルマネージャー、UUIDの初期化
+</span><span>    private func setup() {
+</span><span>        centralManager = CBCentralManager()
+</span><span>        centralManager.delegate = self as CBCentralManagerDelegate
+</span><span>//        centralManager.scanForPeripherals(withServices: nil, options: nil)
+</span><span>
+</span><span>        serviceUUID = CBUUID(string: kUARTServiceUUID)
+</span><span>        charcteristicUUIDs = [CBUUID(string: kTXCharacteristicUUID), CBUUID(string: kRXCharacteristicUUID)]
+</span><span>    }
+</span><span>
+</span><span>}
+</span><span>
+</span><span>//MARK : - CBCentralManagerDelegate
+</span><span>extension ViewController: CBCentralManagerDelegate {
+</span><span>    
+</span><span>    func centralManagerDidUpdateState(_ central: CBCentralManager) {
+</span><span>        
+</span><span>        switch central.state {
+</span><span>            
+</span><span>        //電源ONを待って、スキャンする
+</span><span>        case CBManagerState.poweredOn:
+</span><span>            let services: [CBUUID] = [serviceUUID]
+</span><span>            centralManager?.scanForPeripherals(withServices: services,
+</span><span>                                               options: nil)
+</span><span>        default:
+</span><span>            break
+</span><span>        }
+</span><span>    }
+</span><span>    
+</span><span>    /// ペリフェラルを発見すると呼ばれる
+</span><span>    func centralManager(_ central: CBCentralManager,
+</span><span>                        didDiscover peripheral: CBPeripheral,
+</span><span>                        advertisementData: [String : Any],
+</span><span>                        rssi RSSI: NSNumber) {
+</span><span>        
+</span><span>        self.peripheral = peripheral
+</span><span>        centralManager?.stopScan()
+</span><span>        
+</span><span>        //接続開始
+</span><span>        central.connect(peripheral, options: nil)
+</span><span>    }
+</span><span>    
+</span><span>    /// 接続されると呼ばれる
+</span><span>    func centralManager(_ central: CBCentralManager,
+</span><span>                        didConnect peripheral: CBPeripheral) {
+</span><span>        
+</span><span>        peripheral.delegate = self
+</span><span>        peripheral.discoverServices([serviceUUID])
+</span><span>    }
+</span><span>}
+</span><span>
+</span><span>//MARK : - CBPeripheralDelegate
+</span><span>extension ViewController: CBPeripheralDelegate {
+</span><span>    
+</span><span>    /// サービス発見時に呼ばれる
+</span><span>    func peripheral(_ peripheral: CBPeripheral,
+</span><span>                    didDiscoverServices error: Error?) {
+</span><span>        
+</span><span>        if error != nil {
+</span><span>            print(error.debugDescription)
+</span><span>            return
+</span><span>        }
+</span><span>        
+</span><span>        //キャリアクタリスティク探索開始
+</span><span>        peripheral.discoverCharacteristics(charcteristicUUIDs,
+</span><span>                                           for: (peripheral.services?.first)!)
+</span><span>    }
+</span><span>    
+</span><span>    /// キャリアクタリスティク発見時に呼ばれる
+</span><span>    func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
+</span><span>        
+</span><span>        if error != nil {
+</span><span>            print(error.debugDescription)
+</span><span>            return
+</span><span>        }
+</span><span>
+</span><span>        for characteristics in service.characteristics! {
+</span><span>            if(characteristics.uuid == CBUUID(string: kTXCharacteristicUUID)) {
+</span><span>//                peripheral.setNotifyValue(true, for: (service.characteristics?[1])!)
+</span><span>                self.kTXCBCharacteristic = characteristics
+</span><span>                addMessageToTextView(&quot;Found TX characteristics !\n&quot;)
+</span><span>            } else if(characteristics.uuid == CBUUID(string: kRXCharacteristicUUID)) {
+</span><span>                self.kRXCBCharacteristic = characteristics
+</span><span>                addMessageToTextView(&quot;Found RX characteristics !\n&quot;)
+</span><span>            }
+</span><span>        }
+</span><span>        
+</span><span>        if(self.kRXCBCharacteristic != nil) {
+</span><span>            startReciving()
+</span><span>        }
+</span><span>    }
+</span><span>    
+</span><span>    private func startReciving() {
+</span><span>        peripheral.setNotifyValue(true, for: kRXCBCharacteristic)
+</span><span>        addMessageToTextView(&quot;Start monitoring the message from Arduino.\n\n&quot;)
+</span><span>    }
+</span><span>
+</span><span>
+</span><span>    func peripheral(_ peripheral: CBPeripheral, didWriteValueFor characteristic: CBCharacteristic, error: Error?) {
+</span><span>        print(#function)
+</span><span>        if error != nil {
+</span><span>            print(error.debugDescription)
+</span><span>            return
+</span><span>        }
+</span><span>    }
+</span><span>    
+</span><span>    /// データ更新時に呼ばれる
+</span><span>    func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
+</span><span>        
+</span><span>        if error != nil {
+</span><span>            print(error.debugDescription)
+</span><span>            return
+</span><span>        }
+</span><span>        updateWithData(data: characteristic.value!)
+</span><span>    }
+</span><span>    
+</span><span>    private func updateWithData(data : Data) {
+</span><span>        if let dataString = String(data: data, encoding: String.Encoding.utf8) {
+</span><span>            addMessageToTextView(dataString)
+</span><span>        }
+</span><span>    }
+</span><span>    
+</span><span>    private func addMessageToTextView(_ message:String) {
+</span><span>        reciveTextView.text = reciveTextView.text + message
+</span><span>        scrollToBottom(reciveTextView)
+</span><span>    }
+</span><span>    
+</span><span>    private func scrollToBottom(_ textView:UITextView) {
+</span><span>        textView.selectedRange = NSRange(location: textView.text.count, length: 0)
+</span><span>        textView.isScrollEnabled = true
+</span><span>        
+</span><span>        let scrollY = textView.contentSize.height - textView.bounds.height
+</span><span>        let scrollPoint = CGPoint(x: 0, y: scrollY &gt; 0 ? scrollY : 0)
+</span><span>        textView.setContentOffset(scrollPoint, animated: true)
+</span><span>    }
+</span><span>}
+</span></pre><br>Arduino側のスケッチはこうなった。<br><br><pre class='code'><span>#include &lt;string.h&gt;
+</span><span>#include &lt;Arduino.h&gt;
+</span><span>#include &lt;SPI.h&gt;
+</span><span>#include &quot;Adafruit_BLE.h&quot;
+</span><span>#include &quot;Adafruit_BluefruitLE_SPI.h&quot;
+</span><span>#include &quot;Adafruit_BluefruitLE_UART.h&quot;
+</span><span>
+</span><span>
+</span><span>#if SOFTWARE_SERIAL_AVAILABLE
+</span><span>  #include &lt;SoftwareSerial.h&gt;
+</span><span>#endif
+</span><span>
+</span><span>// Arduino UNOの場合この設定でうまくいった
+</span><span>//
+</span><span>#define BLUEFRUIT_SWUART_RXD_PIN       9    // Required for software serial!
+</span><span>#define BLUEFRUIT_SWUART_TXD_PIN       10   // Required for software serial!
+</span><span>#define BLUEFRUIT_UART_CTS_PIN         11   // Required for software serial!
+</span><span>#define BLUEFRUIT_UART_RTS_PIN         -1    // Optional, set to -1 if unused
+</span><span>#define BLUEFRUIT_UART_MODE_PIN        -1    // Set to -1 if unused
+</span><span>#define VERBOSE_MODE                   false  // If set to 'true' enables debug output
+</span><span>
+</span><span>SoftwareSerial bluefruitSS = SoftwareSerial(BLUEFRUIT_SWUART_TXD_PIN, BLUEFRUIT_SWUART_RXD_PIN);
+</span><span>
+</span><span>Adafruit_BluefruitLE_UART ble(bluefruitSS, BLUEFRUIT_UART_MODE_PIN,
+</span><span>                      BLUEFRUIT_UART_CTS_PIN, BLUEFRUIT_UART_RTS_PIN);
+</span><span>
+</span><span>
+</span><span>
+</span><span>void error(const __FlashStringHelper*err) {
+</span><span>  Serial.println(err);
+</span><span>  while (1);
+</span><span>}
+</span><span>
+</span><span>
+</span><span>
+</span><span>void setup(void)
+</span><span>{
+</span><span>  while (!Serial); // required for Flora &amp; Micro
+</span><span>  delay(500);
+</span><span>
+</span><span>
+</span><span>  Serial.begin(9600);
+</span><span>
+</span><span>  if ( !ble.begin(VERBOSE_MODE) )
+</span><span>  {
+</span><span>    error(F(&quot;Couldn't find Bluefruit, make sure it's in CoMmanD mode &amp; check wiring?&quot;));
+</span><span>  }
+</span><span>  Serial.println( F(&quot;OK!&quot;) );
+</span><span>}
+</span><span>
+</span><span>
+</span><span>void loop(void)
+</span><span>{
+</span><span>
+</span><span>  int n = 0;
+</span><span>  int maxMessageLength = 50;
+</span><span>  char recivedMessage[maxMessageLength];
+</span><span>
+</span><span>   while ( ble.available() ) {    
+</span><span>    int c = ble.read();
+</span><span>    // 起動時に255(0xFF)の出力をスルー
+</span><span>    if(c != 0xFF) {
+</span><span>      if(maxMessageLength &gt; (n - 1)) {
+</span><span>        recivedMessage[n] = (char)c;
+</span><span>        n++;
+</span><span>      }
+</span><span>    }
+</span><span>  }
+</span><span>
+</span><span>  if(n &gt; 0) {
+</span><span>    recivedMessage[n] = '\0';
+</span><span>    ble.write(&quot;Arduino got your message is...\n&quot;);
+</span><span>    ble.write(recivedMessage);
+</span><span>    ble.write(&quot;\n&quot;);
+</span><span>  }
+</span><span>
+</span><span>  
+</span><span>}
+</span></pre><br>見事、対話に成功した！<br><br><iframe width="560" height="315" frameborder="0" allowfullscreen="" src="//www.youtube.com/embed/bH0tcbTb9Pw"></iframe><br><a href="https://youtube.com/watch?v=bH0tcbTb9Pw">Successfully talked with iOS and Arduino on a Bluetooth connection!</a><br><br><br>[参考]<br>SwiftのBluetooth処理の大部分はこちらを参考にさせていただいた。<br><a href="https://qiita.com/eKushida/items/def628e0eff6c106d467">https://qiita.com/eKushida/items/def628e0eff6c106d467</a><br><br>UUIDはbluefruitのサイトに記されている。<br><a href="https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefruit-le-breakout/adding-app-support">https://learn.adafruit.com/getting-started-with-the-nrf8001-bluefru...</a><br><br>Bluetooth用語に戸惑っていたが、こちらを読めばざっくりイメージがつく。<br><a href="http://jellyware.jp/kurage/bluejelly/ble_guide.html">http://jellyware.jp/kurage/bluejelly/ble_guide.html</a><br><br><br><h2 id="4">ESP-WROOM-02でWiFi通信するまで、その1 (2018-11-23)</h2>Arduinoの情報を漁ってみると、数年前にESP-WROOM-02という画期的なWifiモジュールが出ていた事を知った。<br><br>早速、秋月電子で買ってきた。<br><br><img data-src="/images/arduino-7.jpg" width="300" class="lazyload" /><br><br>1280円という安さもそうだが、Arduino UNOなどをわざわざ買わなくても、Arduino IDEで開発できてしまう事だ。<br>ちょっとしたセンサをつけて、IoT化なんてことができてしまうのだろう。<br><br>開発環境はMacBookPro(macOS Mojave 10.14)でおこなっていく。<br><br>秋月のESP-WROOM-02開発キットマニュアル。手順通り進めていく。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br><br><br><h3>動作確認</h3>1. USBで直接つなぐと赤くLEDランプがつく。<br>2. Arduino IDEを立ち上げ、新規スケッチを開いておく。<br>3. メニューのツール->シリアルポートの一覧から、それらしきものを見つけ選択。<br>4. その後、シリアルモニターを立ち上げ、改行を「CRおよびLF」にし、通信速度を「115200bps」を選択する。<br>5. ESP-WROOM-02のRSTスイッチを押すと、文字化けしたメッセージが出てくるが、最後にReadyと帰って来ればおk。<br>6. 今度はシリアルから「AT」と入力して、OKと返ってくればおkだ。<br><br><br><h3>Arduinoスケッチを書き込んでみる</h3>半田付けをささっと終わらせ、Lチカ確認できるようにする。<br><br><img data-src="/images/arduino-8.jpg" width="300" class="lazyload" /><br><br>IEDの設定は、秋月のマニュアル通り進めていく。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br>何度かエラーの体験をしたが、この設定でうまく書き込めた。<br><img data-src="/images/arduino-9.jpg" width="300" class="lazyload" /><br><br>書き込みをするときは、毎回次の手順を忘れないこと。<br><b>RSTとPGMを同時に押して、RSTからPGMの順番に離していく。</b><br><br><h3>成功！</h3>とりあえず、青色ダイオードのLチカに成功した。<br><a href="https://youtu.be/sinwrMGVUTw">https://youtu.be/sinwrMGVUTw</a><br><br>次回はいよいよWifi経由で通信してみよう。<br><br>追記:<br>ちなみにESP-WROOM-02でLチカさせるのに70mA必要のようだ。<br><img data-src="/images/arduino-10.jpg" width="300" class="lazyload" /><br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B071DY11SB/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B071DY11SB&linkCode=as2&tag=101010fun-22&linkId=c80ca15f8446fb8540d7b719425ae88e"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B071DY11SB&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B071DY11SB" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="5">ESP-WROOM-02でWiFi通信するまで、その2 (2018-11-24)</h2>秋月電子のマニュアル通り、ESP-WROOM-02をアクセスポイントにしてWiFiでダイレクトに接続してみる。<br><a href="http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf">http://akizukidenshi.com/download/ds/akizuki/AE-ESP-WROOM02-DEV.pdf</a><br><br>スケッチ例の、ESP8266WiFi -> WiFiAccessPointを開く。<br><img data-src="/images/arduino-11.jpg" width="300" class="lazyload" /><br><br>サンプルコードをちょっとだけ編集する。<br><br><pre class='code'><span>#include &lt;ESP8266WiFi.h&gt;
+</span><span>#include &lt;WiFiClient.h&gt;
+</span><span>#include &lt;ESP8266WebServer.h&gt;
+</span><span>
+</span><span>/* Set these to your desired credentials. */
+</span><span>const char *ssid = &quot;MyFi&quot;;
+</span><span>const char *password = &quot;88888888&quot;; // 8文字以上でないといけない？
+</span><span>
+</span><span>ESP8266WebServer server(80);
+</span><span>
+</span><span>/* Just a little test message.  Go to http://192.168.4.1 in a web browser
+</span><span>   connected to this access point to see it.
+</span><span>*/
+</span><span>void handleRoot() {
+</span><span>  server.send(200, &quot;text/html&quot;, &quot;&amp;lt;h1&amp;gt;Hello world!&amp;lt;/h1&amp;gt;&quot;);
+</span><span>}
+</span><span>
+</span><span>void setup() {
+</span><span>  delay(1000);
+</span><span>  Serial.begin(115200);
+</span><span>  Serial.println();
+</span><span>  Serial.print(&quot;Configuring access point...&quot;);
+</span><span>  /* You can remove the password parameter if you want the AP to be open. */
+</span><span>  WiFi.softAP(ssid, password);
+</span><span>
+</span><span>  IPAddress myIP = WiFi.softAPIP();
+</span><span>  Serial.print(&quot;AP IP address: &quot;);
+</span><span>  Serial.println(myIP);
+</span><span>  server.on(&quot;/&quot;, handleRoot);
+</span><span>  server.begin();
+</span><span>  Serial.println(&quot;HTTP server started&quot;);
+</span><span>}
+</span><span>
+</span><span>void loop() {
+</span><span>  server.handleClient();
+</span><span>}
+</span></pre><br>スケッチをESP-WROOM-02に書き込む。<br>自分で設定したSSIDがWiFi接続にあらわれるので、それを選択してパスワードを入力する。<br>ちなみにパスワードは8文字以上でないと機能してくれないようだ。<br><br><img data-src="/images/arduino-12.jpg" width="300" class="lazyload" /><br><br>シリアルモニタを開いてRSTボタンを押せば、ESP-WROOM-02のIPアドレスを教えてくれる。<br>ブラウザから  http://192.168.4.1/ へアクセス。<br><br><img data-src="/images/arduino-13.jpg" width="300" class="lazyload" /><br><br>みごとWiFi通信に成功した！<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B07D7ZL1KJ/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B07D7ZL1KJ&linkCode=as2&tag=101010fun-22&linkId=bfd0fe0f241f23dabd7ee48f209b684b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B07D7ZL1KJ&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B07D7ZL1KJ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="6">やっぱりBluetooth通信にもどす、その1 (2018-11-24)</h2>ESP-WROOM-02に浮気してしまったが、秋葉まで歩いているうちに少し冷静になった。<br><br><img data-src="/images/arduino-14.jpg" width="300" class="lazyload" /><br><br>素直にArduino UNOを使った方がデバッギングしやすいのでは？<br>センサで遊んだり、特性を調べたり、手段が目的化してしまう人にはArduino UNOが良いんではないだろうかと。<br>個人で使うには、Arduino UnoでBluetooth通信がスマートではないのかと。<br><br>二日間さわってみて、ESP-WROOM-02の不満がある。<br><br>1. ADコンバーターが貧弱、1端子で1Vの範囲、使いづらい。<br>2. 書き込みエラーが起こりやすい。（書き込みリセットスイッチを押し忘れるから)<br>3. そもそもWiFi経由でログとる必要あるの？<br>4. 電力消費が気になる。<br>5. 電源供給を自前しなければならない。<br><br>1の<b>「ADコンバーターが貧弱、1端子で1Vの範囲、使いづらい。」</b>の件、Arduino UNOは5V、1024bit分解能のADコンバーターが5もついている。<br>1024bitはお遊びには十分、本気を出すなら自前でADコンバーターを用意すれば良い。<br><br>2の<b>「書き込みエラーが起こりやすい。」</b>の件、これは、Arduino UNOはよくできていて、リセットボタン押さずともスケッチ書き込みができる。<br>PCのプログラミングに慣れっこの世代にはとても大切な心遣いではないだろうか？<br><br>3の<b>「そもそもWiFi経由でログとる必要あるの？」</b>の件、「それを言っちゃあ、お終いよ」でもでも、IoTにするメリットは、巨大資本のメリットでしかないのでは？<br>IoT家電化すると、物レベルで人々の行動ログを取れてAnalytiscできるわけ。フィードバックが得られるから、IoT家電をバラまいた方がよりコスパ高い製品が作れるでしょう。<br><br>4の<b>「電力消費が気になる。」</b>の件、感覚的にBLEよりはWiFiの消費電力の方が大きそう。<br><br>5の<b>「電源供給を自前しなければならない。」</b>の件、ESP-WROOM-02でちょこっとテストしたいときは、電源供給が貧弱なので別途自前で電源回路を組んだり、いちいち電源のことまで考えたりしなければならない。目的がはっきりしていて、回路ができ上がっているならばよいが。比べてArduino UNOは5V、3.3Vの電源が簡単に取れるのでセンサー回路設計に集中しやすい。<br><br>そんなこんな思って、Arduino UNOをもう一度見直してみた。まずはデバッグ環境整えるべきかなと。<br>ブレッドボードを占有しているBluetoothモジュールは、どこかに納めたい。<br>しかし、これだけのためにシールドは大げさすぎるだろう。<br>ちょうどロゴの所にスペースがあったので、Bluetoothモジュールを埋め込んでみた。<br><br><img data-src="/images/arduino-15.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-16.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-17.jpg" width="300" class="lazyload" /><br><br><img data-src="/images/arduino-18.jpg" width="300" class="lazyload" /><br>電源は3端子レギュレーターへ直接接続。<br>これで左側のブレッドボードがスッキリした。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B06Y56JV64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B06Y56JV64&linkCode=as2&tag=101010fun-22&linkId=4921fcbca8f1aa08d76c09a37ddaa0d0"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B06Y56JV64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B06Y56JV64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br><br><br><h2 id="7">温度センサーDHT11を実装してみる (2018-11-24)</h2><img data-src="/images/arduino-19.jpg" width="300" class="lazyload" /><br><br>湿度と温度が測れるデジタルセンサDHT11をArduinoに2チャンネルで接続してみた。<br>屋外の気温と、屋内の気温を測定している。<br>Bluefruit LE UART Friendを通して、Bluetooth経由でiOSと接続。<br>Arduinoからの温度データをiOSアプリで受信している画像だ。<br><br>温度センサは取り変え可能なように、3極のオーディオケーブルとミニフォンプラグで取り付けてみた。<br>5V電源、GND、DATAである。<br><img data-src="/images/arduino-20.jpg" width="300" class="lazyload" /><br><br>実際ここまでやってみたが、Arduino母体から有線でセンサを配線するというのがどうも気に入らない。<br>センサの位置は、その時々のアイデアで、雰囲気で位置を決めたいものである。<br>有線に縛られたくないのである。<br>そうなると、やっぱりESP-WROOM-02に戻るのかなぁ。。。<br><br><br><h2 id="8">ESP-WROOM-02でSSLでHTTPSリクエストしてみる (2018/11/26)</h2>スケッチ例のサンプルESP8266WiFi -> HTTPSRequestを元にHTTPSでリクエストを投げてみた。<br>3秒間に一回、SSL経由でPOSTデータを投げている。<br>尚、送信先のサーバーには、Let's encryptを設定済みだ。<br><br><pre class='code'><span>#include &lt;ESP8266WiFi.h&gt;
+</span><span>#include &lt;WiFiClientSecure.h&gt;
+</span><span>
+</span><span>const char* ssid = &quot;Router SSID&quot;;
+</span><span>const char* password = &quot;Router Password&quot;;
+</span><span>
+</span><span>const char* host = &quot;example.com&quot;;
+</span><span>const int httpsPort = 443;
+</span><span>
+</span><span>void setup() {
+</span><span>  Serial.begin(115200);
+</span><span>
+</span><span>  wifiInitialize();
+</span><span>
+</span><span>}
+</span><span>
+</span><span>void loop() {  
+</span><span>  String url = &quot;/somedir/echo.php&quot;;
+</span><span>  String postData = &quot;message=88888&quot;;
+</span><span>  httpsPost(url, postData);
+</span><span>
+</span><span>  delay(3000);
+</span><span>}
+</span><span>
+</span><span>void wifiInitialize() {
+</span><span>  Serial.println();
+</span><span>  Serial.print(&quot;connecting to &quot;);
+</span><span>  Serial.println(ssid);
+</span><span>  WiFi.mode(WIFI_STA);
+</span><span>  WiFi.begin(ssid, password);
+</span><span>  while (WiFi.status() != WL_CONNECTED) {
+</span><span>    delay(500);
+</span><span>    Serial.print(&quot;.&quot;);
+</span><span>  }
+</span><span>  Serial.println(&quot;&quot;);
+</span><span>  Serial.println(&quot;WiFi connected&quot;);
+</span><span>  Serial.println(&quot;IP address: &quot;);
+</span><span>  Serial.println(WiFi.localIP());
+</span><span>}
+</span><span>
+</span><span>void httpsPost(String url, String postData) {
+</span><span>  // Use WiFiClientSecure class to create TLS connection
+</span><span>  WiFiClientSecure client;
+</span><span>  Serial.print(&quot;connecting to &quot;);
+</span><span>  Serial.println(host);
+</span><span>  if (!client.connect(host, httpsPort)) {
+</span><span>    Serial.println(&quot;connection failed&quot;);
+</span><span>    return;
+</span><span>  }
+</span><span>
+</span><span>  Serial.print(&quot;requesting URL: &quot;);
+</span><span>  Serial.println(url);
+</span><span>
+</span><span>  client.println(&quot;POST &quot; + url + &quot; HTTP/1.1&quot;);
+</span><span>  client.println(&quot;Host: &quot; + (String)host);
+</span><span>  client.println(&quot;User-Agent: ESP8266/001&quot;);
+</span><span>  client.println(&quot;Connection: close&quot;);
+</span><span>  client.println(&quot;Content-Type: application/x-www-form-urlencoded;&quot;);
+</span><span>  client.print(&quot;Content-Length: &quot;);
+</span><span>  client.println(postData.length());
+</span><span>  client.println();
+</span><span>  client.println(postData);
+</span><span>
+</span><span>  Serial.println(&quot;request sent&quot;);
+</span><span>  while (client.connected()) {
+</span><span>    String line = client.readStringUntil('\n');
+</span><span>    if (line == &quot;\r&quot;) {
+</span><span>      Serial.println(&quot;headers received&quot;);
+</span><span>      break;
+</span><span>    }
+</span><span>  }
+</span><span>  String line = client.readStringUntil('\n');
+</span><span>  Serial.println(&quot;reply was:&quot;);
+</span><span>  Serial.println(&quot;==========&quot;);
+</span><span>  Serial.println(line);
+</span><span>  Serial.println(&quot;==========&quot;);
+</span><span>  Serial.println(&quot;closing connection&quot;);
+</span><span>}
+</span></pre>サーバー側のスクリプトはこちら、いたって簡単な処理だ。<br><br><pre class='code'><span>&lt;?php
+</span><span>
+</span><span>$message = $_POST[&quot;message&quot;];
+</span><span>$useragent = $_SERVER['HTTP_USER_AGENT'];
+</span><span>
+</span><span>echo &quot;Your message is \&quot;&quot;. $message. &quot;, UserAgent is \&quot;&quot;. $useragent. &quot;\&quot;\n&quot;;
+</span><span>
+</span><span>?&gt;
+</span></pre><br><img data-src="/images/arduino-21.jpg" width="300" class="lazyload" /><br><br>GETでパラメーターを渡してしまうと、SSLの意味がないと思うのでPOSTで送信した。<br>これを元にセンサの値をサーバーへ投げて、サーバー側ではUnixtimestampと共にデータをログって行こうと思う。<br><br><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B07D7ZL1KJ/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B07D7ZL1KJ&linkCode=as2&tag=101010fun-22&linkId=bfd0fe0f241f23dabd7ee48f209b684b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B07D7ZL1KJ&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B07D7ZL1KJ" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /></p>
         <ul class="shareList">
         <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/arduino-bluetooth.html&text=Arduino%E3%81%A7%E6%B8%A9%E5%BA%A6%E3%83%AD%E3%82%AC%E3%83%BC%E3%82%92%E4%BD%9C%E3%82%8B%E3%81%BE%E3%81%A7" target="_blank" title="Twitter"></a></li>
         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/arduino-bluetooth.html" target="_blank" title="Facebook"></a></li>
