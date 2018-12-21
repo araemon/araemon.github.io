@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>
+Swiftでテキストベース10万レコードを処理する実験</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta content="Swiftでテキストベース10万レコードを処理する実験" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/swift-file-read-write.html" property="og:url" />
+<meta content="https://araemon.github.io" property="og:image" />
+<link rel="stylesheet" type="text/css" href="/css/icon.css"  />
+<link rel="stylesheet" type="text/css" href="/css/main.css?1545372821"  />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+</head>
+<body>
+
+        <div id="container">
+        <div id="header" class="blog">
+        <div class="layerTransparent">
+                <div class="container">
+                <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+                </div>
+</div>
+        </div>
+
+<div id="contents">
+<article>
+    <div class="tag">
+    <a href="/blog/" class="tagHighlight">Blog (記事一覧)</a>
+    </div>
+<h1>
+Swiftでテキストベース10万レコードを処理する実験</h1>
+<div class="time"><time pubdate="" datetime="2018-12-21">
+2018-12-21</time></div>
+<p>
+<ul id="toc"><li><a href="#1">はじめに</a></li><li><a href="#2">試験1(文字列連結テスト)</a></li><li><a href="#3">試験2(ファイルの書き込みテスト)</a></li></li></ul>
+<h2 id="1">はじめに</h2>現在製作中のOSS<a href="/oss/chimaki-1.html">「ChiMAKi」</a>の性能限界およびリファクタリングのためにテストしてみました。データはハッシュ型です。データの保存には、シンプルにテキストファイルに保存しています。<br>以上の場合に、テキスト処理のデットポイントや限界を知っておく必要があると思いました。<br>ここでは次の二つの実験を行ってみました。1つ目は文字列連結の速度テストです。２つ目はファイルの書き込み読み込みの速度テストです。<br><br><br><h3>テスト環境</h3><table><thead><tr><th>名称</th><th>情報</th></tr></thead><tbody><tr><td>PC</td><td>MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)</td></tr><tr><td>Xcode</td><td>Version 10.1</td></tr><tr><td>シミュレータ</td><td>iPhoneSE</td></tr><tr><td>テストツール</td><td>XCTest</td></tr></tbody></table><br><br><h2 id="2">試験1(文字列連結テスト)</h2>ハッシュのキーとバリューを、カンマ区切りなどで連結する場合に必要なプログラム処理の速度テストです。<br>ここでは100万回繰り返した時の速度測定を行ってみました。<br><br>テストプログラム<br><pre class='code'><span>public func joinDull() {
+</span><span>    var result = &quot;&quot;
+</span><span>    for i in 0...1000000 {
+</span><span>        result = result + &quot;hogehoge\(i),fugafuga\(i)\n&quot;
+</span><span>    }
+</span><span>}
+</span></pre><br><pre class='code'><span>public func join() {
+</span><span>    var lines:[String] = []
+</span><span>    for i in 0...1000000 {
+</span><span>        lines.append(&quot;hogehoge\(i),fugafuga\(i)&quot;)
+</span><span>    }   
+</span><span>    lines.joined(separator: &quot;\n&quot;)
+</span><span>}
+</span></pre><br><h3>結果</h3>100万回の文字連結テスト結果<br><table><thead><tr><th>joinDull</th><th>join</th></tr></thead><tbody><tr><td>0.104s</td><td>15.257s</td></tr></tbody></table><br>今まで<span class="backSlash">result = result + "文字列"</span>のように文字列を連結していましたが、レコード数が多い場合に性能が悪いということがわかりました。<br>一方、追加したい文字列を配列にしてから<span class="backSlash">joined</span>で結合すると、高速に処理できることがわかりました。<br><br><br><h2 id="3">試験2(ファイルの書き込みテスト)</h2>次に、テキストファイルの読み書きを10万回行ってみました。<br><br><pre class='code'><span>func testWrite() {
+</span><span>    for _ in 0...100000 {
+</span><span>        let file = CKFile(&quot;/Documents&quot;, &quot;hello.txt&quot;)
+</span><span>        file.write(&quot;hoge&quot;)
+</span><span>    }
+</span><span>}
+</span></pre><br><pre class='code'><span>func testRead() {
+</span><span>    for _ in 0...100000 {
+</span><span>        let file = CKFile(&quot;/Documents&quot;, &quot;hello.txt&quot;)
+</span><span>        file.read()
+</span><span>    }
+</span><span>}
+</span></pre>書き込みのCKFile#writeのプログラムの中身は、<span class="backSlash">try text.write(to: fileURL, atomically: true, encoding: .utf8)</span>です。<br>読み込みのCKFile#readのプログラムの中身は、<span class="backSlash">let text = String(contentsOf: fileURL, encoding: .utf8)</span>です。<br><br><h3>結果</h3>10万回のテスト結果<br><table><thead><tr><th>testWrite</th><th>testRead</th></tr></thead><tbody><tr><td>94.771s</td><td>7.004s</td></tr></tbody></table><br>writeはreadに比べると10倍以上の時間がかかることがわかりました。テキストファイルでデータを管理する場合は、頻繁に書き込み処理をしない工夫が必要そうです。<br></p>
+        <ul class="shareList">
+        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/swift-file-read-write.html&text=Swift%E3%81%A7%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%83%99%E3%83%BC%E3%82%B910%E4%B8%87%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E5%AE%9F%E9%A8%93" target="_blank" title="Twitter"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/swift-file-read-write.html" target="_blank" title="Facebook"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/swift-file-read-write.html" target="_blank" title="Google+"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/swift-file-read-write.html" target="_blank" title="はてなブックマーク"></a></li>
+        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/swift-file-read-write.html&title=Swift%E3%81%A7%E3%83%86%E3%82%AD%E3%82%B9%E3%83%88%E3%83%99%E3%83%BC%E3%82%B910%E4%B8%87%E3%83%AC%E3%82%B3%E3%83%BC%E3%83%89%E3%82%92%E5%87%A6%E7%90%86%E3%81%99%E3%82%8B%E5%AE%9F%E9%A8%93" target="_blank" title="Pocket"></a></li>
+        </ul>
+<ul id="prevNext">
+<li class="prev">
+<a href="python-first-try.html">&lt; Pythonのトレンド動向とクラスの書き方</a></li><li class="next"></li></ul>
+</article>
+</div>
+            </div>
+<script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+<script>
+/****************************************
+ * Lazy Load
+***************************************/
+lazyload();
+
+</script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+
+</body>
+</html>
