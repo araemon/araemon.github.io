@@ -49,7 +49,7 @@
 
                                         <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729100900.jpg" class="default lazyload" /><br>
 <br>
-**rsync** をご存知だろうか？<br>
+<b>rsync</b> をご存知だろうか？<br>
 <br>
 ホームページやWebアプリをサーバーにアップロードする作業、<br>
 <br>
@@ -58,21 +58,21 @@ DreamweaverやFileZilla、FTPやSSH(SCP)などで行なうのが世の常、常�
 <br>
 しかしその常識が本当は非常識だどしたら？<br>
 <br>
-**rsync** に触れてみれば今までのやり方が非常識だったと思い知らされる<br>
+<b>rsync</b> に触れてみれば今までのやり方が非常識だったと思い知らされる<br>
 <br>
 <br>
 いつもロボットのように機械的に<br>
 <br>
 コンピューターの奴隷になって行なっているアップロード作業も<br>
 <br>
-**rsync** を知ってしまったら、ボタンをポチッと押してお茶を飲んで待つだけ🍵<br>
+<b>rsync</b> を知ってしまったら、ボタンをポチッと押してお茶を飲んで待つだけ🍵<br>
 <br>
 …<br>
 <br>
 <br>
 いや、待たない<br>
 <br>
-**rsync** は待たないのだ<br>
+<b>rsync</b> は待たないのだ<br>
 <br>
 <br>
 なぜならrsyncは変更したファイルの差分のみをアップロードするのだから<br>
@@ -98,10 +98,10 @@ DreamweaverやFileZilla、FTPやSSH(SCP)などで行なうのが世の常、常�
 プログラマーをさらに家畜にしてしまうのだ<br>
 <br>
 <br>
-**rsync** は恐ろしい…<br>
+<b>rsync</b> は恐ろしい…<br>
 <br>
 <br>
-そんな**rsync**と向き合っていくための記録を残すことにする<br>
+そんな<b>rsync</b>と向き合っていくための記録を残すことにする<br>
 <br>
 …<br>
 <br>
@@ -193,19 +193,19 @@ rsync -av src/ dst
 下のようなディレクトリ構造を作ってテストしてみよう。<br>
 srcディレクトリをdst内のsrcディレクトリへ同期させるけれど、書き方の違いでどう処理が変わるか違いを見ていこう。<br>
 <br>
->home/<br>
-><br>
->├src/<br>
-><br>
->│└  new.txt<br>
-><br>
->└dst/<br>
-><br>
->　　└src/<br>
-><br>
->　　　└ old.txt<br>
-><br>
->　　<br>
+<blockquote>home/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>├src/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>│└  new.txt</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>└dst/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　└src/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　　└ old.txt</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　</blockquote><br>
 <br>
 <h4>1. コピー元、コピー先の両方にスラッシュをつけない</h4>
 <pre class="code">
@@ -306,27 +306,27 @@ rsync -av src dst/
 <br>
 <br>
 <h2>rsyncの動作確認その2 --delete付き</h2>
-**--deleteは危険なので以下はコピペして使わないことをお勧めする。**<br>
+<b>--deleteは危険なので以下はコピペして使わないことをお勧めする。</b><br>
 <br>
 動作確認その1と同じ構造のディレクトリを用意。<br>
 <br>
 今度は--deleteオプションをつけて、コピー元に存在しないファイルはコピー先でも削除して同期するようにしてみよう。<br>
 <br>
->home/<br>
-><br>
->├src/<br>
-><br>
->│└  new.txt<br>
-><br>
->└dst/<br>
-><br>
->　　└src/<br>
-><br>
->　　　└ old.txt<br>
-><br>
->　　<br>
+<blockquote>home/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>├src/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>│└  new.txt</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>└dst/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　└src/</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　　└ old.txt</blockquote><br>
+<blockquote></blockquote><br>
+<blockquote>　　</blockquote><br>
 <br>
-**rsyncの動作確認その1** でおこなった、２、３、５番の３パターンに—deleteオプションを追加して試してみよう。<br>
+<b>rsyncの動作確認その1</b> でおこなった、２、３、５番の３パターンに—deleteオプションを追加して試してみよう。<br>
 <br>
 <pre class="code">
 rsync -av --delete src/ dst/src
@@ -343,7 +343,7 @@ new.txt
 <br>
 <br>
 <br>
-今度は**rsyncの動作確認その1**で行なった、１番と４番に—deleteオプションを追加して試してみよう。<br>
+今度は<b>rsyncの動作確認その1</b>で行なった、１番と４番に—deleteオプションを追加して試してみよう。<br>
 <br>
 <pre class="code">
 rsync -av --delete src dst/src
@@ -358,7 +358,7 @@ ls dst/src/
 old.txt src
 </pre><br>
 <br>
-それでは最後に**rsyncの動作確認その1**で行なった、6番に—deleteオプションをつけて実行してみることにしよう。<br>
+それでは最後に<b>rsyncの動作確認その1</b>で行なった、6番に—deleteオプションをつけて実行してみることにしよう。<br>
 <br>
 <pre class="code">
 rsync -av --delete src/ dst/
@@ -376,11 +376,11 @@ srcの中身をdstにまるごと同期したいならいいかもしれない�
 <br>
 スラッシュの違いを理解してどこのディレクトリを操作するのかイメージできていないと大変なことになってしまう。<br>
 <br>
-おさらいだが**コピー元にスラッシュをつけると、そのディレクトリ以下のファイル群を対象とし**<br>
+おさらいだが<b>コピー元にスラッシュをつけると、そのディレクトリ以下のファイル群を対象とし</b><br>
 <br>
-**スラッシュをつけなければ、ディレクトリごとを対象** とする。<br>
+<b>スラッシュをつけなければ、ディレクトリごとを対象</b> とする。<br>
 <br>
-**<span class="codeInline">コピー元/</span> は <span class="codeInline">コピー元/*</span> と理解しよう。**<br>
+<b><span class="codeInline">コピー元/</span> は <span class="codeInline">コピー元/*</span> と理解しよう。</b><br>
 <br>
 <pre class="code">
 rsync -av src dst
@@ -397,7 +397,7 @@ rsync -av src/ dst
 <br>
 <br>
 <br>
-**dry-run (お試し実行) **というのがある。<br>
+<b>dry-run (お試し実行) </b>というのがある。<br>
 <br>
 -nオプションでいける<br>
 <br>

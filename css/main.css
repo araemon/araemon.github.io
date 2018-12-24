@@ -262,6 +262,11 @@ article .time {
 article img {
     border-radius: 8px;
 }
+article blockquote {
+    border-left:#ddd solid 5px;
+    padding-left:10px;
+    margin:0px;
+}
 @media screen and (min-width: 700px) {
     article .time {
         /* max-width: 800px; */

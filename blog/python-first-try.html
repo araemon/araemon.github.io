@@ -152,9 +152,9 @@ class RecursiveFile():
 まず<span class="codeInline">class RecursiveFile():</span>でクラスを宣言しています。<br>
 次にインデントして処理を書いていきます。<br>
 <span class="codeInline">lineN</span>はstaticな変数になります。型宣言などの必要がなくこのように書けば良いみたいです。<br>
-<span class="codeInline">__init__</span>はコンストラクタメソッドになります。メソッドの第一引数には<span class="codeInline">self</span>を指定しなければならないようです。<span class="codeInline">self</span>の後に続いて引数書いていけば、クラスのインスタントを作るときに、<span class="codeInline">RecursiveFile(abspath, "txt")</span>のように引数を渡して初期化することができます。<br>
-そして、<span class="codeInline">glob.glob(startDir+"/**/*."+extension, recursive=True)</span>の部分が、ディレクトリを再帰的に探索して、指定の拡張子ファイルを全て取得する処理になります。<span class="codeInline">glob.glob</span>はPython3.5以降で使えるようです。特定のフォルダ以降も再帰的に処理したい場合は<span class="codeInline">recursive</span>を<span class="codeInline">True</span>に設定し、<span class="codeInline">/**/</span>のように書きます。<br>
-<span class="codeInline">glob.glob("./**/*.txt", recursive=True)</span>のようにたったの一行で、再帰的にファイルが取得できてしまうなら、今回のようにクラス化する必要はなかったかもしれません。それでもここでは「クラスの使い方の勉強」と思って、このまま進めていきましょう。<br>
+<span class="codeInline"><b>init</b></span>はコンストラクタメソッドになります。メソッドの第一引数には<span class="codeInline">self</span>を指定しなければならないようです。<span class="codeInline">self</span>の後に続いて引数書いていけば、クラスのインスタントを作るときに、<span class="codeInline">RecursiveFile(abspath, "txt")</span>のように引数を渡して初期化することができます。<br>
+そして、<span class="codeInline">glob.glob(startDir+"/<b>/*."+extension, recursive=True)</span>の部分が、ディレクトリを再帰的に探索して、指定の拡張子ファイルを全て取得する処理になります。<span class="codeInline">glob.glob</span>はPython3.5以降で使えるようです。特定のフォルダ以降も再帰的に処理したい場合は<span class="codeInline">recursive</span>を<span class="codeInline">True</span>に設定し、<span class="codeInline">/</b>/</span>のように書きます。<br>
+<span class="codeInline">glob.glob("./<i></i>/*.txt", recursive=True)</span>のようにたったの一行で、再帰的にファイルが取得できてしまうなら、今回のようにクラス化する必要はなかったかもしれません。それでもここでは「クラスの使い方の勉強」と思って、このまま進めていきましょう。<br>
 <br>
 RecursiveFileクラスの続きの処理をみていきます。<br>
 <pre class="code">
@@ -175,7 +175,7 @@ traceメソッドは独自に実装したメソッドになります。第二引
 </pre><br>
 <br>
 クラスの最初の方で宣言したstaticなlineN変数は、<span class="codeInline">RecursiveFile.lineN</span>のように書くことでアクセスできます。<br>
-<span class="codeInline">__del__(self)</span>というのはデストラクタです。循環参照して解放されない場合などのデバッグに使えそうです。<br>
+<span class="codeInline"><b>del</b>(self)</span>というのはデストラクタです。循環参照して解放されない場合などのデバッグに使えそうです。<br>
 以上で、基本的なクラス使い方がわかりました。<br>
 <br>
 それでは、このクラスを実際に使ってみます。<br>
@@ -191,8 +191,8 @@ def tester():
 if __name__ == "__main__":
     tester()
 </pre><br>
-<span class="codeInline">tester()</span>メソッドを作って<span class="codeInline">if __name__ == "__main__":</span>以降で実行しています。<br>
-このファイルを直接実行した場合にのみ、<span class="codeInline">if __name__ == "__main__":</span>以降がスルーします。つまり外部ファイルからimportされた場合には実行されないので、開発でのテスト処理を書くことができます。<br>
+<span class="codeInline">tester()</span>メソッドを作って<span class="codeInline">if <b>name</b> == "<b>main</b>":</span>以降で実行しています。<br>
+このファイルを直接実行した場合にのみ、<span class="codeInline">if <b>name</b> == "<b>main</b>":</span>以降がスルーします。つまり外部ファイルからimportされた場合には実行されないので、開発でのテスト処理を書くことができます。<br>
 実行結果はこのようになりました。<br>
 <pre class="code">
 1: /somewhere/hoge.txt
@@ -202,7 +202,7 @@ if __name__ == "__main__":
 <br>
 以上でPython入門ができました。もしかしたら間違いや、もっと良い書き方があるかもしれませんので、各自でPythonを勉強してみてくださいね。<br>
 <br>
-<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4774196436/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4774196436&linkCode=as2&tag=101010fun-22&linkId=cac21a621d087c2ba54b230cca57db1d"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4774196436&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4774196436" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797396814/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797396814&linkCode=as2&tag=101010fun-22&linkId=70d1fff022835386a88986a32c7852ea"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797396814&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797396814" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4839960240/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4839960240&linkCode=as2&tag=101010fun-22&linkId=a9431092a8ccee3fb7638f1a1943f503"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4839960240&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4839960240" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
+<a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/4774196436/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4774196436&linkCode=as2&tag=101010fun-22&linkId=cac21a621d087c2ba54b230cca57db1d"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=4774196436&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4774196436" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/4797396814/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797396814&linkCode=as2&tag=101010fun-22&linkId=70d1fff022835386a88986a32c7852ea"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=4797396814&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797396814" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/4839960240/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4839960240&linkCode=as2&tag=101010fun-22&linkId=a9431092a8ccee3fb7638f1a1943f503"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=4839960240&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4839960240" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
 
                                 </p>
                                 <ul class="shareList">
