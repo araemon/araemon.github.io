@@ -69,18 +69,18 @@ EventMachine(EM-WebSocket)<br>
 <br>
 <br>
 <h2>インストール</h2>
-<span class="codeInline"></span>`bash<br>
-sudo gem install ew-websocket<br>
 <pre class="code">
-
-## websoketサーバーをつくる
-とりあえず公式のサンプルをコピペ
-
-https://github.com/igrigorik/em-websocket
-
-**server.rb**
-
-```ruby
+sudo gem install ew-websocket
+</pre><br>
+<br>
+<h2>websoketサーバーをつくる</h2>
+とりあえず公式のサンプルをコピペ<br>
+<br>
+<a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br>
+<br>
+**server.rb**<br>
+<br>
+<pre class="code">
 require 'em-websocket'
 
 EM.run {
@@ -108,74 +108,73 @@ EM.run {
 <br>
 サーバーの起動<br>
 <br>
-<span class="codeInline"></span>`bash<br>
-ruby server.rb<br>
 <pre class="code">
-
-
-
-参考:
-https://github.com/igrigorik/em-websocket
-https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9
-
-
-## クライアントからwebsoketを送信する
-ハンドシェイクの作り方はこちらが勉強になる。HTTPに見せかけてルーター達を騙して通信していることになるほど納得した。
-
-引用:
-
-https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より
-『WebSocket ハンドシェイク』
-
-&gt; WebSocket プロトコルは TCP よりも上位かつ HTTP と同じレベルで TCP/IP スイートにぴったりと適合します。新しいプロトコルをインターネットに導入する際の課題の 1 つは、無数のルーター、プロキシ、およびファイアウォールに何も変わっていないと思わせる方法です。WebSocket プロトコルは、同じ基盤となる TCP 接続で、独自の WebSocket データ転送に切り替える前に HTTP として見せかけ、この目的を達成します。これによって、疑うことを知らない多くの中継サービスをアップグレードして、WebSocket 通信がそのネットワーク接続を通過できるようにする必要がなくなります。実際には、これは必ずしもスムーズに行われるわけではありません。熱意が空回りしたルーターが HTTP の要求や応答をいじり、プロキシのキャッシュ、アドレス、リソース変換などを、自身の目的に合うように書き直そうとするためです。短期間で行える効果的な解決策は、セキュリティが確保されるチャネル、つまりトランスポート層セキュリティ (TLS) で WebSocket プロトコルを使用する方法です。こうすれば、多くの場合こうした書き直しを最小限に抑えられます。
-
-
-curlでハンドシェイクしているこちらの記事を参考させてもらった。
-http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl
-
+ruby server.rb
 </pre><br>
-curl -v -i -N \<br>
-  -H 'Sec-WebSocket-Version: 13' \<br>
-  -H "Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)" \<br>
-  -H "Connection: Upgrade" \<br>
-  -H "Upgrade: websocket" \<br>
-  "http://localhost:8080"            <br>
 <br>
-* Rebuilt URL to: http://localhost:8080/<br>
-*   Trying ::1...<br>
-* TCP_NODELAY set<br>
-* Connection failed<br>
-* connect to ::1 port 8080 failed: Connection refused<br>
-*   Trying 127.0.0.1...<br>
-* TCP_NODELAY set<br>
-* Connected to localhost (127.0.0.1) port 8080 (#0)<br>
-> GET / HTTP/1.1<br>
-> Host: localhost:8080<br>
-> User-Agent: curl/7.54.0<br>
-> Accept: */*<br>
-> Sec-WebSocket-Version: 13<br>
-> Sec-WebSocket-Key: LXWAu5XfhDXLUAZRlSOa3w==<br>
-> Connection: Upgrade<br>
-> Upgrade: websocket<br>
-><br>
-< HTTP/1.1 101 Switching Protocols<br>
-HTTP/1.1 101 Switching Protocols<br>
-< Upgrade: websocket<br>
-Upgrade: websocket<br>
-< Connection: Upgrade<br>
-Connection: Upgrade<br>
-< Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=<br>
-Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=<br>
 <br>
-<<br>
-? Hello Client, you connected to /<br>
+<br>
+参考:<br>
+<a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br>
+<a href="https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9">https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9</a><br>
+<br>
+<br>
+<h2>クライアントからwebsoketを送信する</h2>
+ハンドシェイクの作り方はこちらが勉強になる。HTTPに見せかけてルーター達を騙して通信していることになるほど納得した。<br>
+<br>
+引用:<br>
+<br>
+<a href="https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より">https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より</a><br>
+『WebSocket ハンドシェイク』<br>
+<br>
+> WebSocket プロトコルは TCP よりも上位かつ HTTP と同じレベルで TCP/IP スイートにぴったりと適合します。新しいプロトコルをインターネットに導入する際の課題の 1 つは、無数のルーター、プロキシ、およびファイアウォールに何も変わっていないと思わせる方法です。WebSocket プロトコルは、同じ基盤となる TCP 接続で、独自の WebSocket データ転送に切り替える前に HTTP として見せかけ、この目的を達成します。これによって、疑うことを知らない多くの中継サービスをアップグレードして、WebSocket 通信がそのネットワーク接続を通過できるようにする必要がなくなります。実際には、これは必ずしもスムーズに行われるわけではありません。熱意が空回りしたルーターが HTTP の要求や応答をいじり、プロキシのキャッシュ、アドレス、リソース変換などを、自身の目的に合うように書き直そうとするためです。短期間で行える効果的な解決策は、セキュリティが確保されるチャネル、つまりトランスポート層セキュリティ (TLS) で WebSocket プロトコルを使用する方法です。こうすれば、多くの場合こうした書き直しを最小限に抑えられます。<br>
+<br>
+<br>
+curlでハンドシェイクしているこちらの記事を参考させてもらった。<br>
+<a href="http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl">http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl</a><br>
+<br>
 <pre class="code">
+curl -v -i -N \
+  -H 'Sec-WebSocket-Version: 13' \
+  -H "Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)" \
+  -H "Connection: Upgrade" \
+  -H "Upgrade: websocket" \
+  "http://localhost:8080"            
 
-無事websocketでハンドシェイクできた。
+* Rebuilt URL to: http://localhost:8080/
+*   Trying ::1...
+* TCP_NODELAY set
+* Connection failed
+* connect to ::1 port 8080 failed: Connection refused
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+&gt; GET / HTTP/1.1
+&gt; Host: localhost:8080
+&gt; User-Agent: curl/7.54.0
+&gt; Accept: */*
+&gt; Sec-WebSocket-Version: 13
+&gt; Sec-WebSocket-Key: LXWAu5XfhDXLUAZRlSOa3w==
+&gt; Connection: Upgrade
+&gt; Upgrade: websocket
+&gt;
+&lt; HTTP/1.1 101 Switching Protocols
+HTTP/1.1 101 Switching Protocols
+&lt; Upgrade: websocket
+Upgrade: websocket
+&lt; Connection: Upgrade
+Connection: Upgrade
+&lt; Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
+Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
 
+&lt;
+? Hello Client, you connected to /
 </pre><br>
-WebSocket connection open<br>
-<span class="codeInline"></span>`<br>
+<br>
+無事websocketでハンドシェイクできた。<br>
+<br>
+<pre class="code">
+</pre><br>
 <br>
 しかし、この後の通信やり取りはどうしたらいいのだろう？<br>
 <br>

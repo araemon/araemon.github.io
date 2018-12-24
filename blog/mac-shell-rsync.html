@@ -130,7 +130,6 @@ Google先生に聞いた特徴をあげてみる<br>
 Macで最初から入っているバージョンは古いので更新する<br>
 <br>
 <pre class="code">
-brew install rsync
 </pre><br>
 <br>
 ターミナル再起動でおkだった<br>
@@ -361,58 +360,57 @@ old.txt src
 <br>
 それでは最後に**rsyncの動作確認その1**で行なった、6番に—deleteオプションをつけて実行してみることにしよう。<br>
 <br>
-<span class="codeInline"></span>`bash<br>
-rsync -av --delete src/ dst/<br>
 <pre class="code">
-
-なんとdst内のsrcをまるまる削除してしまった。
-
-むなしく残っているのはnew.txtのみである。
-
+rsync -av --delete src/ dst/
 </pre><br>
-ls dst<br>
-new.txt<br>
+<br>
+なんとdst内のsrcをまるまる削除してしまった。<br>
+<br>
+むなしく残っているのはnew.txtのみである。<br>
+<br>
 <pre class="code">
-
-srcの中身をdstにまるごと同期したいならいいかもしれないが。
-
-スラッシュの違いを理解してどこのディレクトリを操作するのかイメージできていないと大変なことになってしまう。
-
-おさらいだが**コピー元にスラッシュをつけると、そのディレクトリ以下のファイル群を対象とし**
-
-**スラッシュをつけなければ、ディレクトリごとを対象** とする。
-
-**`コピー元/` は `コピー元/*` と理解しよう。**
-
+new.txt
 </pre><br>
-rsync -av src dst<br>
+<br>
+srcの中身をdstにまるごと同期したいならいいかもしれないが。<br>
+<br>
+スラッシュの違いを理解してどこのディレクトリを操作するのかイメージできていないと大変なことになってしまう。<br>
+<br>
+おさらいだが**コピー元にスラッシュをつけると、そのディレクトリ以下のファイル群を対象とし**<br>
+<br>
+**スラッシュをつけなければ、ディレクトリごとを対象** とする。<br>
+<br>
+**<span class="codeInline">コピー元/</span> は <span class="codeInline">コピー元/*</span> と理解しよう。**<br>
+<br>
 <pre class="code">
-
-![](./images/rsync-src1.jpg)
-
-
+rsync -av src dst
 </pre><br>
-rsync -av src/ dst<br>
+<br>
+![](./images/rsync-src1.jpg)<br>
+<br>
+<br>
 <pre class="code">
-
-![](./images/rsync-src2.jpg)
-
-
-
-**dry-run (お試し実行) **というのがある。
-
--nオプションでいける
-
-実際には同期されないのでまずは、本番を実行する前にテストで確認する癖をつけよう。
-
+rsync -av src/ dst
 </pre><br>
-rsync -avn --delete src/ dst/<br>
-sending incremental file list<br>
-deleting src/old.txt<br>
-deleting src/<br>
-./<br>
-new.txt<br>
-<span class="codeInline"></span>`<br>
+<br>
+![](./images/rsync-src2.jpg)<br>
+<br>
+<br>
+<br>
+**dry-run (お試し実行) **というのがある。<br>
+<br>
+-nオプションでいける<br>
+<br>
+実際には同期されないのでまずは、本番を実行する前にテストで確認する癖をつけよう。<br>
+<br>
+<pre class="code">
+rsync -avn --delete src/ dst/
+sending incremental file list
+deleting src/old.txt
+deleting src/
+./
+new.txt
+</pre><br>
 <br>
 <br>
 参考:<br>

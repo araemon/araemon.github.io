@@ -86,8 +86,6 @@ Apacheを止めないと証明書を作れないので止めておく。<br>
 <h2>certbotを使って鍵を作成</h2>
 いくつか質問されるが難しいことはない。<br>
 <pre class="code">
-cd letsencrypt
-
 ./letsencrypt-auto certonly -a standalone -d hogedomain.com
 </pre><br>
 <br>
@@ -207,7 +205,6 @@ faviconを設置して無事エラーはなくなった。<br>
 <a href="httpでアクセスしても自動でhttpsへリダイレクトするように.htaccessを編集。">httpでアクセスしても自動でhttpsへリダイレクトするように.htaccessを編集。</a><br>
 <br>
 <pre class="code">
-RewriteEngine On
 RewriteCond %{HTTPS} off
 RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
 </pre><br>

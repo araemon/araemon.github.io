@@ -73,7 +73,6 @@
 どこか適当な所に101010.fun用のルートフォルダ(someWherePath)を作る。<br>
 <br>
 <pre class="code">
-mkdir someWherePath
 </pre><br>
 <br>
 所有者、パーミッションも適切に設定しておく。<br>
@@ -95,7 +94,6 @@ Apacheをreloadする。<br>
 www有りのURLに統一するため以下のように設定した。<br>
 <br>
 <pre class="code">
-RewriteEngine On
 RewriteCond %{HTTP_HOST} ^101010\.fun
 RewriteRule ^(.*) https://www.101010.fun/$1 [R=301,L]
 </pre><br>

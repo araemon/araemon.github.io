@@ -82,7 +82,6 @@ done
 つぎに、上記の$line変数をタグ区切りで分けてみます。<br>
 awkコマンドは-Fオプションで区切り文字を指定しない限り、タブまたは半角スペースで区切ってくれます。そしてMeCabの出力はタグ区切りとなっています。ですから、次のように書くことができます。<br>
 <pre class="code">
-do
     text=`echo $line | awk '{print $1}'`
     hinshi=`echo $line | awk '{print $2}'`
 done
@@ -91,7 +90,6 @@ done
 <br>
 それでは品詞の中から「名詞,一般」という文字が含まれている行だけを抽出してみましょう。<br>
 <pre class="code">
-do
     text=`echo $line | awk '{print $1}'`
     hinshi=`echo $line | awk '{print $2}'`
     meishi=`echo $hinshi | grep 名詞,一般`
