@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>MarkDown Sample</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="MarkDown Sample" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/oss/.html" property="og:url" />
+<meta content="" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="oss">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/oss/" class="tagHighlight">oss</a>
+                                </div>
+                                <h1>MarkDown Sample</h1>
+                                <div class="time"><time pubdate="" datetime="2004-05-01">2004-05-01</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <br>
+<h1>h1 Heading 8-)</h1>
+<h2>h2 Heading</h2>
+<h3>h3 Heading</h3>
+<h4>h4 Heading</h4>
+<h5>h5 Heading</h5>
+<h6>h6 Heading</h6>
+<br>
+<br>
+<h2>Horizontal Rules</h2>
+<br>
+___<br>
+<br>
+<br>
+"Smartypants, double quotes" and 'single quotes'<br>
+<br>
+<br>
+<h2>Emphasis</h2>
+<br>
+**This is bold text**<br>
+<br>
+__This is bold text__<br>
+<br>
+*This is italic text*<br>
+<br>
+_This is italic text_<br>
+<br>
+~~Strikethrough~~<br>
+<br>
+<br>
+<h2>Blockquotes</h2>
+<br>
+<br>
+> Blockquotes can also be nested...<br>
+>> ...by using additional greater-than signs right next to each other...<br>
+> > > ...or with spaces between arrows.<br>
+<br>
+<br>
+<h2>Lists</h2>
+<br>
+Unordered<br>
+<br>
++ Create a list by starting a line with <span class="codeInline">+</span>, <span class="codeInline">-</span>, or <span class="codeInline">*</span><br>
++ Sub-lists are made by indenting 2 spaces:<br>
+  - Marker character change forces new list start:<br>
+    * Ac tristique libero volutpat at<br>
+    + Facilisis in pretium nisl aliquet<br>
+    - Nulla volutpat aliquam velit<br>
++ Very easy!<br>
+<br>
+Ordered<br>
+<br>
+1. Lorem ipsum dolor sit amet<br>
+2. Consectetur adipiscing elit<br>
+3. Integer molestie lorem at massa<br>
+<br>
+<br>
+1. You can use sequential numbers...<br>
+1. ...or keep all the numbers as <span class="codeInline">1.</span><br>
+<br>
+Start numbering with offset:<br>
+<br>
+57. foo<br>
+1. bar<br>
+<br>
+<br>
+<h2>Code</h2>
+<br>
+Inline <span class="codeInline">code</span><br>
+<br>
+Indented code<br>
+<br>
+    // Some comments<br>
+    line 1 of code<br>
+    line 2 of code<br>
+    line 3 of code<br>
+<br>
+<br>
+Block code "fences"<br>
+<br>
+<pre class="code">
+Sample text here...
+</pre><br>
+<br>
+Syntax highlighting<br>
+<br>
+<span class="codeInline"></span>` js<br>
+var foo = function (bar) {<br>
+  return bar++;<br>
+};<br>
+<br>
+console.log(foo(5));<br>
+<span class="codeInline"></span>`<br>
+<br>
+<h2>Tables</h2>
+<br>
+<table><thead><tr><th> Option </th><th> Description </th></tr></thead><tbody><tr><td> data   </td><td> path to data files to supply the data that will be passed into templates. </td></tr><tr><td> engine </td><td> engine to be used for processing templates. Handlebars is the default. </td></tr><tr><td> ext    </td><td> extension to be used for dest files. </td></tr></tbody></table><br>
+Right aligned columns<br>
+<br>
+<table><thead><tr><th> Option </th><th> Description </th></tr></thead><tbody><tr><td> data   </td><td> path to data files to supply the data that will be passed into templates. </td></tr><tr><td> engine </td><td> engine to be used for processing templates. Handlebars is the default. </td></tr><tr><td> ext    </td><td> extension to be used for dest files. </td></tr></tbody></table><br>
+<br>
+<h2>Links</h2>
+<br>
+[link text](http://dev.nodeca.com)<br>
+<br>
+[link with title](http://nodeca.github.io/pica/demo/ "title text!")<br>
+<br>
+Autoconverted link https://github.com/nodeca/pica (enable linkify to see)<br>
+<br>
+<br>
+<h2>Images</h2>
+<br>
+![Minion](https://octodex.github.com/images/minion.png)<br>
+![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg "The Stormtroopocat")<br>
+<br>
+Like links, Images also have a footnote style syntax<br>
+<br>
+![Alt text][id]<br>
+<br>
+With a reference later in the document defining the URL location:<br>
+<br>
+[id]: https://octodex.github.com/images/dojocat.jpg  "The Dojocat"<br>
+<br>
+<br>
+<h2>Plugins</h2>
+<br>
+The killer feature of <span class="codeInline">markdown-it</span> is very effective support of<br>
+[syntax plugins](https://www.npmjs.org/browse/keyword/markdown-it-plugin).<br>
+<br>
+<br>
+<h3>[Emojies](https://github.com/markdown-it/markdown-it-emoji)</h3>
+<br>
+> Classic markup: :wink: :crush: :cry: :tear: :laughing: :yum:<br>
+><br>
+> Shortcuts (emoticons): :-) :-( 8-) ;)<br>
+<br>
+see [how to change output](https://github.com/markdown-it/markdown-it-emoji#change-output) with twemoji.<br>
+<br>
+<br>
+<h3>[Subscript](https://github.com/markdown-it/markdown-it-sub) / [Superscript](https://github.com/markdown-it/markdown-it-sup)</h3>
+<br>
+- 19^th^<br>
+- H~2~O<br>
+<br>
+<br>
+<h3>[\<ins>](https://github.com/markdown-it/markdown-it-ins)</h3>
+<br>
+++Inserted text++<br>
+<br>
+<br>
+<h3>[\<mark>](https://github.com/markdown-it/markdown-it-mark)</h3>
+<br>
+==Marked text==<br>
+<br>
+<br>
+<h3>[Footnotes](https://github.com/markdown-it/markdown-it-footnote)</h3>
+<br>
+Footnote 1 link[^first].<br>
+<br>
+Footnote 2 link[^second].<br>
+<br>
+Inline footnote^[Text of inline footnote] definition.<br>
+<br>
+Duplicated footnote reference[^second].<br>
+<br>
+[^first]: Footnote **can have markup**<br>
+<br>
+    and multiple paragraphs.<br>
+<br>
+[^second]: Footnote text.<br>
+<br>
+<br>
+<h3>[Definition lists](https://github.com/markdown-it/markdown-it-deflist)</h3>
+<br>
+Term 1<br>
+<br>
+:   Definition 1<br>
+with lazy continuation.<br>
+<br>
+Term 2 with *inline markup*<br>
+<br>
+:   Definition 2<br>
+<br>
+        { some code, part of Definition 2 }<br>
+<br>
+    Third paragraph of definition 2.<br>
+<br>
+_Compact style:_<br>
+<br>
+Term 1<br>
+  ~ Definition 1<br>
+<br>
+Term 2<br>
+  ~ Definition 2a<br>
+  ~ Definition 2b<br>
+<br>
+<br>
+<h3>[Abbreviations](https://github.com/markdown-it/markdown-it-abbr)</h3>
+<br>
+This is HTML abbreviation example.<br>
+<br>
+It converts "HTML", but keep intact partial entries like "xxxHTMLyyy" and so on.<br>
+<br>
+*[HTML]: Hyper Text Markup Language<br>
+<br>
+<h3>[Custom containers](https://github.com/markdown-it/markdown-it-container)</h3>
+<br>
+::: warning<br>
+*here be dragons*<br>
+:::<br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/oss/.html&text=MarkDown Sample"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/oss/.html&title=MarkDown Sample"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

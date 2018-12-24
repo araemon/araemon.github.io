@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>シェルスクリプト・コマンドの覚え書き</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="シェルスクリプト・コマンドの覚え書き" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/.html" property="og:url" />
+<meta content="" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="blog">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/blog/" class="tagHighlight">blog</a>
+                                </div>
+                                <h1>シェルスクリプト・コマンドの覚え書き</h1>
+                                <div class="time"><time pubdate="" datetime="2018-05-11">2018-05-11</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        シェルスクリプトに慣れるためのメモ。<br>
+<br>
+<h2>引数と特別な変数</h2>
+test.sh<br>
+<pre class="code">
+#!/bin/sh
+
+#スクリプト名
+echo "$0"
+
+#ドルマークをバックスラッシュでエスケープすれば文字列として扱える
+echo "\$0"
+
+#1番目の引数
+echo "$1"
+
+#引数の数
+echo "$#"
+
+# $* 全部の引数をまとめて1つとして処理?
+
+# $@ 全部の引数を個別として処理?
+
+# $? 直前実行したコマンドの終了値（0は成功、1は失敗）
+
+# $$ このシェルスクリプトのプロセスID
+
+# $! 最後に実行したバックグラウンドプロセスID
+</pre><br>
+<br>
+参考:<br>
+<a href="https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337">https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337</a><br>
+<br>
+{{amazon_4797377623}}<br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=シェルスクリプト・コマンドの覚え書き"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=シェルスクリプト・コマンドの覚え書き"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

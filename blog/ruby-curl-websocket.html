@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>RubyとcURLではじめてのWebSocketを試してみる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="RubyとcURLではじめてのWebSocketを試してみる" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/.html" property="og:url" />
+<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729093657.png" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="blog">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/blog/" class="tagHighlight">blog</a>
+                                </div>
+                                <h1>RubyとcURLではじめてのWebSocketを試してみる</h1>
+                                <div class="time"><time pubdate="" datetime="2018-05-22">2018-05-22</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729093657.png" class="default lazyload" /><br>
+<br>
+<br>
+だいぶ前からWebSocketは気になっていたが情報が少なかったこともあり手を出せずにいた。<br>
+<br>
+現在では情報も多く、Flashが終わったとなるとChazukeのコメント取得もwebsocketに対応せざるを得ないと思うので遅ればせながら学んでみることにした。<br>
+<br>
+<br>
+とりあえず導入が簡単そうなrubyで動くwebsocketサーバーを探してみる。<br>
+<br>
+EventMachine(EM-WebSocket)<br>
+<a href="https://github.com/igrigorik/em-websocket">https://github.com/igrigorik/em-websocket</a><br>
+<br>
+<br>
+<h2>開発環境</h2>
+* macOS High Sierra 10.13.4<br>
+* em-websocket-0.5.1.gem<br>
+* ruby 2.3.3p222 (2016-11-21 revision 56859) [universal.x86_64-darwin17]<br>
+* curl 7.54.0 (x86_64-apple-darwin17.0) libcurl/7.54.0 LibreSSL/2.0.20 zlib/1.2.11 nghttp2/1.24.0<br>
+<br>
+<br>
+<h2>インストール</h2>
+<span class="codeInline"></span>`bash<br>
+sudo gem install ew-websocket<br>
+<pre class="code">
+
+## websoketサーバーをつくる
+とりあえず公式のサンプルをコピペ
+
+https://github.com/igrigorik/em-websocket
+
+**server.rb**
+
+```ruby
+require 'em-websocket'
+
+EM.run {
+  EM::WebSocket.run(:host =&gt; "0.0.0.0", :port =&gt; 8080) do |ws|
+    ws.onopen { |handshake|
+      puts "WebSocket connection open"
+
+      # Access properties on the EM::WebSocket::Handshake object, e.g.
+      # path, query_string, origin, headers
+
+      # Publish message to the client
+      ws.send "Hello Client, you connected to #{handshake.path}"
+    }
+
+    ws.onclose { puts "Connection closed" }
+
+    ws.onmessage { |msg|
+      puts "Recieved message: #{msg}"
+      ws.send "Pong: #{msg}"
+    }
+  end
+}
+</pre><br>
+<br>
+<br>
+サーバーの起動<br>
+<br>
+<span class="codeInline"></span>`bash<br>
+ruby server.rb<br>
+<pre class="code">
+
+
+
+参考:
+https://github.com/igrigorik/em-websocket
+https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9
+
+
+## クライアントからwebsoketを送信する
+ハンドシェイクの作り方はこちらが勉強になる。HTTPに見せかけてルーター達を騙して通信していることになるほど納得した。
+
+引用:
+
+https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より
+『WebSocket ハンドシェイク』
+
+&gt; WebSocket プロトコルは TCP よりも上位かつ HTTP と同じレベルで TCP/IP スイートにぴったりと適合します。新しいプロトコルをインターネットに導入する際の課題の 1 つは、無数のルーター、プロキシ、およびファイアウォールに何も変わっていないと思わせる方法です。WebSocket プロトコルは、同じ基盤となる TCP 接続で、独自の WebSocket データ転送に切り替える前に HTTP として見せかけ、この目的を達成します。これによって、疑うことを知らない多くの中継サービスをアップグレードして、WebSocket 通信がそのネットワーク接続を通過できるようにする必要がなくなります。実際には、これは必ずしもスムーズに行われるわけではありません。熱意が空回りしたルーターが HTTP の要求や応答をいじり、プロキシのキャッシュ、アドレス、リソース変換などを、自身の目的に合うように書き直そうとするためです。短期間で行える効果的な解決策は、セキュリティが確保されるチャネル、つまりトランスポート層セキュリティ (TLS) で WebSocket プロトコルを使用する方法です。こうすれば、多くの場合こうした書き直しを最小限に抑えられます。
+
+
+curlでハンドシェイクしているこちらの記事を参考させてもらった。
+http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl
+
+</pre><br>
+curl -v -i -N \<br>
+  -H 'Sec-WebSocket-Version: 13' \<br>
+  -H "Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)" \<br>
+  -H "Connection: Upgrade" \<br>
+  -H "Upgrade: websocket" \<br>
+  "http://localhost:8080"            <br>
+<br>
+* Rebuilt URL to: http://localhost:8080/<br>
+*   Trying ::1...<br>
+* TCP_NODELAY set<br>
+* Connection failed<br>
+* connect to ::1 port 8080 failed: Connection refused<br>
+*   Trying 127.0.0.1...<br>
+* TCP_NODELAY set<br>
+* Connected to localhost (127.0.0.1) port 8080 (#0)<br>
+> GET / HTTP/1.1<br>
+> Host: localhost:8080<br>
+> User-Agent: curl/7.54.0<br>
+> Accept: */*<br>
+> Sec-WebSocket-Version: 13<br>
+> Sec-WebSocket-Key: LXWAu5XfhDXLUAZRlSOa3w==<br>
+> Connection: Upgrade<br>
+> Upgrade: websocket<br>
+><br>
+< HTTP/1.1 101 Switching Protocols<br>
+HTTP/1.1 101 Switching Protocols<br>
+< Upgrade: websocket<br>
+Upgrade: websocket<br>
+< Connection: Upgrade<br>
+Connection: Upgrade<br>
+< Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=<br>
+Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=<br>
+<br>
+<<br>
+? Hello Client, you connected to /<br>
+<pre class="code">
+
+無事websocketでハンドシェイクできた。
+
+</pre><br>
+WebSocket connection open<br>
+<span class="codeInline"></span>`<br>
+<br>
+しかし、この後の通信やり取りはどうしたらいいのだろう？<br>
+<br>
+SSL/TLSやOAuthなどの認証が必要な場合などの問題も解決しなければならない。<br>
+<br>
+WebSocketの旅は長そうだ。<br>
+<br>
+つづく。<br>
+<br>
+<br>
+参考:<br>
+<a href="http://keicode.com/script/html5-websocket-1.php">http://keicode.com/script/html5-websocket-1.php</a><br>
+<a href="https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx">https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx</a><br>
+<a href="https://triple-underscore.github.io/RFC6455-ja.html">https://triple-underscore.github.io/RFC6455-ja.html</a><br>
+<a href="http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl">http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl</a><br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=RubyとcURLではじめてのWebSocketを試してみる"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=RubyとcURLではじめてのWebSocketを試してみる"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

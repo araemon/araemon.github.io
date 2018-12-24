@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>ChiMAKi(仮)</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="ChiMAKi(仮)" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/oss/.html" property="og:url" />
+<meta content="https://araemon.github.io/images/chimaki.jpg" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="oss">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/oss/" class="tagHighlight">oss</a>
+                                </div>
+                                <h1>ChiMAKi(仮)</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-20">2018-12-20</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <img data-src="/images/chimaki.jpg" class="default lazyload" /><br>
+<br>
+<h2>ChiMAKiプロジェクトとしてオープンソースにすることにしました</h2>
+<a href="https://github.com/araemon/chimaki">https://github.com/araemon/chimaki</a><br>
+<br>
+ChiMAKiはiOSアプリ開発のためのswiftライブラリです。<br>
+後の事を考えず、勢いでアプリ開発を進めていくと、後々積んでしまいます。スパゲッティコードになってしまったら、メンテナンスもやる気がせず、だんだん開発から離れていってしまいます。 そうならないためにも、痒いところに手が届くような小さなKitを作っていくことにしました。 ネイティブメソッドを抽象化するラッパークラス群です。<br>
+<br>
+<h3>Chill out! Make Application Kit!</h3>
+「（アプリを作る前に）落ち着いて！アプリ開発のためのキットを作って！」というような意味を込めてChiMAKIと名付けています。<br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/oss/.html&text=ChiMAKi(仮)"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/oss/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/oss/.html&title=ChiMAKi(仮)"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

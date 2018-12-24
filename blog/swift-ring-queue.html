@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>SwiftでRingBuffer(待ち行列)のQueueを作って100万回処理してみる</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="SwiftでRingBuffer(待ち行列)のQueueを作って100万回処理してみる" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/.html" property="og:url" />
+<meta content="https://araemon.github.io/images/queue-image.jpg" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="blog">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/blog/" class="tagHighlight">blog</a>
+                                </div>
+                                <h1>SwiftでRingBuffer(待ち行列)のQueueを作って100万回処理してみる</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-21">2018-12-21</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <img data-src="/images/queue-image.jpg" class="default lazyload" /><br>
+開発中のOSS<a href="/oss/chimaki-1.html">「ChiMAKi」</a>に、QueueのKitを追加するまでの記事です。<br>
+<br>
+Swiftの場合、Queueを作るとしたら次のようなプログラミングが考えられます。<br>
+<span class="codeInline">Queue.swift</span><br>
+<pre class="code">
+var max:Int!
+var data:[Any] = []
+
+init(_ max:Int) {
+    self.max = max
+}
+
+func enqueue(_ obj:Any) -&gt; Bool {
+    if data.count &gt; self.max - 1 {
+        return false
+    }
+    data.append(obj)
+    return true
+}
+
+func dequeue() -&gt; Any? {
+    if data.count &gt; 0 {
+        let obj = data[0]
+        data.remove(at: 0)
+        return obj
+    }
+    return nil
+}
+</pre><br>
+<br>
+単純なプログラムでサクッと作れました。<br>
+しかしこのようなアルゴリズムは、特にC言語の場合では問題があるようです。先頭配列を削除するというのは、配列を前方にシフトする処理を行うというこになるので、速度が遅くなってしまうのです。何か良い方法があるのではと思いQueueのプログラムを調べていくと、リングバッファーというアルゴリズムが見つかりました。<br>
+<br>
+<img data-src="/images/queue-ring-buffer.jpg" width="300" class="lazyload" /><br>
+<br>
+サイズの決まった配列を作り、輪のように見立てて考えます。0番から順番にデータを入れていきます。一周回ったら、また0番に戻ってデータを入れていきます。こうすることで、配列をシフトする処理の必要が無くなります。カウントの管理はheadとnumの値で管理します。enqueueしたらnumカウントを1プラスするようにし、dequeueしたら、headカウンタを1プラスします。enqueueすべきインデックスはhead+num番となります。dequeueすべきインデックスはhead番となります。<br>
+<br>
+リングバッファーの説明およびプログラミングは、こちらのサイトが大変参考になりました。<br>
+<a href="http://www.cc.kyoto-su.ac.jp/~yamada/ap/queue.html">http://www.cc.kyoto-su.ac.jp/~yamada/ap/queue.html</a><br>
+<br>
+<br>
+さて、このリングバッファーのQueueを、Swiftでもやってみたいと思いプログラミングしてみました。<br>
+<span class="codeInline">RingQueue.swift</span><br>
+<pre class="code">
+var head:Int = 0
+var num:Int = 0
+var max:Int = 0
+var data:[Any]!
+var debug = false
+
+init(_ max:Int) {
+    self.max = max
+    self.data = Array&lt;Any&gt;(repeating: -1, count: max)
+}
+
+@discardableResult
+func enqueue(_ obj:Any) -&gt; Bool { // キューが一杯だったらfalseを返す
+    if num &lt; max {
+        self.data[(head + num) % max] = obj
+        num = num + 1
+        return true
+    }
+    return false
+}
+
+@discardableResult
+func dequeue() -&gt; Any? {
+    if num &gt; 0 {
+        let obj = data[head]
+        data[head] = -1
+        num = num - 1
+        head = (head + 1) % max;
+        return obj
+    }
+    return nil
+}
+</pre><br>
+<br>
+動作確認を行うために、XCTestで次のプログラムを組んで確認してみます。<br>
+<pre class="code">
+let max = 5
+let loop = 3
+var num = 0
+func sequenceNo() -&gt; Int {
+    num = num + 1
+    return num
+}
+
+func testRingQueue() {
+    let q = RingQueue(max)
+    
+    for _ in 0..&lt;loop {
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+    }
+
+}
+</pre><br>
+<br>
+動作確認の結果です。一つ一つ丁寧に追っていくと、ちゃんとキューイングできていることがわかります。<br>
+<img data-src="/images/queue-test-trace.jpg" width="300" class="lazyload" /><br>
+<br>
+<br>
+さらに、最初に作った<span class="codeInline">Queue.swift</span>と、先ほどの<span class="codeInline">RingQueue.swift</span>で速度比較実験を行ってみました。<br>
+次のようなXCTestCaseを書いて、速度を比較してみます。<br>
+<pre class="code">
+let max = 1000
+let loop = 100*100*100
+
+var num = 0
+func sequenceNo() -&gt; String {
+    num = num + 1
+    return "hogehogehogehoge\(num)"
+}
+
+func testQueue() {
+    print("[Queue.swift]\n\n\n")
+    let q = Queue(max)
+
+
+    for _ in 0..&lt;loop {
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+    }
+
+}
+
+
+func testRingQueue() {
+    print("[RingQueue.swift]\n\n\n")
+    let q = RingQueue(max)
+    
+    for _ in 0..&lt;loop {
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+        q.dequeue()
+        q.dequeue()
+        q.enqueue(sequenceNo())
+        q.enqueue(sequenceNo())
+    }
+
+}
+</pre><br>
+<br>
+QueueのMax sizeを変えて実験してみました。100万回のループ処理における速度結果を次に示します。<br>
+<table><thead><tr><th>Queue max</th><th>Queue.swift</th><th>RingQueue.swift</th></tr></thead><tbody><tr><td>10  </td><td>9.954 seconds</td><td>11.201 seconds</td></tr><tr><td>100 </td><td>12.377 seconds</td><td>10.863 seconds</td></tr><tr><td>1000</td><td>33.233 seconds</td><td>11.789 seconds</td></tr><tr><td>10000</td><td>232.331 seconds</td><td>10.712 seconds</td></tr></tbody></table><br>
+上記データをグラフにしてみました。縦軸はQueueのMax size、横軸は100万回処理にかかった秒数を表します。<br>
+<img data-src="/images/queue-test-graph.jpg" class="default lazyload" /><br>
+<br>
+QueueのMax sizeが小さい場合は、どちらのアルゴリズムでも大した差はありません。しかし、Max sizeが大きくなるほど<span class="codeInline">Queue.swift</span>では顕著に速度が遅くなってしまいました。これは最初に説明した通り、C言語と同様にSwiftでもArrayをシフト処理をしているからだと思われます。<br>
+一方、<span class="codeInline">RingQueue.swift</span>の方は、Max sizeを変えても速度変化はみられませんでした。それもそのはず、Arrayそのものは増やしたり、減らしたりせず、参照するインデックスを足したり減らしたりしているだけなので、QueueのMax sizeには依存しないのです。<br>
+<br>
+本プログラムはChiMAKiプロジェクトへ実装しましたので、ご参照ください。<br>
+<a href="https://github.com/araemon/chimaki/tree/master/Chimaki/Queue">https://github.com/araemon/chimaki/tree/master/Chimaki/Queue</a><br>
+<br>
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797366249/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797366249&linkCode=as2&tag=101010fun-22&linkId=3fdf21a47fcaea6368785832ba3bd506"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797366249&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797366249" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B00FR78X64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B00FR78X64&linkCode=as2&tag=101010fun-22&linkId=4d3bca9491477b3f1228dc3bf6f26d0b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B00FR78X64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B00FR78X64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=SwiftでRingBuffer(待ち行列)のQueueを作って100万回処理してみる"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=SwiftでRingBuffer(待ち行列)のQueueを作って100万回処理してみる"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

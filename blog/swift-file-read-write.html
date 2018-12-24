@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>Swiftでテキストベース10万レコードを処理する実験</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="Swiftでテキストベース10万レコードを処理する実験" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/.html" property="og:url" />
+<meta content="" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="blog">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/blog/" class="tagHighlight">blog</a>
+                                </div>
+                                <h1>Swiftでテキストベース10万レコードを処理する実験</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-21">2018-12-21</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <h2>はじめに</h2>
+現在製作中のOSS<a href="/oss/chimaki-1.html">「ChiMAKi」</a>の性能限界およびリファクタリングのためにテストしてみました。データはハッシュ型です。データの保存には、シンプルにテキストファイルに保存しています。<br>
+以上の場合に、テキスト処理のデットポイントや限界を知っておく必要があると思いました。<br>
+ここでは次の二つの実験を行ってみました。1つ目は文字列連結の速度テストです。２つ目はファイルの書き込み読み込みの速度テストです。<br>
+<br>
+<br>
+<h3>テスト環境</h3>
+<table><thead><tr><th>名称</th><th>情報</th></tr></thead><tbody><tr><td>PC</td><td>MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)</td></tr><tr><td>Xcode</td><td>Version 10.1</td></tr><tr><td>シミュレータ</td><td>iPhoneSE</td></tr><tr><td>テストツール</td><td>XCTest</td></tr></tbody></table><br>
+<br>
+<h2>試験1(文字列連結テスト)</h2>
+ハッシュのキーとバリューを、カンマ区切りなどで連結する場合に必要なプログラム処理の速度テストです。<br>
+ここでは100万回繰り返した時の速度測定を行ってみました。<br>
+<br>
+テストプログラム<br>
+<pre class="code">
+public func joinDull() {
+    var result = ""
+    for i in 0...1000000 {
+        result = result + "hogehoge\(i),fugafuga\(i)\n"
+    }
+}
+</pre><br>
+<br>
+<pre class="code">
+public func join() {
+    var lines:[String] = []
+    for i in 0...1000000 {
+        lines.append("hogehoge\(i),fugafuga\(i)")
+    }   
+    lines.joined(separator: "\n")
+}
+</pre><br>
+<br>
+<h3>結果</h3>
+100万回の文字連結テスト結果<br>
+<table><thead><tr><th>joinDull</th><th>join</th></tr></thead><tbody><tr><td>0.104s</td><td>15.257s</td></tr></tbody></table><br>
+今まで<span class="codeInline">result = result + "文字列"</span>のように文字列を連結していましたが、レコード数が多い場合に性能が悪いということがわかりました。<br>
+一方、追加したい文字列を配列にしてから<span class="codeInline">joined</span>で結合すると、高速に処理できることがわかりました。<br>
+<br>
+<br>
+<h2>試験2(ファイルの書き込みテスト)</h2>
+次に、テキストファイルの読み書きを10万回行ってみました。<br>
+<br>
+<pre class="code">
+func testWrite() {
+    for _ in 0...100000 {
+        let file = CKFile("/Documents", "hello.txt")
+        file.write("hoge")
+    }
+}
+</pre><br>
+<br>
+<pre class="code">
+func testRead() {
+    for _ in 0...100000 {
+        let file = CKFile("/Documents", "hello.txt")
+        file.read()
+    }
+}
+</pre><br>
+書き込みのCKFile#writeのプログラムの中身は、<span class="codeInline">try text.write(to: fileURL, atomically: true, encoding: .utf8)</span>です。<br>
+読み込みのCKFile#readのプログラムの中身は、<span class="codeInline">let text = String(contentsOf: fileURL, encoding: .utf8)</span>です。<br>
+<br>
+<h3>結果</h3>
+10万回のテスト結果<br>
+<table><thead><tr><th>testWrite</th><th>testRead</th></tr></thead><tbody><tr><td>94.771s</td><td>7.004s</td></tr></tbody></table><br>
+writeはreadに比べると10倍以上の時間がかかることがわかりました。テキストファイルでデータを管理する場合は、頻繁に書き込み処理をしない工夫が必要そうです。<br>
+<br>
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797366249/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797366249&linkCode=as2&tag=101010fun-22&linkId=3fdf21a47fcaea6368785832ba3bd506"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797366249&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797366249" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B00FR78X64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B00FR78X64&linkCode=as2&tag=101010fun-22&linkId=4d3bca9491477b3f1228dc3bf6f26d0b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B00FR78X64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B00FR78X64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=Swiftでテキストベース10万レコードを処理する実験"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=Swiftでテキストベース10万レコードを処理する実験"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>

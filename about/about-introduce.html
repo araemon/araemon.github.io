@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>このサイトについて</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="このサイトについて" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/about/.html" property="og:url" />
+<meta content="" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="about">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/about/" class="tagHighlight">about</a>
+                                </div>
+                                <h1>このサイトについて</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-13">2018-12-13</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        このサイトは元々アプリのためのヘルプページや宣伝に使っていたのですが、今ではプログラミングのモチベーション、および「未来の自分」のために忘備録などを残すことにしています。<br>
+<br>
+以前まで「はてなブログ有料版」を使っていたのですが、「GitHub Pages」に引っ越すことにしました。<br>
+今更ながらかもしれませんが、無料でできるgithub.ioがカッコ良いなと思ったのです。<br>
+「GitHub Pages」は動的なCGIなどは使えませんが、Staticなコンテンツなら無料で置くことができます。<br>
+<br>
+さて、このサイトのHTMLファイルの書き出しは、全て自前のプログラムで組んでいます。<br>
+Hugoなどの静的サイトジェネレーターは使っておりません。<br>
+<br>
+HTMLファイルの出力は、Mac上でPHPとシェルスクリプトを動かして行なっています。<br>
+とは言っても、PHPで生成したHTMLを、リダイレクトでファイルに書き込んでいるだけなのです。<br>
+動的コンテンツを作ることに比べて、たいして変わらないことに気づきました。<br>
+<pre class="code">
+ob_start();
+include "./template/index.php";
+$resultHtml = ob_get_contents();
+ob_end_clean();
+
+$writePath = "./contents/index.html";
+
+file_put_contents($writePath, $resultHtml);
+</pre><br>
+<br>
+VScodeとVimをエディターとして、フルスクラッチで約1週間くらいの工程でベースの出来上がりです。<br>
+<br>
+MarkDownの変換も以前はPandocを使っていましたが、それもやめました。<br>
+自分だけのなんちゃってMarkDownを採用しています。<br>
+そもそもMarkDownをHTMLに変換するのは、正規表現で簡単にできることに気づきました。<br>
+そして、自作プログラムならば独自の記述を付け足すことができるので、通常のMarkDownより使い勝手を良くすることができます。チューニングってやつですね。<br>
+例えば<br>
+<span class="codeInline">image300:画像パス</span><br>
+のように書くことで、widthを300pxに指定するようにしました。<br>
+<pre class="code">
+if (preg_match('/^image([0-9]+):/', $line, $matches) == true) {
+        $width = $matches[1];
+        $line = str_replace(array("\r", "\n", "image" . $width . ":"), '', $line);
+        return '&lt;img src="' . $line . "\" width=\"" . $width . "\" /&gt;\n";
+}
+</pre><br>
+<br>
+<br>
+さらに、MarkDownファイルを更新したら、つまり記事を作成したり修正したりしたら、自動でHTML変換をして欲しいと思いました。<br>
+そこで、ファイルのmodify timestampを監視して処理を実行するBashスクリプトを次のように組んでみました。<br>
+<pre class="code">
+function checkTimeStamp () {
+  local nowTime=`date +%s`
+  lastTime=0
+  lastFile=''
+
+  for file in ${srcDir}*.md; do
+    modifyTime=`stat -f "%m" $file`
+
+    if [ $(($modifyTime)) -gt $(($lastTime)) ]; then
+        lastTime=$modifyTime
+        lastFile=$file
+    fi
+  done
+  echo $lastTime
+
+}
+
+lastTime=0
+
+while :
+  do
+      resultTime=$(checkTimeStamp)
+      if [ $resultTime -gt $lastTime ]; then
+        lastTime=$resultTime
+        echo "Do convert..."
+        doConverter
+        echo "Did converted !"
+      fi
+  
+  sleep 5
+done
+</pre><br>
+<br>
+自前ジェネレーターにはシンプルな機能しかありませんが、軽量でミニマムな仕様になったので快適です。<br>
+外部のライブラリーを使わずに自前のプログラミング処理をすることで、精神衛生上にもよくなりました。<br>
+また、CSS、レシポンシブルデザインなどの勉強にもなりました。<br>
+何より自分でプログラミングして作ることは、楽しいものです。<br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/about/.html&text=このサイトについて"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/about/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/about/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/about/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/about/.html&title=このサイトについて"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>
