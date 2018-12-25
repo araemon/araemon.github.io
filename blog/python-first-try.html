@@ -153,8 +153,8 @@ class RecursiveFile():
 次にインデントして処理を書いていきます。<br>
 <span class="codeInline">lineN</span>はstaticな変数になります。型宣言などの必要がなくこのように書けば良いみたいです。<br>
 <span class="codeInline">__init__</span>はコンストラクタメソッドになります。メソッドの第一引数には<span class="codeInline">self</span>を指定しなければならないようです。<span class="codeInline">self</span>の後に続いて引数書いていけば、クラスのインスタントを作るときに、<span class="codeInline">RecursiveFile(abspath, "txt")</span>のように引数を渡して初期化することができます。<br>
-そして、<span class="codeInline">glob.glob(startDir+"/<b>/*."+extension, recursive=True)</span>の部分が、ディレクトリを再帰的に探索して、指定の拡張子ファイルを全て取得する処理になります。<span class="codeInline">glob.glob</span>はPython3.5以降で使えるようです。特定のフォルダ以降も再帰的に処理したい場合は<span class="codeInline">recursive</span>を<span class="codeInline">True</span>に設定し、<span class="codeInline">/</b>/</span>のように書きます。<br>
-<span class="codeInline">glob.glob("./<i></i>/*.txt", recursive=True)</span>のようにたったの一行で、再帰的にファイルが取得できてしまうなら、今回のようにクラス化する必要はなかったかもしれません。それでもここでは「クラスの使い方の勉強」と思って、このまま進めていきましょう。<br>
+そして、<span class="codeInline">glob.glob(startDir+"/**/*."+extension, recursive=True)</span>の部分が、ディレクトリを再帰的に探索して、指定の拡張子ファイルを全て取得する処理になります。<span class="codeInline">glob.glob</span>はPython3.5以降で使えるようです。特定のフォルダ以降も再帰的に処理したい場合は<span class="codeInline">recursive</span>を<span class="codeInline">True</span>に設定し、<span class="codeInline">/**/</span>のように書きます。<br>
+<span class="codeInline">glob.glob("./**/*.txt", recursive=True)</span>のようにたったの一行で、再帰的にファイルが取得できてしまうなら、今回のようにクラス化する必要はなかったかもしれません。それでもここでは「クラスの使い方の勉強」と思って、このまま進めていきましょう。<br>
 <br>
 RecursiveFileクラスの続きの処理をみていきます。<br>
 <pre class="code">
