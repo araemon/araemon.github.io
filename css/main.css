@@ -355,7 +355,7 @@ table {
 
 @media screen and (min-width: 1000px) {
     article img.default {
-        width:70%;
+        max-width:400px;
     }   
 }
 

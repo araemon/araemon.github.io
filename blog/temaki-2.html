@@ -3,15 +3,15 @@
 
 <head>
         <meta charset="UTF-8">
-<title>Swift4でUITalbeViewの最下部にスクロールしたい</title>
+<title>オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
-<meta content="Swift4でUITalbeViewの最下部にスクロールしたい" property="og:title" />
+<meta content="オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理" property="og:title" />
 <meta content="article" property="og:type" />
 <meta content="https://araemon.github.io/blog/.html" property="og:url" />
-<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" property="og:image" />
+<meta content="https://araemon.github.io/images/temaki-2a.jpg" property="og:image" />
 <?php echo $SITE['article_appid']; ?>
 <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 </head>
@@ -42,30 +42,26 @@
                                 <div class="tag">
                                         <a href="/blog/" class="tagHighlight">blog</a>
                                 </div>
-                                <h1>Swift4でUITalbeViewの最下部にスクロールしたい</h1>
-                                <div class="time"><time pubdate="" datetime="2018-05-21">2018-05-21</time></div>
+                                <h1>オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-25">2018-12-25</time></div>
                                 <p>
                                         <?php echo $SITE['article_toc']; ?>
 
-                                        <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180801/20180801111254.png" class="default lazyload" /><br>
+                                        <h2>デザインパターン</h2>
+<img data-src="/images/temaki-2a.jpg" class="default lazyload" /><br>
 <br>
-最下部にスクロールするには<span class="codeInline">scrollToRow</span>を使うが、<span class="codeInline">tableView.reloadData()</span> 後すぐに実行すると正しくスクロールできない。<br>
-タイマーでタイミングを少しずらすことでうまくいった。<br>
-<pre class="code">
-//tableViewに追加する処理をした後
-
-tableView.reloadData()
-
-DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-    self.tableView.scrollToRow(at: IndexPath(row: self.items.count - 1, section: 0), at: UITableViewScrollPosition.bottom, animated: true)
-}
-</pre><br>
+OSSのTeMaKiプロジェクトで、Md2Htmlオブジェクト内でインスタンスの生成をしていましたが、メインプログラムで全てインスタンスを生成し、それをMd2Htmlのコンストラクタで渡すようにしました。こういった手法のことをコンポジションとかオブジェクト注入と呼ぶそうです。<br>
+今までなんとなくモヤモヤしたクラス分けが、はっきりと機能別に分けられるようになりました。また、クラスごとの独立性がまし、クラス同士が疎結合になりました。<br>
+以前はMetaDataを、Md2Htmlのインスタンスプロパティとして直接書き込んでいましたが、別オブジェクトに分けることでMetaDataオブジェクトだけを使い回すといったことが容易になりました。<br>
 <br>
-<a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/477419414X/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=477419414X&linkCode=as2&tag=101010fun-22&linkId=3293e410b5b6d910a78f78aeb9e0a67e"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=477419414X&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=477419414X" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
+TeMaKi<br>
+<a href="https://github.com/araemon/temaki">https://github.com/araemon/temaki</a><br>
+<br>
+<a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/4873115655/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4873115655&linkCode=as2&tag=101010fun-22&linkId=f4300224c9f015c2f26b49f9b622a3a4"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=4873115655&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4873115655" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
 
                                 </p>
                                 <ul class="shareList">
-                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=Swift4でUITalbeViewの最下部にスクロールしたい"
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理"
                                                         target="_blank" title="Twitter"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
                                                         target="_blank" title="Facebook"></a></li>
@@ -73,7 +69,7 @@ DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                                         target="_blank" title="Google+"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
                                                         target="_blank" title="はてなブックマーク"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=Swift4でUITalbeViewの最下部にスクロールしたい"
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理"
                                                         target="_blank" title="Pocket"></a></li>
                                 </ul>
                         </article>
