@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+        <meta charset="UTF-8">
+<title>オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="stylesheet" type="text/css" href="/css/main.css" />
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
+<link rel="shortcut icon" href="/images/favicon.ico">
+<meta content="オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://araemon.github.io/blog/.html" property="og:url" />
+<meta content="https://araemon.github.io/images/temaki-2a.jpg" property="og:image" />
+<?php echo $SITE['article_appid']; ?>
+<link rel="stylesheet" type="text/css" href="/css/icon.css" />
+</head>
+
+<body>
+
+        <div id="container">
+                <div id="header" class="blog">
+                        <div class="layerTransparent">
+                                <div class="container">
+                                        <ul class="nav">
+<li><a href="/blog/">Blog</a></li>
+<li><a href="/kamityping/">KamiTyping</a></li>
+<li><a href="/chazuke/">Chazuke</a></li>
+<li><a href="/harmonize/">Harmonize</a></li>
+<li><a href="/apps/">Other Apps</a></li>
+<li><a href="/oss/">OSS</a></li>
+<li><a href="/about/">About</a></li>
+</ul>
+<div class="copyright">Copyright © Toshihiko Arai</div>
+
+                                </div>
+                        </div>
+                </div>
+
+                <div id="contents">
+                        <article>
+                                <div class="tag">
+                                        <a href="/blog/" class="tagHighlight">blog</a>
+                                </div>
+                                <h1>オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-25">2018-12-25</time></div>
+                                <p>
+                                        <?php echo $SITE['article_toc']; ?>
+
+                                        <h2>デザインパターン</h2>
+<img data-src="/images/temaki-2a.jpg" class="default lazyload" /><br>
+<br>
+OSSのTeMaKiプロジェクトで、Md2Htmlオブジェクト内でインスタンスの生成をしていましたが、メインプログラムで全てインスタンスを生成し、それをMd2Htmlのコンストラクタで渡すようにしました。こういった手法のことをコンポジションとかオブジェクト注入と呼ぶそうです。<br>
+今までなんとなくモヤモヤしたクラス分けが、はっきりと機能別に分けられるようになりました。また、クラスごとの独立性がまし、クラス同士が疎結合になりました。<br>
+以前はMetaDataを、Md2Htmlのインスタンスプロパティとして直接書き込んでいましたが、別オブジェクトに分けることでMetaDataオブジェクトだけを使い回すといったことが容易になりました。<br>
+<br>
+TeMaKi<br>
+<a href="https://github.com/araemon/temaki">https://github.com/araemon/temaki</a><br>
+<br>
+<a target="<i>blank"  href="https://www.amazon.co.jp/gp/product/4873115655/ref=as</i>li<i>tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4873115655&linkCode=as2&tag=101010fun-22&linkId=f4300224c9f015c2f26b49f9b622a3a4"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?</i>encoding=UTF8&MarketPlace=JP&ASIN=4873115655&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=<i>SL250</i>&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4873115655" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
+
+                                </p>
+                                <ul class="shareList">
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理"
+                                                        target="_blank" title="Twitter"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Facebook"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-google-plus" href="https://plus.google.com/share?url=https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="Google+"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
+                                                        target="_blank" title="はてなブックマーク"></a></li>
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=オブジェクト注入（コンポジション）でTeMaKiのメインプログラムを整理"
+                                                        target="_blank" title="Pocket"></a></li>
+                                </ul>
+                        </article>
+                </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+        <script>
+                /****************************************
+                 * Lazy Load
+                ***************************************/
+                lazyload();
+
+        </script>
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  gtag('js', new Date());
+
+  gtag('config', 'UA-12032595-16');
+</script>
+</body>
+
+</html>
