@@ -1,0 +1,80 @@
+---
+title:"RMagickを使ってアスペクト比を維持しながら画像をリサイズしてみる"
+date:"2018-05-11"
+category:"blog"
+---
+## 仕様を考えてみる
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729123052.jpg
+
+1. Rubyで書いたResizer.rbと同じフォルダに、リサイズしたいPNGまたはJPEGファイルを配置。
+2. Resizerを実行すると、リサイズされた画像がresizedディレクトリに格納され元のデータはmasterへ移動される。
+3. 指定サイズの正方形の大きさの枠内におさまるように、アスペクト比を維持しながらJPEGフォーマットに変換する。
+4. RMagick (RubyでImageMagickを動かす)を使う。
+
+
+## 出来上がったプログラムがこちら
+resizer.rb
+```
+require 'date'
+require 'RMagick'
+require 'fileutils'
+
+#limit=500
+p "リサイズ値を入力してください"
+limit = $stdin.gets
+p limit
+
+files = Dir.glob("*.{png,PNG,jpg,JPG,jpeg,JPEG}")           # ファイルの配列を返す ["bar", "foo"]
+puts(files)
+FileUtils::mkdir_p './master'
+FileUtils::mkdir_p './resized'
+
+files.each do |filename|
+    name = File.basename(filename, ".*") #=> "test"
+    img = Magick::ImageList.new(filename)
+
+    File.rename filename, "./master/#{filename}"
+
+new_img = img.resize_to_fit(limit, limit)
+    new_img.write("./resized/#{name}.jpg") { self.quality = 90 }
+
+    new_img.destroy! # メモリクリア
+end
+```
+
+エラー処理などしていないので注意。
+commandファイルを用意してこのプログラムをダブルクリックで実行できるようにした。
+
+```
+#!/bin/bash
+
+cd `dirname $0`
+
+ruby Resizer.rb
+```
+
+## RMagickのインストールでつまづく
+RMagickをbrewでインストールしようとしたら、エラーが出てインストールできなかった。
+Stack Over Flowで問題解決の方法が。
+https://stackoverflow.com/questions/41647979/imagemagick-7-with-rmagick-2-16-on-macos-sierra-cant-find-magickwand-h?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+ImageMagickをバージョンダウンすれば良さそうである。
+
+```
+brew uninstall imagemagick
+
+brew install imagemagick@6
+
+brew link --force imagemagick@6
+
+sudo gem install rmagick
+```
+
+これでインストールできた。
+
+
+## 感想
+* ファイルを扱うプログラムをRubyでは簡潔に書けるのでありがたい。
+* ImageMagick最高！
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797377623/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797377623&linkCode=as2&tag=101010fun-22&linkId=b73336026353f211400d68f588761dbb"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797377623&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797377623" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

@@ -1,0 +1,50 @@
+---
+title:"画像表示について"
+date:"2018-12-16"
+category:"about"
+---
+サイトの表示速度改善にはGoogleの「PageSpeed Insights」が便利です。
+https://developers.google.com/speed/pagespeed/insights/?hl=ja
+
+静的コンテンツの場合、そもそも表示速度が速いので高得点が出やすいと思いますが、それでも画像に関しては軽量化などの工夫を行ってあげる必要があります。格安SIMなどの遅い回線でもサイトをストレスなく表示するためには、こういった最適化は必須となるでしょう。
+
+次のように画像を軽量化する処理を、シェルスクリプトで実装しました。
+まずはpngファイルをjpgに変換する処理です。
+```
+for file in $( ls ${gitDir}/images/ | grep .png$ ); do
+  name=${file%.*}
+  convert ${gitDir}/images/${file} -flatten ${gitDir}/images/${name}.jpg
+  rm -f ${gitDir}/images/${file}
+done
+```
+
+そしてjpgファイルを、見た目に影響が出ない程度に圧縮してあげます。これで元画像の数分の一の容量になりました。
+```
+for file in $( ls ${gitDir}/images/ | grep .jpg$ ); do
+  convert ${gitDir}/images/${file} -sampling-factor 4:2:0 -strip -quality 85 -interlace JPEG -colorspace sRGB ${gitDir}/images/${file}
+done
+```
+
+画像の最適化ができたところで、さらに初期表示速度を改善するには、現在表示されいている以外の部分の画像を、必要になった時に遅延して読み込ませるのが良いでしょう。
+そこで画像を遅延読み込みさせることのできるjavascriptのライブラリ「Lazy Load」を使ってみました。jqueryに対応していますが、jqueryがなくても動きました。
+https://github.com/tuupola/jquery_lazyload
+
+Lazy Loadを使うには、遅延読み込みさせたい画像URLをdata-srcという属性に置き換える必要があります。
+```
+<img data-src="/images/research-is.jpg" class="default lazyload" />
+```
+
+そしてjsライブラリのパスを埋め込みます。
+```
+<script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
+```
+
+最後に、lazyload()を叩けば画像が遅延読み込みされるようになります。
+```
+<script>
+lazyload();
+</script>
+```
+
+さて、これで「PageSpeed Insights」で高得点を出すことができました。
+image:/images/pagespeed-insight.jpg

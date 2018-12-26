@@ -1,0 +1,149 @@
+---
+title:"RubyとcURLではじめてのWebSocketを試してみる"
+date:"2018-05-22"
+category:"blog"
+---
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729093657.png
+
+
+だいぶ前からWebSocketは気になっていたが情報が少なかったこともあり手を出せずにいた。
+
+現在では情報も多く、Flashが終わったとなるとChazukeのコメント取得もwebsocketに対応せざるを得ないと思うので遅ればせながら学んでみることにした。
+
+
+とりあえず導入が簡単そうなrubyで動くwebsocketサーバーを探してみる。
+
+EventMachine(EM-WebSocket)
+https://github.com/igrigorik/em-websocket
+
+
+## 開発環境
+* macOS High Sierra 10.13.4
+* em-websocket-0.5.1.gem
+* ruby 2.3.3p222 (2016-11-21 revision 56859) [universal.x86_64-darwin17]
+* curl 7.54.0 (x86_64-apple-darwin17.0) libcurl/7.54.0 LibreSSL/2.0.20 zlib/1.2.11 nghttp2/1.24.0
+
+
+## インストール
+```bash
+sudo gem install ew-websocket
+```
+
+## websoketサーバーをつくる
+とりあえず公式のサンプルをコピペ
+
+https://github.com/igrigorik/em-websocket
+
+**server.rb**
+
+```ruby
+require 'em-websocket'
+
+EM.run {
+  EM::WebSocket.run(:host => "0.0.0.0", :port => 8080) do |ws|
+    ws.onopen { |handshake|
+      puts "WebSocket connection open"
+
+      # Access properties on the EM::WebSocket::Handshake object, e.g.
+      # path, query_string, origin, headers
+
+      # Publish message to the client
+      ws.send "Hello Client, you connected to #{handshake.path}"
+    }
+
+    ws.onclose { puts "Connection closed" }
+
+    ws.onmessage { |msg|
+      puts "Recieved message: #{msg}"
+      ws.send "Pong: #{msg}"
+    }
+  end
+}
+```
+
+
+サーバーの起動
+
+```bash
+ruby server.rb
+```
+
+
+
+参考:
+https://github.com/igrigorik/em-websocket
+https://qiita.com/duke-gonorego/items/a4374c2e1d76d255ceb9
+
+
+## クライアントからwebsoketを送信する
+ハンドシェイクの作り方はこちらが勉強になる。HTTPに見せかけてルーター達を騙して通信していることになるほど納得した。
+
+引用:
+
+https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx より
+『WebSocket ハンドシェイク』
+
+> WebSocket プロトコルは TCP よりも上位かつ HTTP と同じレベルで TCP/IP スイートにぴったりと適合します。新しいプロトコルをインターネットに導入する際の課題の 1 つは、無数のルーター、プロキシ、およびファイアウォールに何も変わっていないと思わせる方法です。WebSocket プロトコルは、同じ基盤となる TCP 接続で、独自の WebSocket データ転送に切り替える前に HTTP として見せかけ、この目的を達成します。これによって、疑うことを知らない多くの中継サービスをアップグレードして、WebSocket 通信がそのネットワーク接続を通過できるようにする必要がなくなります。実際には、これは必ずしもスムーズに行われるわけではありません。熱意が空回りしたルーターが HTTP の要求や応答をいじり、プロキシのキャッシュ、アドレス、リソース変換などを、自身の目的に合うように書き直そうとするためです。短期間で行える効果的な解決策は、セキュリティが確保されるチャネル、つまりトランスポート層セキュリティ (TLS) で WebSocket プロトコルを使用する方法です。こうすれば、多くの場合こうした書き直しを最小限に抑えられます。
+
+
+curlでハンドシェイクしているこちらの記事を参考させてもらった。
+http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl
+
+```
+curl -v -i -N \
+  -H 'Sec-WebSocket-Version: 13' \
+  -H "Sec-WebSocket-Key: $(head -c 16 /dev/urandom | base64)" \
+  -H "Connection: Upgrade" \
+  -H "Upgrade: websocket" \
+  "http://localhost:8080"            
+
+* Rebuilt URL to: http://localhost:8080/
+*   Trying ::1...
+* TCP_NODELAY set
+* Connection failed
+* connect to ::1 port 8080 failed: Connection refused
+*   Trying 127.0.0.1...
+* TCP_NODELAY set
+* Connected to localhost (127.0.0.1) port 8080 (#0)
+> GET / HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.54.0
+> Accept: */*
+> Sec-WebSocket-Version: 13
+> Sec-WebSocket-Key: LXWAu5XfhDXLUAZRlSOa3w==
+> Connection: Upgrade
+> Upgrade: websocket
+>
+< HTTP/1.1 101 Switching Protocols
+HTTP/1.1 101 Switching Protocols
+< Upgrade: websocket
+Upgrade: websocket
+< Connection: Upgrade
+Connection: Upgrade
+< Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
+Sec-WebSocket-Accept: Ph0rkBpS0v58J9o0QHequ985Q8Y=
+
+<
+? Hello Client, you connected to /
+```
+
+無事websocketでハンドシェイクできた。
+
+```
+WebSocket connection open
+```
+
+しかし、この後の通信やり取りはどうしたらいいのだろう？
+
+SSL/TLSやOAuthなどの認証が必要な場合などの問題も解決しなければならない。
+
+WebSocketの旅は長そうだ。
+
+つづく。
+
+
+参考:
+http://keicode.com/script/html5-websocket-1.php
+https://msdn.microsoft.com/ja-jp/magazine/jj863133.aspx
+https://triple-underscore.github.io/RFC6455-ja.html
+http://hateda.hatenadiary.jp/entry/debugging-websocket-using-curl

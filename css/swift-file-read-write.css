@@ -1,0 +1,86 @@
+---
+title:"Swiftでテキストベース10万レコードを処理する実験"
+date:"2018-12-21"
+category:"blog"
+---
+## はじめに
+現在製作中のOSS<a href="/oss/chimaki-1.html">「ChiMAKi」</a>の性能限界およびリファクタリングのためにテストしてみました。データはハッシュ型です。データの保存には、シンプルにテキストファイルに保存しています。
+以上の場合に、テキスト処理のデットポイントや限界を知っておく必要があると思いました。
+ここでは次の二つの実験を行ってみました。1つ目は文字列連結の速度テストです。２つ目はファイルの書き込み読み込みの速度テストです。
+
+
+### テスト環境
+|名称|情報|
+|-------|----------|
+|PC|MacBook Pro (13-inch, 2017, Two Thunderbolt 3 ports)|
+|Xcode|Version 10.1|
+|シミュレータ|iPhoneSE|
+|テストツール|XCTest|
+
+
+## 試験1(文字列連結テスト)
+ハッシュのキーとバリューを、カンマ区切りなどで連結する場合に必要なプログラム処理の速度テストです。
+ここでは100万回繰り返した時の速度測定を行ってみました。
+
+テストプログラム
+```
+public func joinDull() {
+    var result = ""
+    for i in 0...1000000 {
+        result = result + "hogehoge\(i),fugafuga\(i)\n"
+    }
+}
+```
+
+```
+public func join() {
+    var lines:[String] = []
+    for i in 0...1000000 {
+        lines.append("hogehoge\(i),fugafuga\(i)")
+    }   
+    lines.joined(separator: "\n")
+}
+```
+
+### 結果
+100万回の文字連結テスト結果
+|joinDull|join|
+|------|------|
+|0.104s|15.257s|
+
+今まで`result = result + "文字列"`のように文字列を連結していましたが、レコード数が多い場合に性能が悪いということがわかりました。
+一方、追加したい文字列を配列にしてから`joined`で結合すると、高速に処理できることがわかりました。
+
+
+## 試験2(ファイルの書き込みテスト)
+次に、テキストファイルの読み書きを10万回行ってみました。
+
+```
+func testWrite() {
+    for _ in 0...100000 {
+        let file = CKFile("/Documents", "hello.txt")
+        file.write("hoge")
+    }
+}
+```
+
+```
+func testRead() {
+    for _ in 0...100000 {
+        let file = CKFile("/Documents", "hello.txt")
+        file.read()
+    }
+}
+```
+書き込みのCKFile#writeのプログラムの中身は、`try text.write(to: fileURL, atomically: true, encoding: .utf8)`です。
+読み込みのCKFile#readのプログラムの中身は、`let text = String(contentsOf: fileURL, encoding: .utf8)`です。
+
+### 結果
+10万回のテスト結果
+|testWrite|testRead|
+|------|------|
+|94.771s|7.004s|
+
+writeはreadに比べると10倍以上の時間がかかることがわかりました。テキストファイルでデータを管理する場合は、頻繁に書き込み処理をしない工夫が必要そうです。
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797366249/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797366249&linkCode=as2&tag=101010fun-22&linkId=3fdf21a47fcaea6368785832ba3bd506"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797366249&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797366249" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/B00FR78X64/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=B00FR78X64&linkCode=as2&tag=101010fun-22&linkId=4d3bca9491477b3f1228dc3bf6f26d0b"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=B00FR78X64&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=B00FR78X64" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

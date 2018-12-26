@@ -1,0 +1,310 @@
+---
+title:"Macのシェルで使えるコマンドやスクリプトを書いて覚えていこう！"
+date:"2018-05-09"
+category:"blog"
+---
+このページではMacで使えそうなコマンドの覚え書きです。
+
+内容は随時修正、変更されます。
+アルファベット順で上げてます。
+
+## awk
+-F'[フィールド区切り文字(複数可能)]'を指定して、文字列に対して列として処理できる。
+
+```
+echo 1 2 3 4 |awk '{print $1}'
+1
+
+echo "2018.05.16,something" |awk  -F'[,]' '{print $2}'
+something
+```
+
+## cd
+(change directoryの略)
+current directoryとごっちゃにしてたorz
+
+参考:
+https://qiita.com/ryouzi/items/f9dee1540a04a0bfb9a3
+
+
+## cp
+ファイルやディレクトリーをコピー
+
+-f	コピー先に同じ名前のファイルがあっても警告なしで上書きをする。
+-r	ディレクトリごとコピーする（再帰的）
+
+`cp -rf file dir`
+
+
+## curl
+>1.1 What is cURL?
+>
+>cURL is the name of the project. The name is a play on 'Client for URLs', originally with URL spelled in uppercase to make it obvious it deals with URLs. The fact it can also be pronounced 'see URL' also helped, it works as an abbreviation for "Client URL Request Library" or why not the recursive version: "Curl URL Request Library".
+
+https://curl.haxx.se/docs/faq.html#What_is_cURL
+より
+
+HTTPだけでなく色々なプロトコルのリクエストを送れる。
+
+オプション  | 意味
+------------|------------------------------------
+-I          | Response Header を取得して出力する
+-i          | Response Header & Bodyを出力する
+-v          | curlでリクエストした時のHeaderも出力する
+-o          | ファイルに出力  
+-X POST     |  --dataにパラメーターを記述、URLエンコードしたければ--data-urlencode
+-F          |  ファイルをUploadするPOST
+-u          |  ベーシック認証（ID:Password）
+-c          |  レスポンスのCookieをcookie.txtに保存
+-b          |  cookie.txtの中身をリクエストのCookieに含める
+-k          | SSL証明書を無視する  
+-x          |  Proxyを指定する
+-H          | Request Headerを追加する
+-L          |  リダイレクト先までアクセスする
+-A          |  User-Agentを偽装する
+
+参考:
+https://qiita.com/yasuhiroki/items/a569d3371a66e365316f
+
+
+## du
+Disk Usage - report the amount of disk space used by the specified files and for each subdirectory.
+出力される数字は容量[GB]で表す。
+
+```
+sudo du -g -x -d 5 / | awk '$1 >= 5{print}'
+.........
+42	/Users/Hoge/Library/Developer/Xcode
+13	/Users/Hoge/Library/Developer/CoreSimulator
+55	/Users/Hoge/Library/Developer
+12	/Users/Hoge/Library/Android/sdk
+12	/Users/Hoge/Library/Android
+74	/Users/Hoge/Library
+........
+```
+
+参考:
+https://discussionsjapan.apple.com/docs/DOC-1081
+https://qiita.com/hirayaCM/items/14dc021d4b27bdbfbb3d
+
+
+## find
+
+`find <Path> -name '.DS_Store' -delete -print`
+
+参考:
+https://qiita.com/nao_ipub/items/46be0e4c90ac55c28002
+
+
+## httpie
+HTTPie: a CLI, cURL-like tool for humans
+
+cURLよりも直感的に分かりやすいHttpクライアント。
+ハイライトしてくれるし最高かもしれない。
+
+brewでインストール
+
+`brew install httpie`
+
+GitHub:
+https://github.com/jakubroztocil/httpie
+
+
+## ln
+(linkの略)
+
+-s オプションでシンボリックリンク(エイリアス)作成
+
+`ln -s SOURCE TARGET`
+
+
+## mkdir
+-pオプションをつければディレクトリが存在しない時だけディレクトリを作成できる。
+
+`mkdir -p hogehoge`
+
+
+## netstat
+空いているポートを確認する
+
+`netstat -an |grep LISTEN`
+
+
+## nkf
+Network Kanji Filterの略
+
+文字コードのチェック
+
+`nkf -g hoge.txt`
+
+ファイルの文字コードをUTF-8に変換して上書き保存する
+
+`nkf -w --overwrite hoge.txt`
+
+
+## ps と kill
+```
+ps ax | grep ruby
+
+5674   ??  S      0:00.56 ruby /Users/Hoge/websocket_ruby/server.rb
+5793 s000  R+     0:00.00 grep ruby
+
+kill -9 5674
+```
+
+## rsync
+以前はホームページをアップロードするときにscpで丸ごとアップロードしていた。
+このままだと、ファイル 数が増えたときに詰むので更新日時を参照してアップロードの振り分けをプログラムしようかと思っていたがrsyncで一発解決した。
+`rsync -avu works username@hoge.com:/home/username/`
+
+rsyncって設定が大変そうだなと思っていたが全く簡単だった。
+たったの一行でリモートサーバー上のファイル群との差分を確認して必要な分だけアップロードしてくれる。
+当然更新が少なければ一瞬でアップロードは完了する。
+rsyncはMacに標準で付いているので難しい設定など必要はない。
+
+rsyncに感動と感謝😭
+rsyncに関して新たに記事を書いた。
+http://works.kamityping.com/post/2018/rsync-ja.html
+
+参考:
+https://qiita.com/BlueEventHorizon/items/209af1c9beaff669cd68
+
+
+## scp
+アップロード
+`scp -r works username@hoge.com:/home/username/`
+
+ダウンロード
+`scp -r username@hoge.com:/home/something ./`
+
+-rオプションをつけることでディレクトリを再帰的に読み込んでくれる。
+FTPサーバーなど立てる必要がないので重宝する。
+
+
+## stat
+lsコマンドよりファイルの詳細が見れる
+-xオプションをつけると見やすく表示してくれる。
+
+```
+stat -x hoge.txt
+  File: "hoge.txt"
+  Size: 0            FileType: Regular File
+  Mode: (0644/-rw-r--r--)         Uid: (  501/UserName)  Gid: (   20/   staff)
+Device: 1,4   Inode: 8593318494    Links: 1
+Access: Thu Jan  1 00:00:00 1981
+Modify: Thu Jan  1 00:00:00 1981
+Change: Sun May 13 12:05:08 2018
+```
+touchコマンドでタイムスタンプを偽装したhoge.txtを調べてみるとChange timeだけが現在の値になっていた。この値は一筋縄では変更できないようだ。
+touchコマンドで偽装したからといってドヤ顔 :sunglasses: にならないように気をつけよう。:smile:
+
+```
+stat -f "%n %Sm" -t "%Y%m%dT%H%M%S" *
+20180512T134423
+```
+
+参考:
+https://freebsd.g.hatena.ne.jp/py4s-tnk/20090202/1233581679
+http://x68000.q-e-d.net/~68user/unix/pickup?%A5%BF%A5%A4%A5%E0%A5%B9%A5%BF%A5%F3%A5%D7
+
+調べているとMacのstatではオプションなどの記述が異なるようなので注意が必要だ。
+https://developer.apple.com/legacy/library/documentation/Darwin/Reference/ManPages/man1/stat.1.html
+より
+> **a, m, c, B**
+>
+>    The time file was last accessed or modified, of when the inode was last changed, or the                     birth time of the inode.
+>
+
+1時間前の.mdファイルをフィルタリングするスクリプト作ってみた。MarkDownからHtmlへ変換するpandoc処理を一部に限定する事ができるようになる。
+```
+nowTime=`date +%s`
+agoTime=$((nowTime-3600))
+
+for file_path in *.md; do
+  modifyTime=`stat -f "%m" $file_path`
+  if [ $modifyTime -gt $agoTime ]; then
+        echo $file_path
+  fi
+done
+```
+
+
+## tail
+ファイルの末尾から -n オプションで行数を指定して標準出力できる。
+下記はApacheのエラーログ最新50件を出力する。
+
+`tail -n 50 /etc/httpd/logs/error_log`
+
+
+## touch
+空ファイルを新規作成
+
+`touch some.txt`
+
+
+-tオプションでタイムスタンプを変更してファイルを作成できる。
+生まれる前の日付でファイルを作るなんてこともできちゃう。😲
+
+`touch -t 198110081000 hoge.txt`
+
+
+## pwd
+(print working directoryの略)
+現在のディレクトリパスを表示
+
+`echo `pwd``
+
+
+## 算術 $(( ～ ) )
+算術式展開 (arithmetic expansion)
+
+```
+#1時間前の秒数を計算
+nowDate=`date +%s`
+echo $nowDate
+echo $((nowDate-3600))
+```
+
+参考:
+https://qiita.com/akinomyoga/items/9761031c551d43307374
+
+
+
+##  比較演算子
+```
+if [ $A = $B ]; then
+# A equal B
+fi
+
+if [ $A -gt $B ] ; then
+# A greater than B
+fi
+
+if [ $A -lt $B ] ; then
+# A less than B
+fi
+
+if [ $A -ge $B ] ; then
+# A greater than or equal B
+fi
+
+if [ $A -le $B ] ; then
+# A less than or equal B
+fi
+```
+
+```
+if [ -f ${file} ]; then
+# file existed
+fi
+
+if [ -z ${A} ]; then
+# A is unset or set to the empty string ("").
+fi
+```
+
+参考:
+https://qiita.com/toshihirock/items/461da0f60f975f6acb10
+https://serverfault.com/questions/7503/how-to-determine-if-a-bash-variable-is-empty?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797377623/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797377623&linkCode=as2&tag=101010fun-22&linkId=b73336026353f211400d68f588761dbb"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797377623&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797377623" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

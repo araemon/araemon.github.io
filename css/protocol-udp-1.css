@@ -1,0 +1,162 @@
+---
+title:"iPhoneでC言語を使ってUDP通信してみよう"
+date:"2018-11-28"
+category:"blog"
+---
+## iOS -> Mac with UDP
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128170938.jpg
+
+PHPからプログラミングを入門した軟弱者の私としては、HTTP以下の低位レイヤーが苦手です。今までなんとなく誤魔化してきましたが、Arduinoに触れたことで学習意欲が湧きました。そこでiOSからMacへUDP送信を行なってみることにしました。学習がてらNSStreamを使わずに、あえてC言語で書いてみることにしました。
+
+ところでUDPという言葉は、User Datagram Protocolの略です。データグラムというのは、配送が成功したかどうかの確認はしないので届くかどうか保証されないですよ、という意味なのだそうです。
+
+
+### Mac側でUDPサーバーを立ち上げる
+まずはMacのターミナルを開き、netcatコマンドを使ってUDPサーバーを立ち上げます。
+たったの一行でUDPサーバーが立ち上がってしまいます。シェルというのは大変便利ですね。
+`nc -u -l 8888`
+
+ところで、ポートが解放されているかどうかの確認で少しハマりました。そもそもUDPは一方的な送信なので、ポートが開いているかどうかのスキャンはできないということを分かっていませんでした。
+例えば、8888ポートが開いているかどうかのコマンドは次のようになります。
+`nc -vz 192.168.100.101 8888`
+
+UDPサーバーを対象にはスキャンできません。次のように、TCPサーバーとして立ち上げた場合はポートスキャンできるようになります。
+`nc -l 8888`
+
+TCPのハンドシェイクを利用しているということなのでしょうね。
+
+
+###  iOSプログラミング、UDPクライアントを作る
+iOSのプログラミングを書いていきましょう。
+Objective-CでC言語の関数を使いたい場合、`.m`ファイルを`.mm`の拡張子にすれば良いようです。
+
+ViewController.mm
+```
+#import "ViewController.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+@interface ViewController ()
+
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+}
+
+- (IBAction)clickedSendButton:(id)sender {
+    int sock;
+    struct sockaddr_in addr;
+    
+    sock = socket(AF_INET, SOCK_DGRAM, 0);
+    
+    addr.sin_family = AF_INET;
+    addr.sin_port = htons(8888);
+    addr.sin_addr.s_addr = inet_addr("192.168.100.101");
+    
+    sendto(sock, "HELLO", 5, 0, (struct sockaddr *)&addr, sizeof(addr));
+    
+    close(sock);
+}
+@end
+```
+
+このように、UDPクライアントのプログラムは驚くほど簡単に書けることがわかりました。それでも慣れないC言語の関数が出てきたので少し調べてみることにしました。
+まず、sockaddr_inという構造体に送信先アドレスやポート番号を設定しています。
+そして、socketというクラスを初期化してます。初期化の時に、SOCK_DGRAMを指定してあげればUDPで通信してくれるようになります。
+また、AF_INETはIPv4のインターネットプロトコルで通信するということのようです。
+さて、これで先ほどMac側で立ち上げたターミナル画面に"HELLO"というメッセージが表示されるようになりました。
+
+### UDPのプロトコル仕様を確認してみる
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128173752.jpg
+UDPプロトコルの仕様を確認してみると、ヘッダ部とデータ部に別れているのがわかります。とてもシンプルで、送信のイメージがつきやすいですね。
+また、ポートが16ビットの長さということは、2の16乗 = 65536番まで指定できるということがわかります。
+
+
+##  Mac -> iOS with UDP
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20181128/20181128194800.jpg
+UDPのことがだいぶ分かってきたところで、今度は、Mac側からUDPソケットをiPhoneへ送信しみたいと思います。
+
+UDPサーバーのプログラミングを行なっていきます。先ほどのUDPクライアントのプログラムよりは複雑になってきますが、丁寧にみていけば難しいことはありません。
+注意するべきところは、UDPソケットを受信するためのrecv関数はメインスレッドで動かしてしまうと、UIが固まってしまいます。そのため、NSThreadを使ってスレッド処理になっています。
+下記プログラムは、buf配列のメモリ解放を行ってないのでご注意ください。
+
+```
+//
+//  ViewController.mm
+//
+
+#import "ViewController.h"
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
+@interface ViewController ()
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    NSThread *thread = [[NSThread alloc]initWithTarget:self selector:@selector(reciveUdp) object:nil];
+    [thread start];
+}
+
+
+-(void)updateTextView:(NSData *)data {
+​    NSString *str = [[NSString alloc] initWithData:data
+​                                          encoding:NSUTF8StringEncoding];
+​    _textView.text = [NSString stringWithFormat:@"%@%@", _textView.text, str];
+}
+
+- (void) reciveUdp {
+  
+    int sock; // ソケットのファイルディスクリプター
+    struct sockaddr_in addr;
+
+    
+    sock = socket(AF_INET, SOCK_DGRAM, 0); // SOCK_DGRAMはUDP通信
+    
+    addr.sin_family = AF_INET; // AF_INETはIPv4のインターネットプロトコル
+    addr.sin_port = htons(8888); // 監視しするiPhone側のポート番号
+    addr.sin_addr.s_addr = INADDR_ANY; // どのアドレスからの接続でも受け入れる
+    
+    bind(sock, (struct sockaddr *)&addr, sizeof(addr)); // ソケットへ名前をつける？
+
+    while (1) {
+    ​    char buf[2048]; // 受信用の配列
+    ​    memset(buf, 0, sizeof(buf)); // buf配列の先頭から、最後までを0で埋めている -> ヌル終端文字列
+    ​    long size = recv(sock, buf, sizeof(buf), 0); // UDP受信開始
+    ​    
+    ​    if(size > 0) {
+    ​        printf("%s\n", buf);
+    ​        NSData *data = [NSData dataWithBytes:buf length:size];
+    ​        
+    ​        [self performSelectorOnMainThread:@selector(updateTextView:) withObject:data waitUntilDone:YES];
+    
+//            break;
+​        }
+​    }
+​    
+​    
+//    close(sock);
+​    
+}
+
+@end
+```
+
+
+### MacからUDPでメッセージを送ってみる
+それでは最後に、実際にMacからiPhoneへUDPソケットを送ってみましょう。
+Macのターミナルを開いて下記のコマンドを実行します。これはUDPクライアントを立ち上げる処理になります。
+`nc -u 192.168.100.119 8888`
+この後に、何か送信したいメッセージを入力し、リターンを押せばiPhone画面にメッセージが表示されるはずです。
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/YTcSSpaE4aM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797386479/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797386479&linkCode=as2&tag=101010fun-22&linkId=4c52bebe153feb8463682e79446e3ddb"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797386479&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797386479" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

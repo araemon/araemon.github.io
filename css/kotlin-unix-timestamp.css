@@ -1,0 +1,31 @@
+---
+title:"KotlinでUNIXタイムスタンプの取得"
+date:"2018-11-12"
+category:"blog"
+---
+`System.currentTimeMillis()`
+
+これでUNIXタイムスタンプが取得できた！、と思ったらつまづく。
+
+正解はこちら。
+
+`val unixTimestamp = System.currentTimeMillis() / 1000`
+
+1000で割る。
+
+UNIXタイムスタンプの単位は秒だから。
+
+一方、System.currentTimeMillis()での取得はミリ秒。
+
+
+関数名を落ち着いてよく読みませう。
+
+<b>current time millis**</b>
+
+😯
+
+書いてある。
+
+コピペばかりしてるとこうなる。
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797377623/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797377623&linkCode=as2&tag=101010fun-22&linkId=b73336026353f211400d68f588761dbb"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797377623&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797377623" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

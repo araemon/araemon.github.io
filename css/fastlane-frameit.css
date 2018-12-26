@@ -1,0 +1,36 @@
+---
+title:"App Store用のスクショ作成"
+date:"2018-05-19"
+category:"blog"
+---
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729100505.png
+
+fastlaneはインストール済みとして進める。
+
+
+## モックアップ画像にはめ込む
+スクショをどこかのディレクトリに保存したらそこへ移動してコマンドを叩く。
+iPhone X のサイズのスクショなら iPhoen X に埋め込んでくれる。
+
+```
+fastlane frameit rose_gold
+```
+
+fastlane frameit:
+https://docs.fastlane.tools/actions/frameit/
+
+フォトショを使って自分で埋め込みたいならアップルがモックアップを用意してくれている。
+
+Apple 製品画像:
+https://developer.apple.com/jp/app-store/marketing/guidelines/#images
+
+
+## App Store のスクリーンショット仕様
+端末                    |  縦サイズ
+------------------------|--------------------------------
+5.8インチ (iPhone X)    |  1125 x 2436
+5.5インチ (iPhone8 plus)|  1242 x 2208
+12.9インチ(iPad Pro)    |  2048 x 2732
+
+参考:
+https://help.apple.com/itunes-connect/developer/#/devd274dd925

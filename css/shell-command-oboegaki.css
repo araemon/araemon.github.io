@@ -1,0 +1,39 @@
+---
+title:"シェルスクリプト・コマンドの覚え書き"
+date:"2018-05-11"
+category:"blog"
+---
+シェルスクリプトに慣れるためのメモ。
+
+## 引数と特別な変数
+test.sh
+```
+#!/bin/sh
+
+#スクリプト名
+echo "$0"
+
+#ドルマークをバックスラッシュでエスケープすれば文字列として扱える
+echo "\$0"
+
+#1番目の引数
+echo "$1"
+
+#引数の数
+echo "$#"
+
+# $* 全部の引数をまとめて1つとして処理?
+
+# $@ 全部の引数を個別として処理?
+
+# $? 直前実行したコマンドの終了値（0は成功、1は失敗）
+
+# $$ このシェルスクリプトのプロセスID
+
+# $! 最後に実行したバックグラウンドプロセスID
+```
+
+参考:
+https://qiita.com/zayarwinttun/items/0dae4cb66d8f4bd2a337
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797377623/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797377623&linkCode=as2&tag=101010fun-22&linkId=b73336026353f211400d68f588761dbb"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797377623&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797377623" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

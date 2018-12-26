@@ -1,0 +1,35 @@
+---
+title:"Google翻訳の精度をあげるアイデア - アプリローカライズへの道"
+date:"2018-08-02"
+category:"blog"
+---
+AIやディープラーニングが騒がれるご時世。以前よりはGoogle翻訳の精度もだいぶ上がってきた。しかし、アプリの紹介ページを完全に任せられるほどの精度ではない。
+そこである本を読んでいて思いついたのだが、言語系統に分けて翻訳してみてはどうだろうか。例えばゲルマン系言語や、ラテン系言語のことである。
+
+## ヨーロッパはインド・ヨーロッパ語族
+同じ語族から派生したとされる言語の集まりを語族と言うそうである。ヨーロッパはインド・ヨーロッパ語族になるのだが、そのなかで特に多いのがゲルマン系言語、ラテン系言語、スラブ系言語だ。
+
+image300:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180802/20180802212407.jpg
+
+ゲルマン系言語には、英語、ドイツ語、オランダ語、デンマーク語、ノルウェー語、スウェーデン語、アイスランド語などがある。
+ラテン系言語は、フランス語、イタリア語、スペイン語、ポルトガル語、ルーマニア語などがある。
+そしてスラブ系言語には、ロシア語、ウクライナ語、ポーランド語、チェコ語、スロバキア語、ブルガリア語などがある。
+
+
+## Google翻訳の精度を上げる
+つまりGoogle翻訳するときにこれらの言語系統区分を利用するのである。
+ドイツ語に翻訳したいのなら日本語を直接翻訳するのではなくて、一旦英語の文章にしてから翻訳できれば精度は高くなりそうである。イタリア語に翻訳したいのなら、日本語や英語から翻訳するのではなく、一旦フランス語にしてから翻訳すれば同じく精度が高まるのではなかろうか。
+このようにすれば代表的な英語やフランス語のみにお金をかけて、その他の同種の言語をGoogle翻訳で間に合わせることによって翻訳コストをぐんと下げることが出来るのではないだろうか。もちろん真のローカライズという意味では不十分だろうが、試験的なものであれば十分スタート可能となる。
+ところで先ほどの言語の分布図は、宗教の分布図とそっくりだ。
+プロテスタント→ゲルマン系、カトリック→ラテン系、東方正教会→スラブ系
+
+image300:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180802/20180802212609.jpg
+
+
+## 参考文献
+今回参考にしたのは「中学校の地理が1冊でしっかりわかる本」という本である。
+中学生と言っても侮ることはできない。かなり密度が高くとても分かりやすい内容となっていた。これを読んで、実は自分が地理(Geography)が大好きだというとこが分かった。産業や文化がなぜそのようになっているのか、その土地の気候や地形、資源などを結びつけて考えるので理屈屋としては大満足なのだろう。
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4761272813/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4761272813&linkCode=as2&tag=101010fun-22&linkId=74d8206debcc98fb1f9552a69fd7980a"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4761272813&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4761272813" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />
+
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4862463916/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4862463916&linkCode=as2&tag=101010fun-22&linkId=cf4bad71c9a3b1000537b48ddb0d7fd2"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4862463916&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4862463916" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" />

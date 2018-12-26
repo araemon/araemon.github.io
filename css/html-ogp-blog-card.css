@@ -1,0 +1,111 @@
+---
+title:"OGPが反映されない。ブログカードを実装するまで"
+date:"2018-05-23"
+category:"blog"
+---
+## ブログカードとOpen Graph Protocol(OPG)
+URLをつけて投稿するとSNSなどにカードのように表示されるこれ。
+
+image:https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729101634.jpg
+
+どうやるかというとhtmlのメタタグにこんな感じでサイト情報を埋め込むことでコントロールできる。
+
+```
+<meta content="description説明が入ります" name="description" />
+<meta content="og:titleタイトルが入ります" property="og:title" />
+<meta content="article" property="og:type" />
+<meta content="https://works.kamityping.com/post/2018/index.html" property="og:url" />
+<meta content="https://works.kamityping.com/post/2018/images/kamityping-icon.png" property="og:image" />
+<meta content="og:description説明が入ります" property="og:description" />
+```
+
+Open Graph Protocol(OGP)という規格らしい。
+
+Pandocで自作ジェネレーターを組んでHTML生成しているとこういったことも全て自分でやらなければならない。
+現在のWEBの仕組みに詳しくなると同時に、CMSやブログサービスがこういったことを自動でやってくれていたありがたみがわかる。
+
+OGPに関してはこちらに詳しい規格が書いてある。
+
+The Open Graph protocol:
+http://ogp.me/
+
+
+## OGPが反映されない
+Twitterなどでブログカードを反映させるまでにトラブルがあった。
+
+まずは、現状でブログカードがどのように反映されるか確認できるツールがある。
+
+シェアデバッガー:
+https://developers.facebook.com/tools/debug/sharing/
+
+確認するとこのような警告がでた。
+
+```
+SSL証明書を検証できません。 自己署名（ブラウザの警告を引き起こす）または無効です。
+Can't validate SSL Certificate. Either it is self-signed (which will cause browser warnings) or it is invalid.
+```
+
+サブドメインで運営しているためか、Let's Encrypt 関連でうまくいっていないようである。
+ルートドメインではエラーは吐かなかった。
+
+
+## バーチャルホストの鍵のパスをいじる
+letsencryptは４つの鍵を生成する。
+
+|ファイル名    |  意味|
+|---------------|---------------------------------------------------|
+|privkey.pem    |  秘密鍵（SSL/TLS サーバ証明書の公開鍵に対応する）|
+|cert.pem       |  SSL/TLS サーバ証明書（公開鍵を含む）|
+|chain.pem      |  アクセス時にブラウザに提供する必要のある中間証明書|
+|fullchain.pem  | SSL/TLS サーバ証明書（公開鍵を含む）と中間証明書の両方が含まれているファイルで、cert.pem と chain.pem の内容が結合されたものです。|
+
+参考:
+https://letsencrypt.jp/docs/using.html
+
+chainの指定を追加したらなぜかうまくいったが、問題はさらに続く。
+
+```
+SSLCertificateFile /somewherepath/fullchain.pem
+SSLCertificateKeyFile /somewherepath/privkey.pem
+#以下追加
+SSLCertificateChainFile /somewherepath/chain.pem
+```
+
+
+## VirtualHost 443の複数記述
+Virtualhostのconfに下のように複数記述していた。どうも書き方が間違っていたようだ。
+複数設定すると最後の設定のみが反映されているようで、ドメインが証明書が使われてしまいブラウザーでエラーを吐いた。
+
+```
+<VirtualHost *:443>
+...#サブドメイン1
+</VirtualHost>
+
+<VirtualHost *:443>
+...#サブドメイン2
+</VirtualHost>
+
+<VirtualHost *:443>
+...#サブドメイン3
+</VirtualHost>
+```
+
+443に関する記述を消して、ssl.confをドメイン毎に書き直した。というか現状一つのドメインしかsslを必要としていないのでssl.confをrenameして使っただけだが、他のサブドメインにsslを設定したい場合はこのssl.confをコピーして編集すれば良さそうだ。
+
+```
+cp ssl.conf subdomain1.ssl.conf
+```
+
+
+## SSL Server Test
+自分のサーバーのSSLが最適化されているかテストしてみた。B評価だった。そのうちAになるように対応してみたい。
+
+Qualys SSL Labs:
+https://www.ssllabs.com/ssltest/analyze.html
+
+
+## 画像キャッシュサービス
+とあるブログカードなどに使われていた。直リンクを避け画像表示を高速化するためだと思うが、使い方は調べていない。
+
+Images.weserv.nl:
+https://images.weserv.nl/#quick-reference

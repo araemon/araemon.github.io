@@ -1,0 +1,34 @@
+---
+title:"TeMaKi ver0.8リリース"
+date:"2018-12-24"
+category:"oss"
+---
+## TeMaKiはPythonで作られた静的サイトジェネレーターです
+https://github.com/araemon/temaki
+
+MarkDownファイルからHTML生成して、静的サイトコンテンンツを生成できるようにPythonでプログラミングしました。
+世の中にはHugoをはじめ、すでに多くの静的サイトジェネレーターが存在しますが、Pythonの勉強もかねて一からプログラミングしてみました。
+他者製品のような高度な機能はありませんが、シンプルなプログラミングなので、仕組みがわかりやすく、誰でも容易にカスタマイズが可能です。
+本プログラムはTeMaKiプロジェクトとしてオープンソース化することにしました。
+
+ちなみに、TeMaKiは「Text Markup Kit」の略です。
+
+
+## 実行環境
+最新版のPythonが必要です。こちらではMac上のPython3.7で動作確認を行なっています。
+
+
+## 使い方
+`posts`ディレクトリにMarkDownファイルを入れてください。
+`python main.py all`を実行すると、HTML生成が始まり、ブラウザーから`http://0.0.0.0:8888/`へアクセスすることで、生成されたコンテンツを確認することができるようになります。終了する場合は`control` + `c`で終了してください。
+```
+python main.py all
+All convert ...
+http server start.... http://0.0.0.0:8888/
+```
+
+現在TeMaKiでMarkDownを変換すると次のようになります。
+
+
+変換後:
+https://araemon.github.io/oss/temaki-md-sample.html
