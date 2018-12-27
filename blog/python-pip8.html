@@ -3,15 +3,15 @@
 
 <head>
         <meta charset="UTF-8">
-<title>GitHub Pagesのトラブルシューティング</title>
+<title>PEP8を読んだまとめ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
-<meta content="GitHub Pagesのトラブルシューティング" property="og:title" />
+<meta content="PEP8を読んだまとめ" property="og:title" />
 <meta content="article" property="og:type" />
 <meta content="https://araemon.github.io/blog/.html" property="og:url" />
-<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" property="og:image" />
+<meta content="" property="og:image" />
 <?php echo $SITE['article_appid']; ?>
 <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 </head>
@@ -42,86 +42,63 @@
                                 <div class="tag">
                                         <a href="/blog/" class="tagHighlight">blog</a>
                                 </div>
-                                <h1>GitHub Pagesのトラブルシューティング</h1>
-                                <div class="time"><time pubdate="" datetime="2018-05-09">2018-05-09</time></div>
+                                <h1>PEP8を読んだまとめ</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-27">2018-12-27</time></div>
                                 <p>
                                         <?php echo $SITE['article_toc']; ?>
 
-                                        <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" width="200" class="lazyload" /><br>
-GitHub Pagesでサイトを運用する際につまづいた事を忘備録として残しておきます。<br>
-Octocatロゴは https://github.com/logos から利用させてもらっています。<br>
+                                        PEP8(日本語)を読んで、印象に残ったところをまとめておきます。<br>
+<a href="https://pep8-ja.readthedocs.io/ja/latest/">https://pep8-ja.readthedocs.io/ja/latest/</a><br>
 <br>
+原文はこちらのようです。<br>
+<a href="https://hg.python.org/peps/file/tip/pep-0008.txt">https://hg.python.org/peps/file/tip/pep-0008.txt</a><br>
 <br>
-<h2>サイトが反映されない</h2>
-サイトが何時間もたってもビルドできていないと思ったら、こんなメールが届いていた。<br>
+PEPとはPython Enhancement Proposalsの略のようです。<br>
+また「pep」という単語があるということを知り、調べてみると、「元気」や「気力」の意味ということがわかりました。(あの飲み物は、そういうことだったんですね)<br>
+<br>
+* 1行の長さは80文字以内に収める -> 二窓で表示した時もレイアウトが崩れない<br>
+* 演算子の前で改行すると目の動きが少なくて済む -> 算数の計算と似ている<br>
 <pre class="code">
-The page build failed for the `master` branch with the following error:
-
-The symbolic link `/works` targets a file which does not exist within your site's repository. For more information, see https://help.github.com/articles/page-build-failed-symlink-does-not-exist-within-your-site-s-repository/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
+income = (gross_wages
+          + taxable_interest
+          + (dividends - qualified_dividends)
+          - ira_deduction
+          - student_loan_interest)
+</pre><br>
+* 関数、変数、メソッド名、インスタンス変数はlower_case_with_underscores、小文字とアンダースコアで表現する<br>
+* 公開されていないメソッドやインスタンス変数にだけ、アンダースコアを先頭に付ける(PythonにはPrivateなものは存在しない)<br>
+* 定数は UPPER_CASE_WITH_UNDERSCORES<br>
+* クラス名は CapitalizedWord方式を使うべき -> ただし、HttpServerErrorより HTTPServerErrorの方が良い<br>
+* Objective-Cにある、NSなどのプリフィックスは不要。なぜなら、Pythonの属性やメソッドの名前の前にはクラス名が付き、関数名の前にはモジュール名が付くから<br>
+* モジュールの名前は、全て小文字の短い名前にすべき。アンダースコアも使って良い。<br>
+* Python のパッケージ名は、全て小文字の短い名前を使うべきだが、アンダースコアを使うのは推奨されない<br>
+* インスタンスメソッドのはじめの引数の名前は常に self を使うこと -> 実は、selfをhogeにしても動くという事実！<br>
+<pre class="code">
+def do_something(hoge, name):
+    return hoge.name &gt;= name
+</pre><br>
+* パフォーマンスに敏感な部分には、a += b や a = a + b ではなく ''.join() を代わりに使うべき -> 文字列の連結が線形時間で終わる<br>
+* None のようなシングルトンと比較をする場合は、常に is か is not を使うべき。絶対に等値演算子を使わないこと<br>
+* if x is not None と書いているつもりで、 if x と書いている場合は注意！たとえば、デフォルトの値がNoneになる変数や引数に、何かしら別の値が設定されているかどうかをテストする場合です。この「別の値」は、ブール型のコンテクストでは False と評価される(コンテナのような)型かもしれませんよ！<br>
+* 式を返しているreturn文が関数の中にある場合、値を何も返さないreturn文は 明示的に return None と書くべき<br>
+* 文字列にプレフィックスやサフィックスチェックには、''.startswith() と ''.endswith() を使う<br>
+* 文字列, リスト, タプルでの空はFalseになるので次のように書ける<br>
+<pre class="code">
+if not hoge:
+if hoge:
+</pre><br>
+* True や False を比較するのに == を使わないこと<br>
+<pre class="code">
+NG   if hoge == True:
+NG   if hoge is True:
+OK   if hoge:
 </pre><br>
 <br>
-要はシンボリックリンクがサイト内に含まれていてビルドエラーになっているよという事だった。<b>シンボリックリンクを見つけて削除</b>したら一瞬でビルドできた。<br>
-<br>
-<br>
-<h2>DNS設定に関するwarning</h2>
-<pre class="code">
-The page build completed successfully, but returned the following warning for the `master` branch:
-
-Your site's DNS settings are using a custom subdomain, works.kamityping.com, that's set up as an A record. We recommend you change this to a CNAME record pointing at araemon.github.io. For more information, see https://help.github.com/articles/using-a-custom-domain-with-github-pages/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
-</pre><br>
-<br>
-DNSのAレコードにサブドメインを割り当てないでくれとのことの様だ。<br>
-サブドメインはCNAMEで登録してくれと。<br>
-DNSの事がよくわかっていないのだが、なんとか解決できた。<br>
-<br>
-digコマンドで確認してみる<br>
-<br>
-<span class="codeInline">dig works.kamityping.com</span><br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130030.jpg" class="default lazyload" /><br>
-<br>
-サブドメイン(works.kamityping.com)を直接GithubのサーバーIPアドレスに割り当てていた。これがいけないらしい。<br>
-次の様にDNSの設定を変えたら今のところワーニングのメールが来なくなったので、うまくできたのかな？<br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130045.jpg" width="300" class="lazyload" /><br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130101.jpg" class="default lazyload" /><br>
-<br>
-<br>
-こんな感じで名前解決されているということか<br>
-<br>
-<span class="codeInline">works.kamityping.com.</span><br>
-　↓<br>
-<span class="codeInline">araemon.github.io.</span><br>
-　↓<br>
-<span class="codeInline">sni.github.map.fastly.net.</span><br>
-　↓<br>
-<span class="codeInline">185.199.108.153</span><br>
-<span class="codeInline">185.199.109.153</span><br>
-<span class="codeInline">185.199.110.153</span><br>
-<span class="codeInline">185.199.111.153</span><br>
-<br>
-追記:<br>
-GitHub Pagesにはユーザーサイトとプロジェクトサイトがある様で、プロジェクトサイトで動かしていたようだ。cname割り当てれば問題ないのだけど、なんだか構造がわかりづらい。<br>
-また、ルートドメインをユーザーサイトに割り当てるにはムームードメインのDNSでは一筋縄にはいかないようで、GitHubにしたらシンプルかなと思ったがそうでもないことがわかった。月に10万リクエストの制限もあるしWebでサービスを提供するなら素直にレンタルサーバー使った方が効率良さそうだ。<br>
-ということで元のさくらサーバーに引っ越すことに。静的HTMLだからコピペすれば良いだけなので引っ越し作業は一瞬だ。<br>
-今回はGitHub Pagesを試したことでGitの構造が理解できて良い勉強になったということで。<br>
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4774196436/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4774196436&linkCode=as2&tag=101010fun-22&linkId=cac21a621d087c2ba54b230cca57db1d"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4774196436&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4774196436" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797396814/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797396814&linkCode=as2&tag=101010fun-22&linkId=70d1fff022835386a88986a32c7852ea"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797396814&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797396814" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4839960240/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4839960240&linkCode=as2&tag=101010fun-22&linkId=a9431092a8ccee3fb7638f1a1943f503"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4839960240&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4839960240" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
 
                                 </p>
                                 <ul class="shareList">
-                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=GitHub Pagesのトラブルシューティング"
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=PEP8を読んだまとめ"
                                                         target="_blank" title="Twitter"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
                                                         target="_blank" title="Facebook"></a></li>
@@ -129,7 +106,7 @@ GitHub Pagesにはユーザーサイトとプロジェクトサイトがある�
                                                         target="_blank" title="Google+"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
                                                         target="_blank" title="はてなブックマーク"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=GitHub Pagesのトラブルシューティング"
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=PEP8を読んだまとめ"
                                                         target="_blank" title="Pocket"></a></li>
                                 </ul>
                         </article>

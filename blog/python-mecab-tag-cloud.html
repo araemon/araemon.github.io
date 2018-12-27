@@ -3,15 +3,15 @@
 
 <head>
         <meta charset="UTF-8">
-<title>GitHub Pagesのトラブルシューティング</title>
+<title>Python3でMeCabを使えるようにする</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <link rel="stylesheet" type="text/css" href="/css/main.css" />
 <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-icon-144x144.jpg">
 <link rel="shortcut icon" href="/images/favicon.ico">
-<meta content="GitHub Pagesのトラブルシューティング" property="og:title" />
+<meta content="Python3でMeCabを使えるようにする" property="og:title" />
 <meta content="article" property="og:type" />
 <meta content="https://araemon.github.io/blog/.html" property="og:url" />
-<meta content="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" property="og:image" />
+<meta content="" property="og:image" />
 <?php echo $SITE['article_appid']; ?>
 <link rel="stylesheet" type="text/css" href="/css/icon.css" />
 </head>
@@ -42,86 +42,52 @@
                                 <div class="tag">
                                         <a href="/blog/" class="tagHighlight">blog</a>
                                 </div>
-                                <h1>GitHub Pagesのトラブルシューティング</h1>
-                                <div class="time"><time pubdate="" datetime="2018-05-09">2018-05-09</time></div>
+                                <h1>Python3でMeCabを使えるようにする</h1>
+                                <div class="time"><time pubdate="" datetime="2018-12-26">2018-12-26</time></div>
                                 <p>
                                         <?php echo $SITE['article_toc']; ?>
 
-                                        <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729125958.jpg" width="200" class="lazyload" /><br>
-GitHub Pagesでサイトを運用する際につまづいた事を忘備録として残しておきます。<br>
-Octocatロゴは https://github.com/logos から利用させてもらっています。<br>
+                                        PythonでMeCabを使えるようにするためには、バインディングという作業が必要のようです。<br>
+<span class="codeInline">mecab-python3</span>をインストールするだけで、バインディング作業が完了するようなので、早速インストールしてみました。<br>
 <br>
+<span class="codeInline">pip install mecab-python3</span><br>
 <br>
-<h2>サイトが反映されない</h2>
-サイトが何時間もたってもビルドできていないと思ったら、こんなメールが届いていた。<br>
+しかし、下記のようにエラーが出てしまいました。<br>
 <pre class="code">
-The page build failed for the `master` branch with the following error:
-
-The symbolic link `/works` targets a file which does not exist within your site's repository. For more information, see https://help.github.com/articles/page-build-failed-symlink-does-not-exist-within-your-site-s-repository/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
+Collecting mecab-python3
+  Using cached https://files.pythonhosted.org/packages/ac/48/295efe525df40cbc2173748eb869290e81a57e835bc41f6d3834fc5dad5f/mecab-python3-0.996.1.tar.gz
+Installing collected packages: mecab-python3
+  Running setup.py install for mecab-python3 ... error
+    Complete output from command /Users/hoge/.pyenv/versions/3.7.1/bin/python3.7 -u -c "import setuptools, tokenize;__file__='/private/var/folders/ww/9t84g7g97552vzggl__9j3h00000gn/T/pip-install-6m4r9l3_/mecab-python3/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /private/var/folders/ww/9t84g7g97552vzggl__9j3h00000gn/T/pip-record-4qqpv1oi/install-record.txt --single-version-externally-managed --compile:
+    /Users/hoge/.pyenv/versions/3.7.1/lib/python3.7/distutils/dist.py:274: UserWarning: Unknown distribution option: 'long_description_content_type'
+      warnings.warn(msg)
+    running install
+    running build
+    running build_py
+    running build_ext
+    building '_MeCab' extension
+    swigging MeCab.i to MeCab_wrap.cpp
+    swig -python -shadow -c++ -I/usr/local/Cellar/mecab/0.996/include -o MeCab_wrap.cpp MeCab.i
+    unable to execute 'swig': No such file or directory
+    error: command 'swig' failed with exit status 1
+    
+    ----------------------------------------
+Command "/Users/hoge/.pyenv/versions/3.7.1/bin/python3.7 -u -c "import setuptools, tokenize;__file__='/private/var/folders/ww/9t84g7g97552vzggl__9j3h00000gn/T/pip-install-6m4r9l3_/mecab-python3/setup.py';f=getattr(tokenize, 'open', open)(__file__);code=f.read().replace('\r\n', '\n');f.close();exec(compile(code, __file__, 'exec'))" install --record /private/var/folders/ww/9t84g7g97552vzggl__9j3h00000gn/T/pip-record-4qqpv1oi/install-record.txt --single-version-externally-managed --compile" failed with error code 1 in /private/var/folders/ww/9t84g7g97552vzggl__9j3h00000gn/T/pip-install-6m4r9l3_/mecab-python3/
 </pre><br>
+swigというコマンドが見つからないエラーです。swigとは、C言語やC++で書かれたライブラリをPythonやRuby, Javaなどのプログラミングで利用できるようにするためのツールのようです。<br>
+<a href="https://ja.wikipedia.org/wiki/SWIG">https://ja.wikipedia.org/wiki/SWIG</a><br>
 <br>
-要はシンボリックリンクがサイト内に含まれていてビルドエラーになっているよという事だった。<b>シンボリックリンクを見つけて削除</b>したら一瞬でビルドできた。<br>
+<span class="codeInline">brew install swig</span>でswigをインストールします。<br>
+再び<span class="codeInline">pip install mecab-python3</span>で試したら、無事インストールできました。<br>
 <br>
+せっかくですので、MeCabを使ってこのブログのタグクラウドを作ってみました。タグクラウドはブログの下部に表示しています。<br>
+仕組みはページごとのtitleタグを読み取って、MeCabで分かち書きに分解します。分解された文字の中から、名詞のみを抽出して、その単語をキーとしたハッシュを作ります。ハッシュの値には、ページタイトルとURLを配列で格納します。それをjsonとして書き出すことにしました。あとは、jQueryで読み込めば、Ajax式のタグクラウドとして表示できました。<br>
 <br>
-<h2>DNS設定に関するwarning</h2>
-<pre class="code">
-The page build completed successfully, but returned the following warning for the `master` branch:
-
-Your site's DNS settings are using a custom subdomain, works.kamityping.com, that's set up as an A record. We recommend you change this to a CNAME record pointing at araemon.github.io. For more information, see https://help.github.com/articles/using-a-custom-domain-with-github-pages/.
-
-For information on troubleshooting Jekyll see:
-
-  https://help.github.com/articles/troubleshooting-jekyll-builds
-
-If you have any questions you can contact us by replying to this email.
-</pre><br>
-<br>
-DNSのAレコードにサブドメインを割り当てないでくれとのことの様だ。<br>
-サブドメインはCNAMEで登録してくれと。<br>
-DNSの事がよくわかっていないのだが、なんとか解決できた。<br>
-<br>
-digコマンドで確認してみる<br>
-<br>
-<span class="codeInline">dig works.kamityping.com</span><br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130030.jpg" class="default lazyload" /><br>
-<br>
-サブドメイン(works.kamityping.com)を直接GithubのサーバーIPアドレスに割り当てていた。これがいけないらしい。<br>
-次の様にDNSの設定を変えたら今のところワーニングのメールが来なくなったので、うまくできたのかな？<br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130045.jpg" width="300" class="lazyload" /><br>
-<br>
-<img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180729/20180729130101.jpg" class="default lazyload" /><br>
-<br>
-<br>
-こんな感じで名前解決されているということか<br>
-<br>
-<span class="codeInline">works.kamityping.com.</span><br>
-　↓<br>
-<span class="codeInline">araemon.github.io.</span><br>
-　↓<br>
-<span class="codeInline">sni.github.map.fastly.net.</span><br>
-　↓<br>
-<span class="codeInline">185.199.108.153</span><br>
-<span class="codeInline">185.199.109.153</span><br>
-<span class="codeInline">185.199.110.153</span><br>
-<span class="codeInline">185.199.111.153</span><br>
-<br>
-追記:<br>
-GitHub Pagesにはユーザーサイトとプロジェクトサイトがある様で、プロジェクトサイトで動かしていたようだ。cname割り当てれば問題ないのだけど、なんだか構造がわかりづらい。<br>
-また、ルートドメインをユーザーサイトに割り当てるにはムームードメインのDNSでは一筋縄にはいかないようで、GitHubにしたらシンプルかなと思ったがそうでもないことがわかった。月に10万リクエストの制限もあるしWebでサービスを提供するなら素直にレンタルサーバー使った方が効率良さそうだ。<br>
-ということで元のさくらサーバーに引っ越すことに。静的HTMLだからコピペすれば良いだけなので引っ越し作業は一瞬だ。<br>
-今回はGitHub Pagesを試したことでGitの構造が理解できて良い勉強になったということで。<br>
+<a target="_blank"  href="https://www.amazon.co.jp/gp/product/4774196436/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4774196436&linkCode=as2&tag=101010fun-22&linkId=cac21a621d087c2ba54b230cca57db1d"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4774196436&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4774196436" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4797396814/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4797396814&linkCode=as2&tag=101010fun-22&linkId=70d1fff022835386a88986a32c7852ea"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4797396814&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4797396814" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><a target="_blank"  href="https://www.amazon.co.jp/gp/product/4839960240/ref=as_li_tl?ie=UTF8&camp=247&creative=1211&creativeASIN=4839960240&linkCode=as2&tag=101010fun-22&linkId=a9431092a8ccee3fb7638f1a1943f503"><img border="0" src="//ws-fe.amazon-adsystem.com/widgets/q?_encoding=UTF8&MarketPlace=JP&ASIN=4839960240&ServiceVersion=20070822&ID=AsinImage&WS=1&Format=_SL250_&tag=101010fun-22" ></a><img src="//ir-jp.amazon-adsystem.com/e/ir?t=101010fun-22&l=am2&o=9&a=4839960240" width="1" height="1" border="0" alt="" style="border:none !important; margin:0px !important;" /><br>
 
                                 </p>
                                 <ul class="shareList">
-                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=GitHub Pagesのトラブルシューティング"
+                                        <li class="shareList__item"><a class="shareList__link icon-twitter" href="https://twitter.com/intent/tweet?url=https://araemon.github.io/blog/.html&text=Python3でMeCabを使えるようにする"
                                                         target="_blank" title="Twitter"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/blog/.html"
                                                         target="_blank" title="Facebook"></a></li>
@@ -129,7 +95,7 @@ GitHub Pagesにはユーザーサイトとプロジェクトサイトがある�
                                                         target="_blank" title="Google+"></a></li>
                                         <li class="shareList__item"><a class="shareList__link icon-hatebu" href="http://b.hatena.ne.jp/entry/https://araemon.github.io/blog/.html"
                                                         target="_blank" title="はてなブックマーク"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=GitHub Pagesのトラブルシューティング"
+                                        <li class="shareList__item"><a class="shareList__link icon-pocket" href="http://getpocket.com/edit?url=https://araemon.github.io/blog/.html&title=Python3でMeCabを使えるようにする"
                                                         target="_blank" title="Pocket"></a></li>
                                 </ul>
                         </article>
