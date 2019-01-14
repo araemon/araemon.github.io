@@ -236,12 +236,12 @@ article .list h3 {
 article内設定
 **********************************/
 article {
-    line-height: 1.5em;
+    line-height: 1.8em;
 }
 article h1 {
     font-size:1.3em;
     line-height: 1.5em;
-    padding:10px 0 10px;
+    padding:20px 0 10px;
     font-family: "ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
 }
 article h2 {
