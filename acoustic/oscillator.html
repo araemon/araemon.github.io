@@ -51,17 +51,17 @@
                                         <?php echo $SITE['article_toc']; ?>
 
                                         <br>
+<br>
+<div class="app-download"><img src="../images/oscillator-icon-512.jpg" width="200px" height="200px" /><a
+        href="https://apps.apple.com/us/app/%E6%B3%A2%E5%8B%95-hysteric-oscillator-%E3%82%AA%E3%82%B7%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC/id1473229854?l=ja&ls=1"
+        target="_blank" class="iOS">Download on the<span>App Store</span></a></div><br>
+<br>
+<br>
+<h2>告知</h2>
 <img data-src="/images/oscillator3.jpg" class="default lazyload" /><br>
 <br>
-ただいま猛烈製作中です！(`･ω･)ゞ<br>
-リリースまで今しばらくお待ちください。<br>
-<br>
-<br>
-<h2>予告</h2>
-「波動 〜 Hysteric Oscillator」というiOSアプリを製作中です。<br>
-いわゆるオシレーターですね。ローパスフィルターやAM変調も実装しているのでシンセサイザーにも近いです。<br>
-<br>
-波形をモニターできるのが特徴です。2チャンネル同時に発振できるので音響実験や、音遊びとして色々楽しいことができます。波の合成を耳と目で感じることができるので、難しいことがわからなくても誰でも遊べる内容になってます。<br>
+「波動 〜 Hysteric Oscillator」というiOSアプリをリリースしました。<br>
+基本はいわゆるオシレーターですが、ローパスフィルターやAM変調、FM変調までも実装しているのでシンセサイザーと行った方が良いかもしれません。ただ、世の中にあるシンセサイザーとは違い、オシロスコープのようにリアルタイムで波形をみることができます。またフルバージョンでは、2チャンネル同時に発振できるので音響実験や、音遊びとして色々楽しいことができるようになっています。<br>
 <br>
 <br>
 <br>
@@ -95,31 +95,65 @@
 <br>
 <br>
 <br>
-<h2>開発記録（タイムトラベル）</h2>
-<h3>Version 1.0.0 (2019.7.17)</h3>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">『波動 - Hysteric Oscillator ver1.0.0』完成！AppStoreへ申請完了！疲れたぁー(´&gt;ω&lt;｀) <a href="https://t.co/hl8B0GP1ED">https://t.co/hl8B0GP1ED</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151450634647793664?ref_src=twsrc%5Etfw">2019年7月17日</a></blockquote><br>
+<h2>開発記録を振り返る🐸（タイムトラベル）</h2>
+<br>
+<h3>Version 0.0.1 (⏱2019.5.22)</h3>
+アプリ制作開始から3日ほど。基本的な仕様は完成している。オシロスコープのような波の表現もそれほど難しくはなかった。この頃はGAINの上げ下げでいちいち感動しているのが可愛らしく思う。<br>
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ABV42icYfEM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<br>
+<br>
+<br>
+<h3>Version 0.1.0 (⏱2019.5.24)</h3>
+アナログ的なツマミ（丸型のボリューム）にUIを変えてみたバージョンだ。<br>
+トレモロ(AM変調)も導入している。AM変調とはAmplifier Modulationの名の通り、ボリュームをミリ秒単位で上げ下げしているだけのことだ。AMラジオもほぼ同じ原理だが、搬送波と音声信号の関係がこのアプリとは逆であることに注意。AMラジオの場合は搬送波の周波数は一定で、振幅(Amplifier)が音声信号の振幅に該当するのだ。<br>
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/luaubhxKEec" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<br>
+<br>
+<br>
+<h3>Version 0.1.1 (⏱2019.5.25)</h3>
+ホワイトノイズを導入した。本物のホワイトノイズを作ろうとするとエライ大変だ。リアルタイムではとても負荷が大きくて処理できないと判断。乱数を使用した擬似ホワイトノイズを採用している。今思えば、あらかじめ用意した音源再生っていう手段もあり得るかも。<br>
+<br>
+さて、この動画では海の音の再現を試みているところだ。当時はとても似ていると思ったが、今聞くと随分高音よりのスカスカな音だ。サラサラした高周波をカットするローパスフィルターが必要だと思った。<br>
+<br>
+ローパスフィルターは、電子回路で実現するなら簡単だが、プログラミングになるとそう簡単にはいかない。FIRフィルターやIIRフィルターなどのワケワカメな世界へ足を突っ込まなければならない。フーリエ変換、オイラーの公式、離散フーリエ、z変換、線形補間などが登場し、いちいち疑問を持ったら先に進まず、狐につままれたと思い込まないとやっていけない世界だ。<br>
+<br>
+この後、ローパスフィルターに取り掛かるまでに一ヶ月以上のブランクが空いているのは言うまでもない。<br>
+<br>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Mp9XXYfJI7s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<br>
+<br>
+<br>
+<h3>Version 0.4.3 (⏱2019.7.15)</h3>
+ようやくローパフィルターの実装ができた。このような技術の書籍を書いた人や発見した数学者たちに感謝したい。<br>
+<br>
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">アプリ名を『波動 〜The Wave』にしてみる。厨ニ病っぽくて悪くないかも。バージョン0.4.3、カラーも変更。ローパスフィルターがあると、ホワイトノイズも海の波の音みたいになる。🌊 <a href="https://t.co/ryeXhVdEd1">pic.twitter.com/ryeXhVdEd1</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1150817941148983296?ref_src=twsrc%5Etfw">2019年7月15日</a></blockquote><br>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
 <br>
-<h3>Version 0.5.0 (2019.7.16)</h3>
+<br>
+<br>
+<h3>Version 0.5.0 (⏱2019.7.16)</h3>
+さらにFM変調を導入した。今までのサウンドとは別次元のものになった感があり、『波動』では地味だと思ったのか『破響』へ変更している。UIの色も派手にした。<br>
+<br>
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">それとも『破響 〜Hysteric Wave』にしようか。🤔<br>FM変調のLFOを変更するときに、とてつもない破壊音が生じているが。これは意図していない。なんとかする。 <a href="https://t.co/NvLaPSQtgN">pic.twitter.com/NvLaPSQtgN</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151147153248542720?ref_src=twsrc%5Etfw">2019年7月16日</a></blockquote><br>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
 <blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">『波動〜The Wave』にFM変調を追加してみた。ビブラートもFM変調の一部分だが、パラメータ可動幅を広げるとカオス的な音が生まれる。鐘の音や、幽霊の音、おもちゃの音などが作れる。80年代のFM音源の技術だがなかなか面白い。 <a href="https://t.co/pU0aer730C">pic.twitter.com/pU0aer730C</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151093037365264385?ref_src=twsrc%5Etfw">2019年7月16日</a></blockquote><br>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
 <br>
-<h3>Version 0.4.3 (2019.7.15)</h3>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">アプリ名を『波動 〜The Wave』にしてみる。厨ニ病っぽくて悪くないかも。バージョン0.4.3、カラーも変更。ローパスフィルターがあると、ホワイトノイズも海の波の音みたいになる。🌊 <a href="https://t.co/ryeXhVdEd1">pic.twitter.com/ryeXhVdEd1</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1150817941148983296?ref_src=twsrc%5Etfw">2019年7月15日</a></blockquote><br>
+<br>
+<br>
+<h3>Version 1.0.0 (⏱2019.7.17)</h3>
+『破響』は流石に意味がわからないと思い『波動』に戻すことにした。<br>
+<br>
+アプリリースまでの最後の一息。ここら辺になると、作業内容が地味でつまらなくなる。だからこそ一気に乗り越えなければならない。だから何としても1日以内に仕上げる。そしてめでたくAppStoreへ申請完了。あとは『野となれ山となれ』。<br>
+<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">『波動 - Hysteric Oscillator ver1.0.0』完成！AppStoreへ申請完了！疲れたぁー(´&gt;ω&lt;｀) <a href="https://t.co/hl8B0GP1ED">https://t.co/hl8B0GP1ED</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151450634647793664?ref_src=twsrc%5Etfw">2019年7月17日</a></blockquote><br>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
 <br>
-<h3>Version 0.1.1 (2019.5.25)</h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Mp9XXYfJI7s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
 <br>
-<br>
-<h3>Version 0.1.0 (2019.5.24)</h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/luaubhxKEec" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-<br>
-<br>
-<h3>Version 0.0.1 (2019.5.22)</h3>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ABV42icYfEM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
+<div class="app-download"><img src="../images/oscillator-icon-512.jpg" width="200px" height="200px" /><a
+        href="https://apps.apple.com/us/app/%E6%B3%A2%E5%8B%95-hysteric-oscillator-%E3%82%AA%E3%82%B7%E3%83%AC%E3%83%BC%E3%82%BF%E3%83%BC/id1473229854?l=ja&ls=1"
+        target="_blank" class="iOS">Download on the<span>App Store</span></a></div><br>
 
                                 </p>
                                 <ul class="shareList">
