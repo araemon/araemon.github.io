@@ -24,14 +24,14 @@
                                 <div class="container">
                                         <ul class="nav">
 
-    <li><a href="/acoustic/">Acoustic Experiment Serise</a></li>
-    <li><a href="/kamityping/">KamiTyping</a></li>
+    <li><a href="/acoustic/oscillator.html">波動</a></li>
+    <li><a href="/kamityping/">タイピングの神様</a></li>
     <li><a href="/chazuke/">Chazuke</a></li>
     <li><a href="/harmonize/">Harmonize</a></li>
     <li><a href="/apps/">Other Apps</a></li>
     <li><a href="https://101010.fun/analog/" target="_blank">Blog</a></li>
 </ul>
-<div class="copyright">Copyright © <a href="https://twitter.com/mopipico" target="_blank">Toshihiko Arai</a></div>
+<div class="copyright">Copyright © Toshihiko Arai</div>
                                 </div>
                         </div>
                 </div>
@@ -101,86 +101,6 @@ We will add preset function from now on.<br>
 <br>
 * 広告の非表示<br>
 * チャンネル2のアンロック<br>
-<br>
-今後、プリセット機能を追加します。<br>
-<br>
-<br>
-<br>
-<h2>Development records (開発記録を振り返る🐸)</h2>
-<br>
-<h3>Version 0.0.1 (⏱2019.5.22)</h3>
-About three days from the start of app production. The basic specifications are complete. Expressing waves like an oscilloscope was not too difficult. I think that it is lovely to be moved by GAIN up and down one by one these days.<br>
-<br>
-アプリ制作開始から3日ほど。基本的な仕様は完成している。オシロスコープのような波の表現もそれほど難しくはなかった。この頃はGAINの上げ下げでいちいち感動しているのが可愛らしく思う。<br>
-<br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ABV42icYfEM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-<br>
-<br>
-<br>
-<h3>Version 0.1.0 (⏱2019.5.24)</h3>
-It is a version that tried changing the UI to an analog knob (round volume).<br>
-Tremolo (Amplifier modulation) is also introduced. AM modulation is just raising and lowering the volume in milliseconds, as the name of the Amplifier Modulation. AM radio is almost the same principle, but note that the relationship between carrier wave and audio signal is opposite to this application. In the case of AM radio, the carrier frequency is constant, and the amplitude ​​corresponds to the amplitude of the audio signal.<br>
-<br>
-アナログ的なツマミ（丸型のボリューム）にUIを変えてみたバージョンだ。<br>
-トレモロ(AM変調)も導入している。AM変調とはAmplifier Modulationの名の通り、ボリュームをミリ秒単位で上げ下げしているだけのことだ。AMラジオもほぼ同じ原理だが、搬送波と音声信号の関係がこのアプリとは逆であることに注意。AMラジオの場合は搬送波の周波数は一定で、振幅(Amplifier)が音声信号の振幅に該当するのだ。<br>
-<br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/luaubhxKEec" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-<br>
-<br>
-<br>
-<h3>Version 0.1.1 (⏱2019.5.25)</h3>
-White noise was introduced. It is very difficult to make a real white noise. In real time, it is determined that the load is too large to process. The pseudo white noise using random numbers is adopted. If you think about it now, there may be a way to play the prepared sound source.<br>
-<br>
-Well, this video is trying to reproduce the sound of the sea. At the time I thought it was very similar, but now I hear it sounds much louder than it sounds. I thought it was necessary to have a low pass filter to cut the high frequency that was smooth.<br>
-<br>
-Low pass filters are easy to implement in electronic circuits, but they are not as easy to program. You have to learn difficult learning such as FIR filter and IIR filter. Fourier Transform, Euler's Formula, Discrete Fourier, z Transform, Linear Interpolation, etc. will appear, and if you have any doubts you will not move forward. It is a world where you can not do without thinking that you have been trapped.<br>
-<br>
-It goes without saying that it took more than a month to start the low pass filter after this.<br>
-<br>
-ホワイトノイズを導入した。本物のホワイトノイズを作ろうとするとエライ大変だ。リアルタイムではとても負荷が大きくて処理できないと判断。乱数を使用した擬似ホワイトノイズを採用している。今思えば、あらかじめ用意した音源再生っていう手段もあり得るかも。<br>
-<br>
-さて、この動画では海の音の再現を試みているところだ。当時はとても似ていると思ったが、今聞くと随分高音よりのスカスカな音だ。サラサラした高周波をカットするローパスフィルターが必要だと思った。<br>
-<br>
-ローパスフィルターは、電子回路で実現するなら簡単だが、プログラミングになるとそう簡単にはいかない。FIRフィルターやIIRフィルターなどのワケワカメな世界へ足を突っ込まなければならない。フーリエ変換、オイラーの公式、離散フーリエ、z変換、線形補間などが登場し、いちいち疑問を持ったら先に進まず、狐につままれたと思い込まないとやっていけない世界だ。<br>
-<br>
-この後、ローパスフィルターに取り掛かるまでに一ヶ月以上のブランクが空いているのは言うまでもない。<br>
-<br>
-<iframe width="560" height="315" src="https://www.youtube.com/embed/Mp9XXYfJI7s" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe><br>
-<br>
-<br>
-<br>
-<h3>Version 0.4.3 (⏱2019.7.15)</h3>
-Finally, the low-pass filter has been implemented. I would like to thank those who wrote such technical books and the mathematicians who discovered them.<br>
-<br>
-ようやくローパフィルターの実装ができた。このような技術の書籍を書いた人や発見した数学者たちに感謝したい。<br>
-<br>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">アプリ名を『波動 〜The Wave』にしてみる。厨ニ病っぽくて悪くないかも。バージョン0.4.3、カラーも変更。ローパスフィルターがあると、ホワイトノイズも海の波の音みたいになる。🌊 <a href="https://t.co/ryeXhVdEd1">pic.twitter.com/ryeXhVdEd1</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1150817941148983296?ref_src=twsrc%5Etfw">2019年7月15日</a></blockquote><br>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
-<br>
-<br>
-<br>
-<h3>Version 0.5.0 (⏱2019.7.16)</h3>
-Furthermore, FM modulation was introduced. There is a sense that it has become a different dimension from the previous sound, and in "波動" I changed it to "破響" or thought it was sober. The color of the UI was also flashy.<br>
-<br>
-さらにFM変調を導入した。今までのサウンドとは別次元のものになった感があり、『波動』では地味だと思ったのか『破響』へ変更している。UIの色も派手にした。<br>
-<br>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">それとも『破響 〜Hysteric Wave』にしようか。🤔<br>FM変調のLFOを変更するときに、とてつもない破壊音が生じているが。これは意図していない。なんとかする。 <a href="https://t.co/NvLaPSQtgN">pic.twitter.com/NvLaPSQtgN</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151147153248542720?ref_src=twsrc%5Etfw">2019年7月16日</a></blockquote><br>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">『波動〜The Wave』にFM変調を追加してみた。ビブラートもFM変調の一部分だが、パラメータ可動幅を広げるとカオス的な音が生まれる。鐘の音や、幽霊の音、おもちゃの音などが作れる。80年代のFM音源の技術だがなかなか面白い。 <a href="https://t.co/pU0aer730C">pic.twitter.com/pU0aer730C</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151093037365264385?ref_src=twsrc%5Etfw">2019年7月16日</a></blockquote><br>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
-<br>
-<br>
-<br>
-<h3>Version 1.0.0 (⏱2019.7.17)</h3>
-I thought that I did not understand the meaning of "破響" and I decided to return it to "波動".<br>
-<br>
-The last breath to Aprile. When it comes to here and there, the contents of work become dull and boring. That is why we have to get over it at once. So I will finish within one day anyway. And the application to the AppStore is complete. After that, "Let's take the field"<br>
-<br>
-『破響』は流石に意味がわからないと思い『波動』に戻すことにした。<br>
-<br>
-アプリリースまでの最後の一息。ここら辺になると、作業内容が地味でつまらなくなる。だからこそ一気に乗り越えなければならない。だから何としても1日以内に仕上げる。そしてめでたくAppStoreへ申請完了。あとは『野となれ山となれ』。<br>
-<blockquote class="twitter-tweet" data-lang="ja"><p lang="ja" dir="ltr">『波動 - Hysteric Oscillator ver1.0.0』完成！AppStoreへ申請完了！疲れたぁー(´&gt;ω&lt;｀) <a href="https://t.co/hl8B0GP1ED">https://t.co/hl8B0GP1ED</a></p>&mdash; Toshihiko Arai (@mopipico) <a href="https://twitter.com/mopipico/status/1151450634647793664?ref_src=twsrc%5Etfw">2019年7月17日</a></blockquote><br>
-<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script><br>
 <br>
 <br>
 <div class="app-download"><img src="../images/oscillator-icon-512.jpg" width="200px" height="200px" /><a
