@@ -688,3 +688,9 @@ Amazonリンク
         padding: 5px 10px;
         /* border-radius: 5px; */
     }
+
+    .thumbnail img {
+        border-radius: 40px;
+        height: 80px;
+        width: 80px;
+      }
