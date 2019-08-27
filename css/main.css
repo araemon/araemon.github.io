@@ -165,7 +165,7 @@ body {
     background:#eee;
     /* background:#EDEDED; */
     color: #404040;
-    font-size:16px; /* 16pxがブラウザ標準 */
+    font-size:18px; /* 16pxがブラウザ標準 */
     /* font-family: "PT Sans", Helvetica, Arial, sans-serif; */
     font-family: 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro','メイリオ',Meiryo,'ＭＳ Ｐゴシック',sans-serif;
 }
@@ -242,7 +242,6 @@ article h1 {
     font-size:1.3em;
     line-height: 1.5em;
     padding:20px 0 10px;
-    font-family: "ヒラギノ丸ゴ Pro W4","ヒラギノ丸ゴ Pro","Hiragino Maru Gothic Pro","ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro","HG丸ｺﾞｼｯｸM-PRO","HGMaruGothicMPRO";
 }
 article h2 {
     font-size:1.2em;
