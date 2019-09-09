@@ -112,11 +112,6 @@ word-wrap: normal;      /* IE 5.5+ */
   #header a:hover {
     color: #ccc;
   }
-  #header .copyright {
-    color: #ccc;
-    padding: 20px 0;
-    text-align: center;
-}
 
 @media screen and (min-width: 700px) {
     #header {
@@ -294,8 +289,6 @@ article pre.code {
     padding:10px 10px 20px;
     width:95%;
     overflow: auto;
-    /* max-height:250px; */
-/* コードがはみ出すのを折り返す */
     white-space: -moz-pre-wrap; /* Mozilla */
     white-space: -pre-wrap;     /* Opera 4-6 */
     white-space: -o-pre-wrap;   /* Opera 7 */
@@ -303,18 +296,7 @@ article pre.code {
     word-wrap: break-word;      /* IE 5.5+ */
     border-radius: 3px;
 }
-/* article pre.code span {
-    float: left;
-    display: block;
-    counter-increment: linenumber;
-    width: 100%;
-    overflow: hidden;
-}
-article pre.code span::before {
-    content: counter(linenumber);
-    padding-right:15px;
-    color:#888;
-} */
+
 article .codeInline {
     background: #f5f7f8;
     border: 1px solid #eee;
