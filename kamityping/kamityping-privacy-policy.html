@@ -37,113 +37,12 @@
 
                 <div id="contents">
                         <article>
-                                <div class="tag">
-                                        <a href="/kamityping/"
-                                                class="tagHighlight">kamityping</a>
-                                </div>
-                                <h1>タイピングの神様 - Privacy Policy</h1>
-                                <div class="time"><time pubdate=""
-                                                datetime="2018-11-17">2018-11-17</time>
-                                </div>
-                                <p>
-                                        <?php echo $SITE['article_toc']; ?>
-
-                                        <h2>Privacy Policy</h2>
-(I) There is no personal information of the user to be provided to a third party from this application.<br>
-(II) Advertisement display and network access to connect to ranking system.<br>
-<br>
-<br>
-<h2>プライバシーポリシー</h2>
-(I)このアプリから第三者に提供される利用者の個人情報はありません。<br>
-(II)広告表示および、ランキングシステムへ接続するためにネットワークアクセスを行います。 <br>
-<br>
-<div class="app-download"><img src="../images/kamityping-icon.jpg" width="200px" height="200px" /><a href="https://itunes.apple.com/jp/app/%E3%82%BF%E3%82%A4%E3%83%94%E3%83%B3%E3%82%B0%E3%81%AE%E7%A5%9E%E6%A7%98-%E3%83%95%E3%83%AA%E3%83%83%E3%82%AF%E5%85%A5%E5%8A%9B%E3%81%A7%E6%96%87%E5%AD%97%E3%81%AE%E6%97%A9%E6%89%93%E3%81%A1/id432724804"
-    target="_blank" class="iOS">Download on the<span>App Store</span></a><a href="https://play.google.com/store/apps/details?id=com.apppppp.kamityping&hl=ja"
-    target="_blank" class="Android">Get it on <span>Google Play</span></a></div> <br>
-
-                                </p>
-                                <ul class="shareList">
-                                        <li class="shareList__item"><a class="shareList__link icon-twitter"
-                                                        href="https://twitter.com/intent/tweet?url=https://araemon.github.io/kamityping/kamityping-privacy-policy.html&text=タイピングの神様 - Privacy Policy"
-                                                        target="_blank" title="Twitter"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-facebook"
-                                                        href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/kamityping/kamityping-privacy-policy.html"
-                                                        target="_blank" title="Facebook"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-pocket"
-                                                        href="http://getpocket.com/edit?url=https://araemon.github.io/kamityping/kamityping-privacy-policy.html&title=タイピングの神様 - Privacy Policy"
-                                                        target="_blank" title="Pocket"></a></li>
-                                </ul><br><br>
-                                <div class="copyright" style="text-align: center">Copyright ©
-                                        <a href="mailto:i.officearai@gmail.com">Toshihiko Arai</a></div>
+                                <b>このページは<a href="https://101010.fun/kamityping/kamityping-privacy-policy.html">こちら</a>に移転しました。</b><br><br>
+                                タイピングの神様 - Privacy Policy<br>
+                                <a href="https://101010.fun/kamityping/kamityping-privacy-policy.html">https://101010.fun/kamityping/kamityping-privacy-policy.html</a>
                         </article>
                 </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>
-                $.ajax({ // json読み込み開始
-                        type: 'GET',
-                        url: '/tag_cloud.json',
-                        dataType: 'json'
-                }).then(
-                        function (json) { // jsonの読み込みに成功した時
-                                // for (var url in json) {
-                                //     var wakati = json[url]['wakati']
-                                //     for (var i = 0; i < wakati.length; i++) {
-                                //         var tango = wakati[i]
-                                //         console.log(wakati[i])
-                                //         $('#tag_cloud').append("<a href=\"" + url + "\">" + tango + "</a>");
-                                //     }
-                                // }
-                                var tag_cloud = $('#tag_cloud')
-                                for (var tango in json) {
-                                        var tag = $("<div>")
-                                        var array = json[tango]
-                                        var count = array.length
-                                        var tag_link = $("<div class=\"link\"></div>")
-                                        if (count > 1) {
-                                                tag.html("<span>" + tango + " (" + count + ")" + "</span>");
-                                        } else {
-                                                continue;
-                                                tag.html("<span>" + tango + "</span>");
-                                        }
-
-                                        for (var i = 0; i < array.length; i++) {
-                                                var data = array[i]
-                                                // console.log(data[0])
-                                                var link = "<a href=\"" + data[0] + "\">" + data[1] + "</a>"
-                                                tag_link.append(link)
-                                        }
-
-                                        tag.append(tag_link)
-
-                                        tag_cloud.append(tag)
-
-                                        tag.click(function () {
-                                                tag_cloud.find(".link").removeClass("link_show")
-                                                var link = $(this).find(".link")
-                                                link.toggleClass('link_show');
-                                                // if (link.hasClass("link_show")) {
-                                                //     link.removeClass("link_show")
-                                                // } else {
-                                                //     link.addClass("link_show")
-                                                // }
-                                        })
-                                }
-
-                        },
-                        function () { //jsonの読み込みに失敗した時
-                                console.log('失敗');
-                        }
-                );
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
-        <script>
-                /****************************************
-                 * Lazy Load
-                ***************************************/
-                lazyload();
-
-        </script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>

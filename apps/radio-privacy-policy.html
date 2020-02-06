@@ -37,122 +37,12 @@
 
                 <div id="contents">
                         <article>
-                                <div class="tag">
-                                        <a href="/apps/"
-                                                class="tagHighlight">apps</a>
-                                </div>
-                                <h1>Radio App – Privacy Policy</h1>
-                                <div class="time"><time pubdate=""
-                                                datetime="2017-05-18">2017-05-18</time>
-                                </div>
-                                <p>
-                                        <?php echo $SITE['article_toc']; ?>
-
-                                        <img data-src="https://cdn-ak.f.st-hatena.com/images/fotolife/a/araemonz/20180512/20180512085712.png" width="300" class="lazyload" /><br>
-<br>
-1. We don’t get excessive personal information.<br>
- このアプリから第三者に提供される利用者情報はありません。<br>
-<br>
-2. We can get personal information because we hold internet connection for advertisement and radio streaming.<br>
- 広告表示及び、ラジオステーションへ接続するためにネットワークアクセスを行います。<br>
-<br>
-iPhone版ラジオアプリは『Radio Maniac』として一つにまとまりました。<br>
-<br>
-<div class="app-download">
-    <img src="../images/radiomaniac-icon.jpg" width="200px" height="200px" />
-    <a href="https://itunes.apple.com/jp/app/%E3%82%B8%E3%83%A3%E3%82%BA-%E3%82%BD%E3%82%A6%E3%83%AB-r-b-%E5%90%8D%E7%9B%A4%E3%81%8C%E8%81%B4%E3%81%8D%E6%94%BE%E9%A1%8C-%E3%83%A9%E3%82%B8%E3%82%AA%E3%83%9E%E3%83%8B%E3%82%A2%E3%83%83%E3%82%AF/id1308734256"
-        target="_blank" class="iOS">
-        Download on the<span>App Store</span></a></div>
-<br><br>
-<div class="app-download">
-    <img src="../images/jazz-icon.jpg" width="200px" height="200px" />
-    <a href="https://play.google.com/store/apps/details?id=com.apppppp.jazz" target="_blank" class="Android">
-        Get it on <span>Google Play</span></a></div><br>
-<br>
-
-                                </p>
-                                <ul class="shareList">
-                                        <li class="shareList__item"><a class="shareList__link icon-twitter"
-                                                        href="https://twitter.com/intent/tweet?url=https://araemon.github.io/apps/radio-privacy-policy.html&text=Radio App – Privacy Policy"
-                                                        target="_blank" title="Twitter"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-facebook"
-                                                        href="https://www.facebook.com/sharer/sharer.php?u=https://araemon.github.io/apps/radio-privacy-policy.html"
-                                                        target="_blank" title="Facebook"></a></li>
-                                        <li class="shareList__item"><a class="shareList__link icon-pocket"
-                                                        href="http://getpocket.com/edit?url=https://araemon.github.io/apps/radio-privacy-policy.html&title=Radio App – Privacy Policy"
-                                                        target="_blank" title="Pocket"></a></li>
-                                </ul><br><br>
-                                <div class="copyright" style="text-align: center">Copyright ©
-                                        <a href="mailto:i.officearai@gmail.com">Toshihiko Arai</a></div>
+                                <b>このページは<a href="https://101010.fun/apps/radio-privacy-policy.html">こちら</a>に移転しました。</b><br><br>
+                                Radio App – Privacy Policy<br>
+                                <a href="https://101010.fun/apps/radio-privacy-policy.html">https://101010.fun/apps/radio-privacy-policy.html</a>
                         </article>
                 </div>
         </div>
-        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-        <script>
-                $.ajax({ // json読み込み開始
-                        type: 'GET',
-                        url: '/tag_cloud.json',
-                        dataType: 'json'
-                }).then(
-                        function (json) { // jsonの読み込みに成功した時
-                                // for (var url in json) {
-                                //     var wakati = json[url]['wakati']
-                                //     for (var i = 0; i < wakati.length; i++) {
-                                //         var tango = wakati[i]
-                                //         console.log(wakati[i])
-                                //         $('#tag_cloud').append("<a href=\"" + url + "\">" + tango + "</a>");
-                                //     }
-                                // }
-                                var tag_cloud = $('#tag_cloud')
-                                for (var tango in json) {
-                                        var tag = $("<div>")
-                                        var array = json[tango]
-                                        var count = array.length
-                                        var tag_link = $("<div class=\"link\"></div>")
-                                        if (count > 1) {
-                                                tag.html("<span>" + tango + " (" + count + ")" + "</span>");
-                                        } else {
-                                                continue;
-                                                tag.html("<span>" + tango + "</span>");
-                                        }
-
-                                        for (var i = 0; i < array.length; i++) {
-                                                var data = array[i]
-                                                // console.log(data[0])
-                                                var link = "<a href=\"" + data[0] + "\">" + data[1] + "</a>"
-                                                tag_link.append(link)
-                                        }
-
-                                        tag.append(tag_link)
-
-                                        tag_cloud.append(tag)
-
-                                        tag.click(function () {
-                                                tag_cloud.find(".link").removeClass("link_show")
-                                                var link = $(this).find(".link")
-                                                link.toggleClass('link_show');
-                                                // if (link.hasClass("link_show")) {
-                                                //     link.removeClass("link_show")
-                                                // } else {
-                                                //     link.addClass("link_show")
-                                                // }
-                                        })
-                                }
-
-                        },
-                        function () { //jsonの読み込みに失敗した時
-                                console.log('失敗');
-                        }
-                );
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/lazyload@2.0.0-beta.2/lazyload.js"></script>
-        <script>
-                /****************************************
-                 * Lazy Load
-                ***************************************/
-                lazyload();
-
-        </script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-12032595-16"></script>
 <script>
